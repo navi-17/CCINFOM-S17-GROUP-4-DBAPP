@@ -1,6 +1,3 @@
-Note: Don't include the * * symbol, just put whats inside of it <br><br><br>
-
-
 Before you proceed w/ the github commands, ensure the ff: <br>
 - Download git on your device so that you can use git commands on your command prompt / terminal <br>
 - Create a folder for this project in your device <br>
