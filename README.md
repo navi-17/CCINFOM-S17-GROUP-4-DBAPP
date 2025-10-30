@@ -17,3 +17,4 @@ files you pushed and decide wether to merge it in the main branch. The main bran
 
 (6) git pull origin "branch name" --> this saves all the files in this repository of your chosen branch on your local device <br>
 
+
