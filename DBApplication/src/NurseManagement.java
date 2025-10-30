@@ -39,7 +39,7 @@ class Nurse{
 public class NurseManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
     private static final String USER = "root";
-    private static final String PASSWORD = "yumeKaze17";
+    private static final String PASSWORD = "infom123";
 
     public boolean registerNurse(Nurse nurse) //create
     {
