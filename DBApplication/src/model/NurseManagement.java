@@ -1,40 +1,6 @@
-import java.util.*;
+package model;
+
 import java.sql.*;
-
-class Nurse{
-    private int nurse_id;
-    private String n_lastname;
-    private String n_firstname;
-    private String contact_no;
-
-    public Nurse(String ln, String fn, String contact_no)
-    {
-        n_lastname = ln;
-        n_firstname = fn;
-        this.contact_no = contact_no;
-    }
-
-    public int getNurseID()
-    {
-        return nurse_id;
-    }
-
-    public String getLastName()
-    {
-        return n_lastname;
-    }
-
-    public String getFirstName()
-    {
-        return n_firstname;
-    }
-
-    public  String getContactNo()
-    {
-        return contact_no;
-    }
-
-}
 
 public class NurseManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
