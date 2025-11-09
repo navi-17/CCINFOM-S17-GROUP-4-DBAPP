@@ -1,36 +1,29 @@
 package model;
-
 import java.sql.*;
 
-public class NurseManagement {
+public class NurseShiftManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
     private static final String USER = "root";
     private static final String PASSWORD = "infom123";
     private Connection conn;
     PreparedStatement pstmt;
 
-    public boolean registerNurse(Nurse nurse) //CREATE
+    public boolean createNurseShift(NurseShift nurseShift)
     {
         try{
-            //This is where we will put codes that will interact w/ database
-            //1. connect to database
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            //2. Prepare SQL Statement --> store in PreparedStatement (dont forget to put alias for column name so u can fetch the value)
-            String sql = "INSERT INTO nurse (n_lastname, n_firstname, contact_no) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO nurse_shift (nurse_id, shift_day, start_time, end_time) VALUES (?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setString(1, nurse.getLastName());
-            pstmt.setString(2, nurse.getFirstName());
-            pstmt.setString(3, nurse.getContactNo());
+            pstmt.setInt(1, nurseShift.getNurseID());
+            pstmt.setString(2, nurseShift.getShiftDay());
+            pstmt.setString(3, nurseShift.getStartTime());
+            pstmt.setString(4, nurseShift.getEndTime());
 
-            pstmt.executeUpdate(); //used for queries that modifies the table
+            pstmt.executeUpdate();
             System.out.println("Record inserted successfully!");
-
-
-            //3. After executing query, store result in ResultSet
-            //4. To get result, use while(rst.next)
 
             pstmt.close();
             conn.close();
@@ -42,24 +35,25 @@ public class NurseManagement {
         }
     }
 
-    public void viewNurseRecords() //READ
+    public void viewNurseShifts()
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "SELECT * FROM nurse";
+            String sql = "SELECT * FROM nurse_shift";
             pstmt = conn.prepareStatement(sql);
 
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
-                int nurseID = rs.getInt("nurse_id");
-                String ln = rs.getString("n_lastname");
-                String fn = rs.getString("n_firstname");
-                String no = rs.getString("contact_no");
+                int nsID = rs.getInt("nurseShift_id");
+                String nID = rs.getString("nurse_id");
+                String sday = rs.getString("shift_day");
+                String sTime = rs.getString("start_time");
+                String eTime = rs.getString("end_time");
 
-                System.out.println(nurseID + ", " + ln + ", " + fn + ", " + no);
+                System.out.println(nsID + ", " + nID + ", " + sday + ", " + sTime + ", " + eTime);
             }
 
             pstmt.close();
@@ -71,24 +65,24 @@ public class NurseManagement {
         }
     }
 
-    public boolean updateNurseRecord(Nurse nurse)
+    public boolean updateNurseShift(NurseShift ns)
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "UPDATE nurse SET n_firstname = ?, n_lastname = ?, contact_no = ? WHERE nurse_id = ?";
+            String sql = "UPDATE nurse_shift SET shift_day = ?, start_time = ?, end_time = ?  WHERE nurseShift_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, nurse.getFirstName());
-            pstmt.setString(2, nurse.getLastName());
-            pstmt.setString(3, nurse.getContactNo());
-            pstmt.setInt(4, nurse.getNurseID());
+            pstmt.setString(1, ns.getShiftDay());
+            pstmt.setString(2, ns.getStartTime());
+            pstmt.setString(3, ns.getEndTime());
+            pstmt.setInt(4, ns.getNurseShiftID());
 
             int rowsAffected = pstmt.executeUpdate();
 
             if(rowsAffected > 0)
             {
-                System.out.println("Nurse with id = " + nurse.getNurseID() + " has been updated!");
+                System.out.println("\nNurseShift with id = " + ns.getNurseShiftID() + " has been updated!");
                 pstmt.close();
                 conn.close();
                 return true;
@@ -108,15 +102,15 @@ public class NurseManagement {
         }
     }
 
-    public boolean deleteNurseRecord(int nurseID) //DELETE
+    public boolean deleteNurseShift(int nurseShiftID) //DELETE
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "DELETE FROM nurse WHERE nurse_id = ?";
+            String sql = "DELETE FROM nurse_shift WHERE nurseShift_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, nurseID); //1 is position placeholder of ? in sql variable. since 1 lang ung ?, it starts at 1
+            pstmt.setInt(1, nurseShiftID);
 
             int rowsAffected = pstmt.executeUpdate();
 
@@ -125,7 +119,7 @@ public class NurseManagement {
 
             if(rowsAffected > 0)
             {
-                System.out.println("Nurse with id = " + nurseID + " deleted successfully!");
+                System.out.println("NurseShift with id = " + nurseShiftID + " deleted successfully!");
                 return true;
             }
             else
@@ -141,13 +135,19 @@ public class NurseManagement {
     }
 
 
-    public static void main(String[] args){
-        Nurse nurse = new Nurse("Marta", "Lualdi", "+63 9645138314");
-        NurseManagement nurseMgmt = new NurseManagement();
 
-//        nurseMgmt.registerNurse(nurse);
-//        nurseMgmt.deleteNurseRecord(1002);
-        nurseMgmt.viewNurseRecords();
+    public static void main(String[] args)
+    {
+//        NurseShift ns = new NurseShift(1003, "Monday", "07:00", "19:00");
+        NurseShiftManagement nsm = new NurseShiftManagement();
+        NurseShift updateNs = new NurseShift(5, 1003, "Tuesday", "09:00", "19:00");
+
+//        nsm.createNurseShift(ns);
+//        nsm.updateNurseShift(updateNs);
+//        nsm.deleteNurseShift(5);
+        nsm.viewNurseShifts();
+
 
     }
+
 }
