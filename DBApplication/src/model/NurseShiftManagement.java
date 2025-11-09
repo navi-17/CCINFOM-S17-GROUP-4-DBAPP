@@ -89,12 +89,11 @@ public class NurseShiftManagement {
             }
             else
             {
-                System.out.println("Nurse record update failed.");
+                System.out.println("NurseShift record update failed.");
                 pstmt.close();
                 conn.close();
                 return false;
             }
-
 
         }catch(Exception e) {
             System.out.println(e.getMessage());
@@ -140,7 +139,7 @@ public class NurseShiftManagement {
     {
 //        NurseShift ns = new NurseShift(1003, "Monday", "07:00", "19:00");
         NurseShiftManagement nsm = new NurseShiftManagement();
-        NurseShift updateNs = new NurseShift(5, 1003, "Tuesday", "09:00", "19:00");
+        NurseShift updateNs = new NurseShift(1003, "Tuesday", "09:00", "19:00");
 
 //        nsm.createNurseShift(ns);
 //        nsm.updateNurseShift(updateNs);
