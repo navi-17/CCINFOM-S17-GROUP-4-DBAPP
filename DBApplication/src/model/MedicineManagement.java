@@ -1,36 +1,32 @@
 package model;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-public class NurseManagement {
+public class MedicineManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
     private static final String USER = "root";
     private static final String PASSWORD = "infom123";
     private Connection conn;
     PreparedStatement pstmt;
 
-    public boolean registerNurse(Nurse nurse) //CREATE
+    public boolean createMedicineRecord(Medicine medicine)
     {
         try{
-            //This is where we will put codes that will interact w/ database
-            //1. connect to database
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            //2. Prepare SQL Statement --> store in PreparedStatement (dont forget to put alias for column name so u can fetch the value)
-            String sql = "INSERT INTO nurse (n_lastname, n_firstname, contact_no) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO medicine (medicine_name, stock_qty) VALUES (?, ?)";
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setString(1, nurse.getLastName());
-            pstmt.setString(2, nurse.getFirstName());
-            pstmt.setString(3, nurse.getContactNo());
-
-            pstmt.executeUpdate(); //used for queries that modifies the table
-            System.out.println("Nurse Record inserted successfully!");
+            pstmt.setString(1, medicine.getMedicineName());
+            pstmt.setInt(2, medicine.getStockQty());
 
 
-            //3. After executing query, store result in ResultSet
-            //4. To get result, use while(rst.next)
+            pstmt.executeUpdate();
+            System.out.println("Medicine Record inserted successfully!");
 
             pstmt.close();
             conn.close();
@@ -42,24 +38,23 @@ public class NurseManagement {
         }
     }
 
-    public void viewNurseRecords() //READ
+    public void viewMedicineRecord()
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "SELECT * FROM nurse";
+            String sql = "SELECT * FROM medicine";
             pstmt = conn.prepareStatement(sql);
 
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
-                int nurseID = rs.getInt("nurse_id");
-                String ln = rs.getString("n_lastname");
-                String fn = rs.getString("n_firstname");
-                String no = rs.getString("contact_no");
+                int mID = rs.getInt("medicine_id");
+                String mName = rs.getString("medicine_name");
+                int stock = rs.getInt("stock_qty");
 
-                System.out.println(nurseID + ", " + ln + ", " + fn + ", " + no);
+                System.out.println(mID + ", " + mName + ", " + stock);
             }
 
             pstmt.close();
@@ -71,24 +66,24 @@ public class NurseManagement {
         }
     }
 
-    public boolean updateNurseRecord(Nurse nurse)
+    public boolean updateMedicineRecord(Medicine medicine)
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "UPDATE nurse SET n_firstname = ?, n_lastname = ?, contact_no = ? WHERE nurse_id = ?";
+            String sql = "UPDATE medicine SET medicine_name = ?, stock_qty = ? WHERE medicine_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, nurse.getFirstName());
-            pstmt.setString(2, nurse.getLastName());
-            pstmt.setString(3, nurse.getContactNo());
-            pstmt.setInt(4, nurse.getNurseID());
+            pstmt.setString(1, medicine.getMedicineName());
+            pstmt.setInt(2, medicine.getStockQty());
+            pstmt.setInt(3,medicine.getMedicineID());
+
 
             int rowsAffected = pstmt.executeUpdate();
 
             if(rowsAffected > 0)
             {
-                System.out.println("Nurse with id = " + nurse.getNurseID() + " has been updated!");
+                System.out.println("\n Medicine with id = " + medicine.getMedicineID() + " has been updated!");
                 pstmt.close();
                 conn.close();
                 return true;
@@ -101,22 +96,21 @@ public class NurseManagement {
                 return false;
             }
 
-
         }catch(Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public boolean deleteNurseRecord(int nurseID) //DELETE
+    public boolean deleteMedicineRecord(int medicineID) //DELETE
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "DELETE FROM nurse WHERE nurse_id = ?";
+            String sql = "DELETE FROM medicine WHERE medicine_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, nurseID); //1 is position placeholder of ? in sql variable. since 1 lang ung ?, it starts at 1
+            pstmt.setInt(1, medicineID);
 
             int rowsAffected = pstmt.executeUpdate();
 
@@ -125,12 +119,12 @@ public class NurseManagement {
 
             if(rowsAffected > 0)
             {
-                System.out.println("Nurse with id = " + nurseID + " deleted successfully!");
+                System.out.println("Medicine with id = " + medicineID + " deleted successfully!");
                 return true;
             }
             else
             {
-                System.out.println("Nurse deletion failed");
+                System.out.println("Medicine deletion failed");
                 return false;
             }
 
@@ -141,13 +135,22 @@ public class NurseManagement {
     }
 
 
-    public static void main(String[] args){
-        Nurse nurse = new Nurse("Marta", "Lualdi", "+63 9645138314");
-        NurseManagement nurseMgmt = new NurseManagement();
 
-//        nurseMgmt.registerNurse(nurse);
-//        nurseMgmt.deleteNurseRecord(1002);
-        nurseMgmt.viewNurseRecords();
 
+
+    public static void main(String[] args)
+    {
+        Medicine medicine = new Medicine("Biogesic", 50);
+        MedicineManagement mm = new MedicineManagement();
+
+        Medicine updatedMed = new Medicine("Paracetamol", 100);
+        updatedMed.setMedicineID(4002);
+
+//        mm.createMedicineRecord(medicine);
+//        mm.updateMedicineRecord(updatedMed);
+//        mm.deleteMedicineRecord(4002);
+        mm.viewMedicineRecord();
     }
 }
+
+
