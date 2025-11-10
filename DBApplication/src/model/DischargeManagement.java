@@ -1,30 +1,29 @@
 package model;
+
 import java.sql.*;
 
-public class DiagnosisManagement {
+public class DischargeManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
     private static final String USER = "root";
     private static final String PASSWORD = "KC379379";
     private Connection conn;
     PreparedStatement pstmt;
 
-    public boolean createDiagnosisRecord(int phySchedID, int pID, int illID, String diagnosis_date, String notes)
+    public boolean createDischargeRecord(int admission_id, String discharge_date)
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "INSERT INTO diagnosis (patient_id, physicianSchedule_id, illness_id, diagnosis_date, notes) VALUES (?, ?, ?, ?, ?)";
+            // no discahrge id since it auto increments
+            String sql = "INSERT INTO discharge (admission_id, discharge_date) VALUES (?, ?)";
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setInt(1, pID);
-            pstmt.setInt(2, phySchedID);
-            pstmt.setInt(3, illID);
-            pstmt.setString(4, diagnosis_date);
-            pstmt.setString(5, notes);
+            pstmt.setInt(1, admission_id);
+            pstmt.setString(2, discharge_date);
 
             pstmt.executeUpdate();
-            System.out.println("Diagnosis Record inserted successfully!");
+            System.out.println("Discharge Record inserted successfully!");
 
             pstmt.close();
             conn.close();
@@ -36,26 +35,23 @@ public class DiagnosisManagement {
         }
     }
 
-    public void viewPatientDiagnosis() //READ
+    public void viewDischargeRecord() //READ
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "SELECT * FROM diagnosis";
+            String sql = "SELECT * FROM discharge";
             pstmt = conn.prepareStatement(sql);
 
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
-                int diagnosisID = rs.getInt("diagnosis_id");
-                int pID = rs.getInt("patient_id");
-                int phySchedID = rs.getInt("physicianSchedule_id");
-                int illID = rs.getInt("illness_id");
-                String diagnosis_date = rs.getString("diagnosis_date");
-                String notes = rs.getString("notes");
+                int discharge_id = rs.getInt("discharge_id");
+                int admission_id = rs.getInt("admission_id");
+                String discharge_date = rs.getString("discharge_date");
 
-                System.out.println(diagnosisID + ", " + pID + ", " + phySchedID + ", " + illID + ", " + diagnosis_date + ", " + notes);
+                System.out.println(discharge_id + ", " + admission_id + ", " + discharge_date);
             }
 
             pstmt.close();
@@ -67,33 +63,30 @@ public class DiagnosisManagement {
         }
     }
 
-    public boolean updateDiagnosisRecord(Diagnosis diagnosis)
+    public boolean updateDischargeRecord(Discharge discharge)
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "UPDATE diagnosis SET patient_id = ?, physicianSchedule_id = ?, illness_id = ?, diagnosis_date = ?, notes = ? WHERE diagnosis_id = ?";
+            String sql = "UPDATE discharge SET admission_id = ?, discharge_date = ? WHERE discharge_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, diagnosis.getPatient_id());
-            pstmt.setInt(2, diagnosis.getPhysicianSchedule_id());
-            pstmt.setInt(3, diagnosis.getIllness_id());
-            pstmt.setString(4, diagnosis.getDiagnosis_date());
-            pstmt.setString(5, diagnosis.getNotes());
-            pstmt.setInt(6, diagnosis.getDiagnosis_id());
+            pstmt.setInt(1, discharge.getAdmission_id());
+            pstmt.setString(2, discharge.getDischarge_date());
+            pstmt.setInt(3, discharge.getDischarge_id());
 
             int rowsAffected = pstmt.executeUpdate();
 
             if(rowsAffected > 0)
             {
-                System.out.println("Diagnosis with id = " + diagnosis.getDiagnosis_id() + " has been updated!");
+                System.out.println("Discharge with id = " + discharge.getDischarge_id() + " has been updated!");
                 pstmt.close();
                 conn.close();
                 return true;
             }
             else
             {
-                System.out.println("Diagnosis record update failed.");
+                System.out.println("Discharge record update failed.");
                 pstmt.close();
                 conn.close();
                 return false;
@@ -106,15 +99,15 @@ public class DiagnosisManagement {
         }
     }
 
-    public boolean deleteDiagnosisRecord(int diagnosis_id) //DELETE
+    public boolean deleteDischargeRecord(int discharge_id) //DELETE
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "DELETE FROM diagnosis WHERE diagnosis_id = ?";
+            String sql = "DELETE FROM discharge WHERE discharge_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, diagnosis_id); //1 is position placeholder of ? in sql variable. since 1 lang ung ?, it starts at 1
+            pstmt.setInt(1, discharge_id); //1 is position placeholder of ? in sql variable. since 1 lang ung ?, it starts at 1
 
             int rowsAffected = pstmt.executeUpdate();
 
@@ -123,12 +116,12 @@ public class DiagnosisManagement {
 
             if(rowsAffected > 0)
             {
-                System.out.println("Diagnosis record with id = " + diagnosis_id + " deleted successfully!");
+                System.out.println("Discharge record with id = " + discharge_id + " deleted successfully!");
                 return true;
             }
             else
             {
-                System.out.println("Diagnosis deletion failed");
+                System.out.println("Discharge record deletion failed");
                 return false;
             }
 
@@ -140,10 +133,10 @@ public class DiagnosisManagement {
 
     public static void main(String[] args)
     {
-        DiagnosisManagement diagnosisManagement = new DiagnosisManagement();
+        DischargeManagement dischargeManagement = new DischargeManagement();
 
-//        diagnosisManagement.createDischargeRecord()
-//        diagnosisManagement.viewPatientDiagnosis();
+//        dischargeManagement.createDischargeRecord();
+//        dischargeManagement.viewDischargeRecord();
 
     }
 }
