@@ -15,9 +15,9 @@ public class PhysicianSchedule {
         end_time = end;
     }
 
-    public void setPhysicianID(int phID)
+    public void setPhysicianScheduleID(int phsID)
     {
-        physician_id = phID;
+        physicianSchedule_id = phsID;
     }
 
     public int getPhysicianScheduleID()

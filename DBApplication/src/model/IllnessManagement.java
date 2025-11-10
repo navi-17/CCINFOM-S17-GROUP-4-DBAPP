@@ -36,7 +36,6 @@ public class IllnessManagement {
             pstmt.close();
             conn.close();
             return true;
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;

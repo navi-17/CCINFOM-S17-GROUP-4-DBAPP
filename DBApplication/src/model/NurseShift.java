@@ -7,14 +7,19 @@ public class NurseShift {
     private String start_time;
     private String end_time;
 
-    public NurseShift(int nurseShiftID, int nurseID, String day, String start, String end)
+    public NurseShift(int nurseID, String day, String start, String end)
     {
-        nurseShift_id = nurseShiftID;
         nurse_id = nurseID;
         shift_day = day;
         start_time = start;
         end_time = end;
     }
+
+    public void setNurseShiftID(int nsID)
+    {
+        nurseShift_id = nsID;
+    }
+
 
     public int getNurseShiftID()
     {
