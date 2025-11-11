@@ -137,11 +137,11 @@ public class NurseShiftManagement {
 
     public static void main(String[] args)
     {
-//        NurseShift ns = new NurseShift(1003, "Monday", "07:00", "19:00");
+        NurseShift ns = new NurseShift(1003, "Monday", "07:00", "19:00");
         NurseShiftManagement nsm = new NurseShiftManagement();
         NurseShift updateNs = new NurseShift(1003, "Tuesday", "09:00", "19:00");
 
-//        nsm.createNurseShift(ns);
+        nsm.createNurseShift(ns);
 //        nsm.updateNurseShift(updateNs);
 //        nsm.deleteNurseShift(5);
         nsm.viewNurseShifts();

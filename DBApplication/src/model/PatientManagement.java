@@ -143,7 +143,7 @@ public class PatientManagement {
 
 //        Patient updateP = new Patient("Braun", "Reiner", "+63 9184398951");
 //        updateP.setPatientID(102);
-        pm.createPatientRecord(p);
+//        pm.createPatientRecord(p);
 //        pm.updatePatientRecord(updateP);
 //        pm.deletePatientRecord(updateP.getPatientID());
         pm.viewPatientRecords();
