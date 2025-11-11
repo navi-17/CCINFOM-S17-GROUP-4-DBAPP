@@ -14,6 +14,7 @@ public class NurseAssignmentManagement {
     { //THIS IS CREATE
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            System.out.println("Connection to database successful!");
             //(1) Get the day of the nurse shift first
             String getNurseShift = "SELECT shift_day FROM nurse_shift WHERE nurseShift_id = ?";
             pstmt = conn.prepareStatement(getNurseShift);
@@ -23,23 +24,37 @@ public class NurseAssignmentManagement {
             if(rs.next())
             {
                 String shiftDay = rs.getString("shift_day"); //(1) get nurse's day shift in String
+                String dayUntil = null;
 
                 //(2) Get assigned_date's and assigned_until's day of week
                 java.sql.Date assignedDate = na.getDateAssigned();
                 String day = assignedDate.toLocalDate().getDayOfWeek().toString(); //just need to convert it to local date to get the day of the week, then convert to string
-                java.sql.Date assignedUntil = na.getAssignedUntil();
-                String dayUntil = assignedUntil.toLocalDate().getDayOfWeek().toString();
+
+                if(na.getAssignedUntil() != null) //because assigned until can be null
+                {
+                    java.sql.Date assignedUntil = na.getAssignedUntil();
+                    dayUntil = assignedUntil.toLocalDate().getDayOfWeek().toString();
+                }
+
 
                 //(3) Compare assigned date (converted) and shiftDay
-                if(!shiftDay.equalsIgnoreCase(day) || !shiftDay.equalsIgnoreCase(dayUntil))
+                if(!shiftDay.equalsIgnoreCase(day) || (dayUntil != null && !shiftDay.equalsIgnoreCase(dayUntil)))
                 {
                     System.out.println("Cannot assign nurse. The date does not match their shift date");
+                    rs.close();
+                    pstmt.close();
+                    conn.close();
                     return false;
                 }
+                rs.close();
+                pstmt.close();
             }
             else
             {
                 System.out.println("No shift found for nurseShiftID " + na.getNurseShiftID());
+                rs.close();
+                pstmt.close();
+                conn.close();
                 return false;
             }
 
@@ -51,7 +66,10 @@ public class NurseAssignmentManagement {
             pstmt.setInt(1, na.getNurseShiftID());
             pstmt.setInt(2, na.getPatientID());
             pstmt.setDate(3, na.getDateAssigned());
-            pstmt.setDate(4, na.getAssignedUntil());
+            if(na.getAssignedUntil() != null)
+                pstmt.setDate(4, na.getAssignedUntil());
+            else
+                pstmt.setNull(4, Types.DATE);
 
             pstmt.executeUpdate();
             System.out.println("Nurse Assignment Record inserted successfully!");
@@ -86,8 +104,8 @@ public class NurseAssignmentManagement {
                 System.out.println(naID + ", " + nsID + ", " + pID + ", " + dateAssigned + ", " + assignedUntil);
             }
 
-            pstmt.close();
             rs.close();
+            pstmt.close();
             conn.close();
 
         } catch(Exception e) {
@@ -110,32 +128,52 @@ public class NurseAssignmentManagement {
             if(rs.next())
             {
                 String shiftDay = rs.getString("shift_day"); //(1) get nurse's day shift in String
+                String dayUntil = null;
 
-                //(2) Get assigned_date's day of week
+                //(2) Get assigned_date's and assigned_until's day of week
                 java.sql.Date assignedDate = na.getDateAssigned();
                 String day = assignedDate.toLocalDate().getDayOfWeek().toString(); //just need to convert it to local date to get the day of the week, then convert to string
-                java.sql.Date assignedUntil = na.getAssignedUntil();
-                String dayUntil = assignedUntil.toLocalDate().getDayOfWeek().toString();
+
+                if(na.getAssignedUntil() != null) //because assigned until can be null
+                {
+                    java.sql.Date assignedUntil = na.getAssignedUntil();
+                    dayUntil = assignedUntil.toLocalDate().getDayOfWeek().toString();
+                }
+
 
                 //(3) Compare assigned date (converted) and shiftDay
-                if(!shiftDay.equalsIgnoreCase(day) || !shiftDay.equalsIgnoreCase(dayUntil))
+                if(!shiftDay.equalsIgnoreCase(day) || (dayUntil != null && !shiftDay.equalsIgnoreCase(dayUntil)))
                 {
                     System.out.println("Cannot update nurse assignment record. The date does not match their shift date");
+                    rs.close();
+                    pstmt.close();
+                    conn.close();
                     return false;
                 }
+                rs.close();
+                pstmt.close();
             }
             else
             {
                 System.out.println("No shift found for nurseShiftID " + na.getNurseShiftID());
+                rs.close();
+                pstmt.close();
+                conn.close();
                 return false;
             }
+
+            //if it doesnt fail, meaning consistent ung date assigned sa day ng nurse shift, proceed with update
 
             String sql = "UPDATE nurse_assignment SET nurseShift_id = ?, patient_id = ?, date_assigned = ?, assigned_until = ? WHERE nurseAssignment_id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, na.getNurseShiftID());
             pstmt.setInt(2, na.getPatientID());
             pstmt.setDate(3, na.getDateAssigned());
-            pstmt.setDate(4, na.getAssignedUntil());
+            if(na.getAssignedUntil() != null)
+                pstmt.setDate(4, na.getAssignedUntil());
+            else
+                pstmt.setNull(4, Types.DATE);
+
             pstmt.setInt(5, na.getNurseAssignmentID());
 
             int rowsAffected = pstmt.executeUpdate();
@@ -199,11 +237,11 @@ public class NurseAssignmentManagement {
     {
         NurseAssignment na = new NurseAssignment(6, 103, Date.valueOf("2025-11-17"), null);
         NurseAssignmentManagement nam = new NurseAssignmentManagement();
-        NurseAssignment updateNa = new NurseAssignment(6, 103, Date.valueOf("2025-11-17"), Date.valueOf("2025-11-24"));
-        updateNa.setAssignmentID(7003);
+        NurseAssignment updateNa = new NurseAssignment(6, 103, Date.valueOf("2025-11-10"), Date.valueOf("2025-11-24"));
+        updateNa.setAssignmentID(7002);
 //        nam.assignNurseToPatient(na);
-//        nam.updateNurseAssignment(updateNa);
-        nam.deleteNurseAssignment(updateNa.getNurseAssignmentID());
+        nam.updateNurseAssignment(updateNa);
+//        nam.deleteNurseAssignment(updateNa.getNurseAssignmentID());
         nam.viewNurseAssignments();
     }
 

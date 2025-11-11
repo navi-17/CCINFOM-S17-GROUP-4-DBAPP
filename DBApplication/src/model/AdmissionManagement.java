@@ -8,18 +8,33 @@ public class AdmissionManagement {
     private Connection conn;
     PreparedStatement pstmt;
 
-    public boolean createAdmissionRecord(int pID, int wID, String admissionDate)
+    public boolean createAdmissionRecord(Admission admission)
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
+            String getWardOccupancy = "SELECT a.admission_id, a.patient_id, a.ward_id, a.admission_id " +
+                                       "FROM admission a LEFT JOIN discharge d ON a.admission_id = d.admission_id " +
+                                        "WHERE a.ward_id = ? AND d.discharge_id IS NULL";
+
+            pstmt = conn.prepareStatement(getWardOccupancy);
+            pstmt.setInt(1, admission.getWardID());
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()) //if it has a result, ward is occupied, cannot create admission
+            {
+                System.out.println("Cannot create admission record, the specified ward is currently occupied!");
+                return false;
+            }
+
+            //if it doesnt fail, ward is unoccupied, insert the record successfully
             String sql = "INSERT INTO admission (patient_id, ward_id, admission_date) VALUES (?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setInt(1, pID);
-            pstmt.setInt(2, wID);
-            pstmt.setString(3, admissionDate);
+            pstmt.setInt(1, admission.getPatientID());
+            pstmt.setInt(2, admission.getWardID());
+            pstmt.setString(3, admission.getAdmissionDate());
 
             pstmt.executeUpdate();
             System.out.println("Admission Record inserted successfully!");
@@ -69,6 +84,24 @@ public class AdmissionManagement {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
+            String getWardOccupancy = "SELECT a.admission_id, a.patient_id, a.ward_id, a.admission_id " +
+                    "FROM admission a LEFT JOIN discharge d ON a.admission_id = d.admission_id " +
+                    "WHERE a.ward_id != ? AND d.discharge_id IS NULL AND a.admission_id = ?";
+
+            pstmt = conn.prepareStatement(getWardOccupancy);
+            pstmt.setInt(1, admission.getWardID());
+            pstmt.setInt(2, admission.getAdmissionID());
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()) //if it has a result, ward is occupied, cannot create admission
+            {
+                System.out.println("Cannot update admission record, the specified ward is currently occupied!");
+                return false;
+            }
+
+            rs.close();
+            pstmt.close();
+
             String sql = "UPDATE admission SET patient_id = ?, ward_id = ?, admission_date = ? WHERE admission_id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, admission.getPatientID());
@@ -92,7 +125,6 @@ public class AdmissionManagement {
                 conn.close();
                 return false;
             }
-
 
         }catch(Exception e) {
             System.out.println(e.getMessage());
@@ -136,12 +168,12 @@ public class AdmissionManagement {
     public static void main(String[] args)
     {
         AdmissionManagement am = new AdmissionManagement();
-//        Admission a = new Admission(103, 502, "2025-11-11");
-
-//        am.createAdmissionRecord(103, 502, "2025-11-10");
-//        a.setAdmissionID(8003);
-//        am.updateAdmissionRecord(a);
-        am.deleteAdmissionRecord(8003);
+        Admission a = new Admission(101, 501, "2025-11-11");
+        Admission updateA = new Admission(103, 501, "2025-11-12");
+//        am.createAdmissionRecord(a);
+        updateA.setAdmissionID(8005);
+        am.updateAdmissionRecord(updateA);
+//        am.deleteAdmissionRecord(8003);
         am.viewPatientAdmission();
     }
 }
