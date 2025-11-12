@@ -8,11 +8,32 @@ public class DiagnosisManagement {
     private Connection conn;
     PreparedStatement pstmt;
 
-    public boolean createDiagnosisRecord(int phySchedID, int pID, int illID, String diagnosis_date, String notes)
+    public boolean createDiagnosisRecord(int phySchedID, int pID, int illID, java.sql.Date diagnosis_date, String notes)
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
+
+            String getPhysicianSched = "SELECT schedule_day FROM physician_schedule ps " +
+                    "WHERE physicianSchedule_id = ?";
+            pstmt = conn.prepareStatement(getPhysicianSched);
+            pstmt.setInt(1, phySchedID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String scheduleDay = rs.getString("schedule_day"); //get physician's schedule day
+                String sDiagnosisDate = diagnosis_date.toLocalDate().getDayOfWeek().toString();
+
+                if (!scheduleDay.equalsIgnoreCase(sDiagnosisDate)) {
+                    System.out.println("Cannot create Diagnosis Record. Diagnosis date is not within the assigned physician's schedule");
+                    rs.close();
+                    pstmt.close();
+                    conn.close();
+                    return false;
+                }
+            }
+            rs.close();
+            pstmt.close();
 
             String sql = "INSERT INTO diagnosis (patient_id, physicianSchedule_id, illness_id, diagnosis_date, notes) VALUES (?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
@@ -20,7 +41,7 @@ public class DiagnosisManagement {
             pstmt.setInt(1, pID);
             pstmt.setInt(2, phySchedID);
             pstmt.setInt(3, illID);
-            pstmt.setString(4, diagnosis_date);
+            pstmt.setDate(4, diagnosis_date);
             pstmt.setString(5, notes);
 
             pstmt.executeUpdate();
@@ -52,7 +73,7 @@ public class DiagnosisManagement {
                 int pID = rs.getInt("patient_id");
                 int phySchedID = rs.getInt("physicianSchedule_id");
                 int illID = rs.getInt("illness_id");
-                String diagnosis_date = rs.getString("diagnosis_date");
+                java.sql.Date diagnosis_date = rs.getDate("diagnosis_date");
                 String notes = rs.getString("notes");
 
                 System.out.println(diagnosisID + ", " + pID + ", " + phySchedID + ", " + illID + ", " + diagnosis_date + ", " + notes);
@@ -73,12 +94,35 @@ public class DiagnosisManagement {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
+            String getPhysicianSched = "SELECT schedule_day FROM physician_schedule ps " +
+                    "WHERE physicianSchedule_id = ?";
+            pstmt = conn.prepareStatement(getPhysicianSched);
+            pstmt.setInt(1, diagnosis.getPhysicianSchedule_id());
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String scheduleDay = rs.getString("schedule_day"); //get physician's schedule day
+                java.sql.Date diagnosisDate = diagnosis.getDiagnosis_date();
+                String sDiagnosisDate = diagnosisDate.toLocalDate().getDayOfWeek().toString();
+
+                if (!scheduleDay.equalsIgnoreCase(sDiagnosisDate)) {
+                    System.out.println("Cannot update Diagnosis Record. Diagnosis date is not within the assigned physician's schedule");
+                    rs.close();
+                    pstmt.close();
+                    conn.close();
+                    return false;
+                }
+            }
+            rs.close();
+            pstmt.close();
+
+
             String sql = "UPDATE diagnosis SET patient_id = ?, physicianSchedule_id = ?, illness_id = ?, diagnosis_date = ?, notes = ? WHERE diagnosis_id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, diagnosis.getPatient_id());
             pstmt.setInt(2, diagnosis.getPhysicianSchedule_id());
             pstmt.setInt(3, diagnosis.getIllness_id());
-            pstmt.setString(4, diagnosis.getDiagnosis_date());
+            pstmt.setDate(4, diagnosis.getDiagnosis_date());
             pstmt.setString(5, diagnosis.getNotes());
             pstmt.setInt(6, diagnosis.getDiagnosis_id());
 

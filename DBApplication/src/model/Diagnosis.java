@@ -5,10 +5,10 @@ public class Diagnosis {
     private int physicianSchedule_id;
     private int patient_id;
     private int illness_id;
-    private String diagnosis_date;
+    private java.sql.Date diagnosis_date;
     private String notes;
 
-    public Diagnosis(int phySchedID, int pID, int illID, String diagnosis_date, String notes) {
+    public Diagnosis(int phySchedID, int pID, int illID, java.sql.Date diagnosis_date, String notes) {
         this.physicianSchedule_id = phySchedID;
         this.patient_id = pID;
         this.illness_id = illID;
@@ -36,7 +36,7 @@ public class Diagnosis {
         return illness_id;
     }
 
-    public String getDiagnosis_date() {
+    public java.sql.Date getDiagnosis_date() {
         return diagnosis_date;
     }
 
