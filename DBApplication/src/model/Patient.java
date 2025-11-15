@@ -5,6 +5,8 @@ public class Patient {
     private String p_lastname;
     private String p_firstname;
     private String contact_no;
+    private String sex;
+    private String status;
 
     public Patient(String ln, String fn, String contact)
     {
