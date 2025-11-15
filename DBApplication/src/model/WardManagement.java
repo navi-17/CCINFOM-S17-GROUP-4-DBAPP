@@ -18,10 +18,11 @@ public class WardManagement {
             System.out.println("Connection to database successful!");
 
             //2. Prepare SQL Statement --> store in PreparedStatement (dont forget to put alias for column name so u can fetch the value)
-            String sql = "INSERT INTO ward (floor) VALUES (?)";
+            String sql = "INSERT INTO ward (floor, ward_no) VALUES (?, ?)";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, ward.getFloor());
+            pstmt.setInt(2, ward.getWardNo());
 
             pstmt.executeUpdate();
             System.out.println("Record inserted successfully!");
@@ -52,10 +53,12 @@ public class WardManagement {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
 
-                int ward_number = rs.getInt("ward_id");
+                int ward_id = rs.getInt("ward_id");
+                int ward_no = rs.getInt("ward_no");
                 String floor = rs.getString("floor");
+                String status = rs.getString("ward_status");
 
-                System.out.println(ward_number + " " + floor);
+                System.out.println(ward_id + " " + ward_no + " " + floor + " " + status);
             }
 
             pstmt.close();
@@ -72,11 +75,12 @@ public class WardManagement {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "UPDATE ward SET floor = ? WHERE ward_id = ?";
+            String sql = "UPDATE ward SET floor = ?, ward_number = ? WHERE ward_id = ?";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, ward.getFloor()); // new floor
-            pstmt.setInt(2, ward.getWard_id()); // new ward id
+            pstmt.setInt(2, ward.getWardNo());
+            pstmt.setInt(3, ward.getWard_id()); // new ward id
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {

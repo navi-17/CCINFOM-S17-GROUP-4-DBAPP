@@ -1,3 +1,5 @@
+package gui;
+
 import java.util.*;
 import java.io.*;
 import java.awt.*;
@@ -102,7 +104,7 @@ public class ASGui extends JFrame{
 
         // Columns and Data --------------------------------------
 
-        String[] attributes = {" ", "ID", "Patient Name", "Sex", "Birthdate", "Contact Number", 
+        String[] attributes = {" ", "ID", "Patient Name", "Sex", "Birthdate", "Contact Number",
                             "Status", "Assigned Physician"};
 
         Object[][] data = {{false, "12648273", new Object[]{profileIcon, "Sunwoo Han"}, "F", "January 01, 1999", "+63 927 636 2540", 
@@ -914,30 +916,54 @@ public class ASGui extends JFrame{
                 mainPanel.add(backgroundLabel);
     }
 
-    public void createFonts()
-    {
-        try{
-            RobotoRegular = Font.createFont(Font.TRUETYPE_FONT, new File("RobotoRegular.ttf")).deriveFont(50f);
-                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("RobotoRegular.ttf")));
-        }
-        catch(IOException | FontFormatException e){
-        }
+//    public void createFonts()
+//    {
+//        try{
+//            RobotoRegular = Font.createFont(Font.TRUETYPE_FONT, new File("RobotoRegular.ttf")).deriveFont(50f);
+//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("RobotoRegular.ttf")));
+//        }
+//        catch(IOException | FontFormatException e){
+//        }
+//        try{
+//            RobotoBold = Font.createFont(Font.TRUETYPE_FONT, new File("RobotoBold.ttf")).deriveFont(50f);
+//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("RobotoBold.ttf")));
+//        }
+//        catch(IOException | FontFormatException e){
+//        }
+//
+//        try{
+//            MontserratBold = Font.createFont(Font.TRUETYPE_FONT, new File("MontserratBold.ttf")).deriveFont(50f);
+//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("MontserratBold.ttf")));
+//        }
+//        catch(IOException | FontFormatException e){
+//        }
+//    }
 
-        try{
-            RobotoBold = Font.createFont(Font.TRUETYPE_FONT, new File("RobotoBold.ttf")).deriveFont(50f);
-                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("RobotoBold.ttf")));
-        }
-        catch(IOException | FontFormatException e){
-        }
+    public void createFonts() {
+        RobotoRegular = loadFont("/RobotoRegular.ttf", 50f);
+        RobotoBold = loadFont("/RobotoBold.ttf", 50f);
+        MontserratBold = loadFont("/MontserratBold.ttf", 50f);
+    }
 
-        try{
-            MontserratBold = Font.createFont(Font.TRUETYPE_FONT, new File("MontserratBold.ttf")).deriveFont(50f);
-                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("MontserratBold.ttf")));
-        }
-        catch(IOException | FontFormatException e){
+    private Font loadFont(String path, float size) {
+        try {
+            InputStream is = getClass().getResourceAsStream(path);
+            if (is == null) {
+                throw new RuntimeException("Font file not found: " + path);
+            }
+
+            Font font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(size);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(font);
+
+            return font;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
+
 }
