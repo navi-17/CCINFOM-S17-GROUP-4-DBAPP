@@ -142,13 +142,14 @@ public class AddPatientDialog extends JDialog {
         String fn = firstNameField.getText().trim();
         String ln = lastNameField.getText().trim();
         String contact = contactField.getText().trim();
+        String sex = contactField.getText().trim();
 
         if (fn.isEmpty() || ln.isEmpty() || contact.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill out all required fields.", "Incomplete", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        Patient patient = new Patient(ln, fn, contact);
+        Patient patient = new Patient(ln, fn, contact, sex);
         boolean success = patientMgmt.createPatientRecord(patient);
 
         if (success) {
