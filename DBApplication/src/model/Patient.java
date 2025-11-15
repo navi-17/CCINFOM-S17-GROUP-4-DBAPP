@@ -5,12 +5,15 @@ public class Patient {
     private String p_lastname;
     private String p_firstname;
     private String contact_no;
+    private String sex;
+    private String patient_status;
 
-    public Patient(String ln, String fn, String contact)
+    public Patient(String ln, String fn, String contact, String s)
     {
         p_lastname = ln;
         p_firstname = fn;
         contact_no = contact;
+        sex = s;
     }
 
     public void setPatientID(int pID)
@@ -36,5 +39,15 @@ public class Patient {
     public String getContact()
     {
         return contact_no;
+    }
+
+    public String getSex()
+    {
+        return sex;
+    }
+
+    public String getStatus()
+    {
+        return patient_status;
     }
 }

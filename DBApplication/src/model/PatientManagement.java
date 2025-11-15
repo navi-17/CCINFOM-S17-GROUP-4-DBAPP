@@ -18,12 +18,13 @@ public class PatientManagement {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "INSERT INTO patient (p_lastname, p_firstname, contact_no) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO patient (p_lastname, p_firstname, contact_no, sex) VALUES (?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, patient.getLastName());
             pstmt.setString(2, patient.getFirstName());
             pstmt.setString(3, patient.getContact());
+            pstmt.setString(4, patient.getSex());
 
             pstmt.executeUpdate();
             System.out.println("Patient Record inserted successfully!");
@@ -73,12 +74,14 @@ public class PatientManagement {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "UPDATE patient SET p_lastname = ?, p_firstname = ?, contact_no = ? WHERE patient_id = ?";
+            String sql = "UPDATE patient SET p_lastname = ?, p_firstname = ?, contact_no = ?, sex = ?, status = ? WHERE patient_id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, patient.getLastName());
             pstmt.setString(2, patient.getFirstName());
             pstmt.setString(3, patient.getContact());
-            pstmt.setInt(4, patient.getPatientID());
+            pstmt.setString(4, patient.getSex());
+            pstmt.setString(5, patient.getStatus());
+            pstmt.setInt(6, patient.getPatientID());
 
             int rowsAffected = pstmt.executeUpdate();
 
@@ -138,7 +141,7 @@ public class PatientManagement {
 
     public static void main(String[] args)
     {
-        Patient p = new Patient("Yeager","Eren","+63 9184398952");
+//        Patient p = new Patient("Yeager","Eren","+63 9184398952");
         PatientManagement pm = new PatientManagement();
 
 //        Patient updateP = new Patient("Braun", "Reiner", "+63 9184398951");

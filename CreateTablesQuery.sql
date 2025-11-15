@@ -3,7 +3,10 @@ CREATE TABLE patient(
 	patient_id INT AUTO_INCREMENT PRIMARY KEY,
     p_lastname VARCHAR(50) NOT NULL, 
     p_firstname VARCHAR(50) NOT NULL,
-    contact_no VARCHAR(15) 
+    sex ENUM('Male', 'Female'),
+    birth_date DATE,
+    contact_no VARCHAR(15),
+    p_status ENUM('Admitted', 'Discharged') NOT NULL
 );
 
 CREATE TABLE nurse(
@@ -43,7 +46,9 @@ CREATE TABLE physician_schedule(
 
 CREATE TABLE ward(
 	ward_id INT AUTO_INCREMENT PRIMARY KEY, 
-    floor VARCHAR(20)
+    ward_number INT NOT NULL,
+    floor VARCHAR(20),
+    w_status ENUM('Available', 'Occupied') NOT NULL
 );
 
 CREATE TABLE illness(
@@ -65,12 +70,11 @@ CREATE TABLE diagnosis(
     patient_id INT NOT NULL,
     physicianSchedule_id INT NOT NULL,
     illness_id INT NOT NULL, 
-    diagnosis_date DATE, 
+    diagnosis_date DATE NOT NULL, 
     notes VARCHAR (255),
     FOREIGN KEY (patient_id) REFERENCES patient(patient_id) ON DELETE RESTRICT ON UPDATE CASCADE, 
     FOREIGN KEY (physicianSchedule_id) REFERENCES physician_schedule(physicianSchedule_id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (illness_id) REFERENCES illness(illness_id) ON DELETE RESTRICT ON UPDATE CASCADE
-
 );
 
 CREATE TABLE nurse_assignment(
@@ -101,6 +105,7 @@ CREATE TABLE treatment(
     assignedPhysician_id INT,
     treatment_date DATE NOT NULL,
     treatment_procedure VARCHAR(100),
+    performed_by ENUM('Nurse', 'Diagnosing Physician', 'Assigned Physician'),
     remarks VARCHAR(255),
     FOREIGN KEY (nurseAssignment_id) REFERENCES nurse_assignment(nurseAssignment_id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (diagnosis_id) REFERENCES diagnosis(diagnosis_id) ON DELETE RESTRICT ON UPDATE CASCADE,
