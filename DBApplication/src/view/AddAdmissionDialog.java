@@ -1,8 +1,7 @@
-
 package view;
 
-import model.Patient;
-import model.PatientManagement;
+import model.Admission;
+import model.AdmissionManagement;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,18 +9,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddPatientDialog extends JDialog {
+public class AddAdmissionDialog extends JDialog {
 
-    private JTextField firstNameField, lastNameField, dobField, contactField, statusField;
-    private JComboBox<String> genderBox;
-    private PatientManagement patientMgmt;
+    private JTextField patientIDField, wardIDField, admissionDateField;
+    private AdmissionManagement admissionMgmt;
 
-    public AddPatientDialog(JFrame parent) {
-        super(parent, "Add Patient", true);
-        patientMgmt = new PatientManagement();
+    public AddAdmissionDialog(JFrame parent) {
+        super(parent, "Add Admission", true);
+        admissionMgmt = new AdmissionManagement();
 
         // --- DIALOG BASE LAYOUT ---
-        setSize(600, 440);
+        setSize(600, 400);
         setLocationRelativeTo(parent);
         setResizable(false);
         setLayout(new BorderLayout());
@@ -31,7 +29,7 @@ public class AddPatientDialog extends JDialog {
         headerPanel.setBackground(new Color(76, 110, 70)); // green
         headerPanel.setPreferredSize(new Dimension(600, 50));
 
-        JLabel headerLabel = new JLabel("Add Patient", SwingConstants.CENTER);
+        JLabel headerLabel = new JLabel("Add Admission", SwingConstants.CENTER);
         headerLabel.setForeground(Color.WHITE);
         headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         headerPanel.add(headerLabel, BorderLayout.CENTER);
@@ -51,75 +49,43 @@ public class AddPatientDialog extends JDialog {
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.anchor = GridBagConstraints.WEST;
 
-        JLabel infoLabel = new JLabel("Patient Information");
+        JLabel infoLabel = new JLabel("Admission Information");
         infoLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 1;
+        gbc.gridwidth = 2;
         formPanel.add(infoLabel, gbc);
 
         gbc.gridwidth = 1;
         gbc.gridy++;
 
-        // First & Last Name
+        // Patient ID
         gbc.gridx = 0;
-        formPanel.add(new JLabel("First Name:"), gbc);
+        formPanel.add(new JLabel("Patient ID:"), gbc);
         gbc.gridx = 1;
-        firstNameField = new JTextField(15);
-        formPanel.add(firstNameField, gbc);
+        patientIDField = new JTextField(15);
+        formPanel.add(patientIDField, gbc);
 
+        // Ward ID
         gbc.gridy++;
         gbc.gridx = 0;
-        formPanel.add(new JLabel("Last Name:"), gbc);
+        formPanel.add(new JLabel("Ward ID:"), gbc);
         gbc.gridx = 1;
-        lastNameField = new JTextField(15);
-        formPanel.add(lastNameField, gbc);
+        wardIDField = new JTextField(15);
+        formPanel.add(wardIDField, gbc);
 
-        // Date of Birth & Gender
+        // Date of Admission
         gbc.gridy++;
         gbc.gridx = 0;
-        formPanel.add(new JLabel("Date of Birth:"), gbc);
+        formPanel.add(new JLabel("Date of Admission: "), gbc);
         gbc.gridx = 1;
-        dobField = new JTextField(15);
-        formPanel.add(dobField, gbc);
+        admissionDateField = new JTextField(15);
+        formPanel.add(admissionDateField, gbc);
 
-        gbc.gridy++;
-        gbc.gridx = 0;
-        formPanel.add(new JLabel("Gender:"), gbc);
-        gbc.gridx = 1;
-        genderBox = new JComboBox<>(new String[]{"Male", "Female", "Other"});
-        formPanel.add(genderBox, gbc);
-
-        // Contact Number
-        gbc.gridy++;
-        gbc.gridx = 0;
-        formPanel.add(new JLabel("Contact Number:"), gbc);
-        gbc.gridx = 1;
-        contactField = new JTextField(15);
-        formPanel.add(contactField, gbc);
-
-        // Status
-        gbc.gridy++;
-        gbc.gridx = 0;
-        formPanel.add(new JLabel("Status"), gbc);
-        gbc.gridx = 1;
-        statusField = new JTextField(15);
-        formPanel.add(statusField, gbc);
-
-        // Right panel (placeholder image)
-		JPanel imagePanel = new JPanel();
-		imagePanel.setBackground(Color.WHITE);
-		imagePanel.setPreferredSize(new Dimension(180, 200));
-		JLabel profilePic = new JLabel();
-		profilePic.setPreferredSize(new Dimension(120, 120));
-		profilePic.setOpaque(false);
-		profilePic.setHorizontalAlignment(SwingConstants.CENTER);
-		profilePic.setVerticalAlignment(SwingConstants.CENTER);
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(Color.WHITE);
         centerPanel.add(formPanel, BorderLayout.CENTER);
-        centerPanel.add(imagePanel, BorderLayout.EAST);
 
         contentPanel.add(centerPanel, BorderLayout.CENTER);
         add(contentPanel, BorderLayout.CENTER);
@@ -147,33 +113,44 @@ public class AddPatientDialog extends JDialog {
     }
 
     private void handleSubmit() {
-        String fn = firstNameField.getText().trim();
-        String ln = lastNameField.getText().trim();
-        String dob = dobField.getText().trim();
-        String contact = contactField.getText().trim();
-        String sex = contactField.getText().trim();
-        String status = contactField.getText().trim();
+        String patientIDText = patientIDField.getText().trim();
+        String wardIDText = wardIDField.getText().trim();
+        String admissionDate = admissionDateField.getText().trim();
 
-        if (fn.isEmpty() || ln.isEmpty() || dob.isEmpty() || contact.isEmpty() || sex.isEmpty() || status.isEmpty()) {
+        if (patientIDText.isEmpty() || wardIDText.isEmpty() || admissionDate.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill out all required fields.", "Incomplete", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        Patient patient = new Patient(ln, fn, dob, contact, sex, status);
-        boolean success = patientMgmt.createPatientRecord(patient);
+        int patientID;
+        int wardID;
+
+        try {
+            patientID = Integer.parseInt(patientIDText);
+            wardID = Integer.parseInt(wardIDText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Patient ID and Ward ID must be valid whole numbers.",
+                    "Invalid Input", JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        Admission admission = new Admission(patientID, wardID, admissionDate);
+        boolean success = admissionMgmt.createAdmissionRecord(admission);
 
         if (success) {
-            JOptionPane.showMessageDialog(this, "Patient added successfully!");
+            JOptionPane.showMessageDialog(this, "Admission added successfully!");
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Failed to add patient.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Failed to add admission.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     // --- TEST LAUNCHER ---
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            AddPatientDialog dialog = new AddPatientDialog(null);
+            AddAdmissionDialog dialog = new AddAdmissionDialog(null);
             dialog.setVisible(true);
         });
     }

@@ -11,7 +11,7 @@ public class DischargeManagement {
     private Connection conn;
     PreparedStatement pstmt;
 
-    public boolean createDischargeRecord(Discharge d)
+    public boolean createDischargeRecord(Discharge discharge)
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
@@ -21,8 +21,8 @@ public class DischargeManagement {
             String sql = "INSERT INTO discharge (admission_id, discharge_date) VALUES (?, ?)";
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setInt(1, d.getAdmission_id());
-            pstmt.setString(2, d.getDischarge_date());
+            pstmt.setInt(1, discharge.getAdmissionID());
+            pstmt.setString(2, discharge.getDischargeDate());
 
             pstmt.executeUpdate();
             System.out.println("Discharge Record inserted successfully!");
@@ -80,15 +80,15 @@ public class DischargeManagement {
 
             String sql = "UPDATE discharge SET admission_id = ?, discharge_date = ? WHERE discharge_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, discharge.getAdmission_id());
-            pstmt.setString(2, discharge.getDischarge_date());
-            pstmt.setInt(3, discharge.getDischarge_id());
+            pstmt.setInt(1, discharge.getAdmissionID());
+            pstmt.setString(2, discharge.getDischargeDate());
+            pstmt.setInt(3, discharge.getDischargeID());
 
             int rowsAffected = pstmt.executeUpdate();
 
             if(rowsAffected > 0)
             {
-                System.out.println("Discharge with id = " + discharge.getDischarge_id() + " has been updated!");
+                System.out.println("Discharge with id = " + discharge.getDischargeID() + " has been updated!");
                 pstmt.close();
                 conn.close();
                 return true;

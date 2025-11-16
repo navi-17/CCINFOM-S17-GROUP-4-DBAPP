@@ -207,34 +207,34 @@ public class ASGui extends JFrame{
         wholeScreen.setBackground(new Color(0x749ee2));
 
         mainPanel = new JLayeredPane();
-        mainPanel.setLayout(null);
-        mainPanel.setBounds(300,0,mainWidth,screenHeight);
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setOpaque(false);
+            mainPanel.setLayout(null);
+            mainPanel.setBounds(300,0,mainWidth,screenHeight);
+            mainPanel.setBackground(Color.WHITE);
+            mainPanel.setOpaque(false);
 
         sidePanel = new JLayeredPane();
-        sidePanel.setLayout(null);
-        sidePanel.setBounds(0,0,sideWidth,screenHeight);
-        sidePanel.setBackground(Color.WHITE);
-        sidePanel.setOpaque(true);
+            sidePanel.setLayout(null);
+            sidePanel.setBounds(0,0,sideWidth,screenHeight);
+            sidePanel.setBackground(Color.WHITE);
+            sidePanel.setOpaque(true);
 
         topPanel = new JPanel();
-        topPanel.setLayout(null);
-        topPanel.setBounds(0,0,mainWidth,64);
-        topPanel.setBackground(new Color(0x2e582e));
-        topPanel.setOpaque(true);
+            topPanel.setLayout(null);
+            topPanel.setBounds(0,0,mainWidth,64);
+            topPanel.setBackground(new Color(0x2e582e));
+            topPanel.setOpaque(true);
 
         topPanel2 = new JPanel();
-        topPanel2.setLayout(null);
-        topPanel2.setBounds(0,64,mainWidth,50);
-        topPanel2.setBackground(Color.WHITE);
-        topPanel2.setOpaque(true);
+            topPanel2.setLayout(null);
+            topPanel2.setBounds(0,64,mainWidth,50);
+            topPanel2.setBackground(Color.WHITE);
+            topPanel2.setOpaque(true);
 
         listBGPanel = new JPanel();
-        listBGPanel.setLayout(null);
-        listBGPanel.setBounds(60,184,1226,730); //(1346) lr60, t70&b100
-        listBGPanel.setBackground(Color.WHITE);
-        listBGPanel.setOpaque(true);
+            listBGPanel.setLayout(null);
+            listBGPanel.setBounds(60,184,1226,730); //(1346) lr60, t70&b100
+            listBGPanel.setBackground(Color.WHITE);
+            listBGPanel.setOpaque(true);
 
         listAttributesPanel = new JPanel();
         listAttributesPanel.setLayout(null);
@@ -245,21 +245,21 @@ public class ASGui extends JFrame{
         // Labels ------------------------------------------------
 
         logoLabel = new JLabel();
-        logoLabel.setIcon(logoImage);
-        logoLabel.setBounds(45,0,240,64);
-        logoLabel.setText("AdmitSys");
-        logoLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
-        logoLabel.setVerticalTextPosition(JLabel.CENTER);
-        logoLabel.setHorizontalTextPosition(JLabel.RIGHT);
-        logoLabel.setForeground(new Color(0x2e582e));
-        logoLabel.setBackground(Color.BLUE);
+            logoLabel.setIcon(logoImage);
+            logoLabel.setBounds(45,0,240,64);
+            logoLabel.setText("AdmitSys");
+            logoLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
+            logoLabel.setVerticalTextPosition(JLabel.CENTER);
+            logoLabel.setHorizontalTextPosition(JLabel.RIGHT);
+            logoLabel.setForeground(new Color(0x2e582e));
+            logoLabel.setBackground(Color.BLUE);
 
         mainMenuLabel = new JLabel();
-        mainMenuLabel.setBounds(50,64,240,50);
-        mainMenuLabel.setText("Main Menu");
-        mainMenuLabel.setFont(MontserratBold.deriveFont(Font.BOLD,20f));
-        mainMenuLabel.setForeground(new Color(0x2e582e));
-        mainMenuLabel.setBackground(Color.BLUE);
+            mainMenuLabel.setBounds(50,64,240,50);
+            mainMenuLabel.setText("Main Menu");
+            mainMenuLabel.setFont(MontserratBold.deriveFont(Font.BOLD,20f));
+            mainMenuLabel.setForeground(new Color(0x2e582e));
+            mainMenuLabel.setBackground(Color.BLUE);
 
         transactionsLabel = new JLabel();
         transactionsLabel.setBounds(50,438,240,50);
@@ -276,80 +276,80 @@ public class ASGui extends JFrame{
         recordsLabel.setBackground(Color.BLUE);
 
         patientListLabel = new JLabel();
-        patientListLabel.setBounds(60,0,240,64);
-        patientListLabel.setText("Patient List");
-        patientListLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
-        patientListLabel.setForeground(Color.WHITE);
-        patientListLabel.setBackground(Color.BLUE);
+            patientListLabel.setBounds(60,0,240,64);
+            patientListLabel.setText("Patient List");
+            patientListLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
+            patientListLabel.setForeground(Color.WHITE);
+            patientListLabel.setBackground(Color.BLUE);
 
         profileLabel = new JLabel();
-        profileLabel.setIcon(profileIcon);
-        profileLabel.setBounds(1166,0,180,64);
-        profileLabel.setForeground(new Color(0x2e582e));
-        profileLabel.setBackground(Color.BLUE);
+            profileLabel.setIcon(profileIcon);
+            profileLabel.setBounds(1166,0,180,64);
+            profileLabel.setForeground(new Color(0x2e582e));
+            profileLabel.setBackground(Color.BLUE);
 
         profileNameLabel = new JLabel();
-        profileNameLabel.setBounds(50,16,120,20);
-        profileNameLabel.setText("Ian Lopez");
-        profileNameLabel.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
-        profileNameLabel.setForeground(Color.WHITE);
-        profileNameLabel.setBackground(Color.WHITE);
+            profileNameLabel.setBounds(50,16,120,20);
+            profileNameLabel.setText("Ian Lopez");
+            profileNameLabel.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+            profileNameLabel.setForeground(Color.WHITE);
+            profileNameLabel.setBackground(Color.WHITE);
 
         profileJobLabel = new JLabel();
-        profileJobLabel.setBounds(50,28,120,20);
-        profileJobLabel.setText("Physician");
-        profileJobLabel.setFont(RobotoBold.deriveFont(Font.BOLD,10f));
-        profileJobLabel.setForeground(Color.WHITE);
-        profileJobLabel.setBackground(Color.RED);
-        // profileJobLabel.setOpaque(true);
+            profileJobLabel.setBounds(50,28,120,20);
+            profileJobLabel.setText("Physician");
+            profileJobLabel.setFont(RobotoBold.deriveFont(Font.BOLD,10f));
+            profileJobLabel.setForeground(Color.WHITE);
+            profileJobLabel.setBackground(Color.RED);
+            // profileJobLabel.setOpaque(true);
 
         searchBarLabel = new JLabel();
-        searchBarLabel.setBounds(736,10,300,30);
-        searchBarLabel.setForeground(new Color(0x2e582e));
-        searchBarLabel.setBackground(new Color(0xd5e3d5));
-        searchBarLabel.setBorder(BorderFactory.createEtchedBorder());
-        searchBarLabel.setOpaque(true);
+            searchBarLabel.setBounds(736,10,300,30);
+            searchBarLabel.setForeground(new Color(0x2e582e));
+            searchBarLabel.setBackground(new Color(0xd5e3d5));
+            searchBarLabel.setBorder(BorderFactory.createEtchedBorder());
+            searchBarLabel.setOpaque(true);
 
         sortByLabel = new JLabel();
-        sortByLabel.setBounds(1046,10,190,30);
-        sortByLabel.setForeground(new Color(0x2e582e));
-        sortByLabel.setBackground(new Color(0xd5e3d5));
-        sortByLabel.setBorder(BorderFactory.createEtchedBorder());
-        sortByLabel.setOpaque(true);
+            sortByLabel.setBounds(1046,10,190,30);
+            sortByLabel.setForeground(new Color(0x2e582e));
+            sortByLabel.setBackground(new Color(0xd5e3d5));
+            sortByLabel.setBorder(BorderFactory.createEtchedBorder());
+            sortByLabel.setOpaque(true);
 
         sortByTextLabel = new JLabel();
-        sortByTextLabel.setBounds(20,0,140,30);
-        sortByTextLabel.setText("Sort By: Name");
-        sortByTextLabel.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
-        sortByTextLabel.setForeground(new Color(0x2e582e));
+            sortByTextLabel.setBounds(20,0,140,30);
+            sortByTextLabel.setText("Sort By: Name");
+            sortByTextLabel.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+            sortByTextLabel.setForeground(new Color(0x2e582e));
 
         pathLabel = new JLabel();
-        pathLabel.setIcon(houseIcon);
-        pathLabel.setBounds(60,0,240,50);
-        pathLabel.setText("Home   /   Patient   /");
-        pathLabel.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        pathLabel.setVerticalTextPosition(JLabel.CENTER);
-        pathLabel.setHorizontalTextPosition(JLabel.RIGHT);
-        pathLabel.setIconTextGap(10);
-        pathLabel.setForeground(new Color(0x2e582e));
-        pathLabel.setBackground(Color.BLUE);
-        // pathLabel.setOpaque(true);
+            pathLabel.setIcon(houseIcon);
+            pathLabel.setBounds(60,0,240,50);
+            pathLabel.setText("Home   /   Patient   /");
+            pathLabel.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            pathLabel.setVerticalTextPosition(JLabel.CENTER);
+            pathLabel.setHorizontalTextPosition(JLabel.RIGHT);
+            pathLabel.setIconTextGap(10);
+            pathLabel.setForeground(new Color(0x2e582e));
+            pathLabel.setBackground(Color.BLUE);
+            // pathLabel.setOpaque(true);
 
         entriesLabel = new JLabel();
-        entriesLabel.setBounds(60,940,240,40);
-        entriesLabel.setText("Showing 1-10 of 246 entries");
-        entriesLabel.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
-        entriesLabel.setHorizontalAlignment(JLabel.CENTER);
-        entriesLabel.setForeground(new Color(0x2e582e));
-        entriesLabel.setBackground(Color.WHITE);
-        entriesLabel.setBorder(BorderFactory.createEtchedBorder());
-        entriesLabel.setOpaque(true);
+            entriesLabel.setBounds(60,940,240,40);
+            entriesLabel.setText("Showing 1-10 of 246 entries");
+            entriesLabel.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+            entriesLabel.setHorizontalAlignment(JLabel.CENTER);
+            entriesLabel.setForeground(new Color(0x2e582e));
+            entriesLabel.setBackground(Color.WHITE);
+            entriesLabel.setBorder(BorderFactory.createEtchedBorder());
+            entriesLabel.setOpaque(true);
 
         backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(backgroundImage);
-        backgroundLabel.setBounds(0,114,mainWidth,915);
-        backgroundLabel.setBackground(Color.WHITE);
-        backgroundLabel.setOpaque(true);
+            backgroundLabel.setIcon(backgroundImage);
+            backgroundLabel.setBounds(0,114,mainWidth,915);
+            backgroundLabel.setBackground(Color.WHITE);
+            backgroundLabel.setOpaque(true);
 
         // Text Field --------------------------------------------
 
@@ -371,7 +371,6 @@ public class ASGui extends JFrame{
                     searchTextField.setText("");
                     searchTextField.setForeground(new Color(0x2e582e)); // normal text color
                 }
-            }
 
             @Override
             public void focusLost(java.awt.event.FocusEvent e)
@@ -381,8 +380,7 @@ public class ASGui extends JFrame{
                     searchTextField.setText(placeholder);
                     searchTextField.setForeground(Color.GRAY);
                 }
-            }
-        });
+            });
 
         // Buttons -----------------------------------------------
 
@@ -543,177 +541,177 @@ public class ASGui extends JFrame{
         nShiftButton.setFocusable(false);
 
         settingsButton = new JButton();
-        settingsButton.setBounds(1086,22,20,20);
-        settingsButton.setIcon(settingsIcon);
-        settingsButton.setContentAreaFilled(false);
-        // settingsButton.setBorderPainted(false);
-        settingsButton.setFocusable(false);
+            settingsButton.setBounds(1086,22,20,20);
+            settingsButton.setIcon(settingsIcon);
+            settingsButton.setContentAreaFilled(false);
+            // settingsButton.setBorderPainted(false);
+            settingsButton.setFocusable(false);
 
         notificationButton = new JButton();
-        notificationButton.setBounds(1126,22,20,20);
-        notificationButton.setIcon(bellIcon);
-        notificationButton.setContentAreaFilled(false);
-        // notificationButton.setBorderPainted(false);
-        notificationButton.setFocusable(false);
+            notificationButton.setBounds(1126,22,20,20);
+            notificationButton.setIcon(bellIcon);
+            notificationButton.setContentAreaFilled(false);
+            // notificationButton.setBorderPainted(false);
+            notificationButton.setFocusable(false);
 
         searchButton = new JButton();
-        searchButton.setBounds(10,5,20,20);
-        searchButton.setIcon(searchIcon);
-        searchButton.setContentAreaFilled(false);
-        // searchButton.setBorderPainted(false);
-        searchButton.setFocusable(false);
+            searchButton.setBounds(10,5,20,20);
+            searchButton.setIcon(searchIcon);
+            searchButton.setContentAreaFilled(false);
+            // searchButton.setBorderPainted(false);
+            searchButton.setFocusable(false);
 
         cancelButton = new JButton();
-        cancelButton.setBounds(270,5,20,20);
-        cancelButton.setIcon(cancelIcon);
-        cancelButton.setContentAreaFilled(false);
-        // cancelButton.setBorderPainted(false);
-        cancelButton.setFocusable(false);
+            cancelButton.setBounds(270,5,20,20);
+            cancelButton.setIcon(cancelIcon);
+            cancelButton.setContentAreaFilled(false);
+            // cancelButton.setBorderPainted(false);
+            cancelButton.setFocusable(false);
 
         dropdownButton = new JButton();
-        dropdownButton.setBounds(140,20,20,20);
-        dropdownButton.setIcon(dropdownIcon);
-        dropdownButton.setContentAreaFilled(false);
-        // dropdownButton.setBorderPainted(false);
-        dropdownButton.setFocusable(false);
+            dropdownButton.setBounds(140,20,20,20);
+            dropdownButton.setIcon(dropdownIcon);
+            dropdownButton.setContentAreaFilled(false);
+            // dropdownButton.setBorderPainted(false);
+            dropdownButton.setFocusable(false);
 
         dropdownButton2 = new JButton();
-        dropdownButton2.setBounds(160,5,20,20);
-        dropdownButton2.setIcon(dropdownIcon2);
-        dropdownButton2.setContentAreaFilled(false);
-        // dropdownButton2.setBorderPainted(false);
-        dropdownButton2.setFocusable(false);
+            dropdownButton2.setBounds(160,5,20,20);
+            dropdownButton2.setIcon(dropdownIcon2);
+            dropdownButton2.setContentAreaFilled(false);
+            // dropdownButton2.setBorderPainted(false);
+            dropdownButton2.setFocusable(false);
 
         filterByButton = new JButton();
-        filterByButton.setBounds(1246,10,40,30);
-        filterByButton.setText("F");
-        filterByButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        filterByButton.setHorizontalAlignment(JButton.CENTER);
-        filterByButton.setForeground(new Color(0x2e582e));
-        filterByButton.setBackground(new Color(0xd5e3d5));
-        filterByButton.setBorder(BorderFactory.createEtchedBorder());
-        filterByButton.setFocusable(false);
-        filterByButton.setOpaque(true);
+            filterByButton.setBounds(1246,10,40,30);
+            filterByButton.setText("F");
+            filterByButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            filterByButton.setHorizontalAlignment(JButton.CENTER);
+            filterByButton.setForeground(new Color(0x2e582e));
+            filterByButton.setBackground(new Color(0xd5e3d5));
+            filterByButton.setBorder(BorderFactory.createEtchedBorder());
+            filterByButton.setFocusable(false);
+            filterByButton.setOpaque(true);
 
         listViewButton = new JButton();
-        listViewButton.setBounds(60,129,40,40);
-        listViewButton.setText("L");
-        listViewButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        listViewButton.setHorizontalAlignment(JButton.CENTER);
-        listViewButton.setForeground(Color.WHITE);
-        listViewButton.setBackground(new Color(0x2e582e));
-        listViewButton.setBorder(BorderFactory.createEtchedBorder());
-        listViewButton.setFocusable(false);
+            listViewButton.setBounds(60,129,40,40);
+            listViewButton.setText("L");
+            listViewButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            listViewButton.setHorizontalAlignment(JButton.CENTER);
+            listViewButton.setForeground(Color.WHITE);
+            listViewButton.setBackground(new Color(0x2e582e));
+            listViewButton.setBorder(BorderFactory.createEtchedBorder());
+            listViewButton.setFocusable(false);
 
         tileViewButton = new JButton();
-        tileViewButton.setBounds(110,129,40,40);
-        tileViewButton.setText("T");
-        tileViewButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        tileViewButton.setHorizontalAlignment(JButton.CENTER);
-        tileViewButton.setForeground(Color.WHITE);
-        tileViewButton.setBackground(new Color(0x2e582e));
-        tileViewButton.setBorder(BorderFactory.createEtchedBorder());
-        tileViewButton.setFocusable(false);
+            tileViewButton.setBounds(110,129,40,40);
+            tileViewButton.setText("T");
+            tileViewButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            tileViewButton.setHorizontalAlignment(JButton.CENTER);
+            tileViewButton.setForeground(Color.WHITE);
+            tileViewButton.setBackground(new Color(0x2e582e));
+            tileViewButton.setBorder(BorderFactory.createEtchedBorder());
+            tileViewButton.setFocusable(false);
 
         createButton = new JButton();
-        createButton.setBounds(1046,129,140,40);
-        createButton.setText("+ Add Patient");
-        createButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        createButton.setHorizontalAlignment(JButton.CENTER);
-        createButton.setForeground(Color.WHITE);
-        createButton.setBackground(new Color(0x2e582e));
-        createButton.setBorder(BorderFactory.createEtchedBorder());
-        createButton.setFocusable(false);
+            createButton.setBounds(1046,129,140,40);
+            createButton.setText("+ Add Patient");
+            createButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            createButton.setHorizontalAlignment(JButton.CENTER);
+            createButton.setForeground(Color.WHITE);
+            createButton.setBackground(new Color(0x2e582e));
+            createButton.setBorder(BorderFactory.createEtchedBorder());
+            createButton.setFocusable(false);
 
         updateButton = new JButton();
-        updateButton.setBounds(1196,129,40,40);
-        updateButton.setText("U");
-        updateButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        updateButton.setHorizontalAlignment(JButton.CENTER);
-        updateButton.setForeground(Color.WHITE);
-        updateButton.setBackground(new Color(0x2e582e));
-        updateButton.setBorder(BorderFactory.createEtchedBorder());
-        updateButton.setFocusable(false);
+            updateButton.setBounds(1196,129,40,40);
+            updateButton.setText("U");
+            updateButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            updateButton.setHorizontalAlignment(JButton.CENTER);
+            updateButton.setForeground(Color.WHITE);
+            updateButton.setBackground(new Color(0x2e582e));
+            updateButton.setBorder(BorderFactory.createEtchedBorder());
+            updateButton.setFocusable(false);
 
         deleteButton = new JButton();
-        deleteButton.setBounds(1246,129,40,40);
-        deleteButton.setText("D");
-        deleteButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        deleteButton.setHorizontalAlignment(JButton.CENTER);
-        deleteButton.setForeground(Color.WHITE);
-        deleteButton.setBackground(new Color(0x2e582e));
-        deleteButton.setBorder(BorderFactory.createEtchedBorder());
-        deleteButton.setFocusable(false);
+            deleteButton.setBounds(1246,129,40,40);
+            deleteButton.setText("D");
+            deleteButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            deleteButton.setHorizontalAlignment(JButton.CENTER);
+            deleteButton.setForeground(Color.WHITE);
+            deleteButton.setBackground(new Color(0x2e582e));
+            deleteButton.setBorder(BorderFactory.createEtchedBorder());
+            deleteButton.setFocusable(false);
 
         previousPageButton = new JButton();
-        previousPageButton.setBounds(946,940,40,40);
-        previousPageButton.setText("<");
-        previousPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        previousPageButton.setHorizontalAlignment(JButton.CENTER);
-        previousPageButton.setForeground(new Color(0x2e582e));
-        previousPageButton.setBackground(Color.WHITE);
-        previousPageButton.setBorder(BorderFactory.createEtchedBorder());
-        previousPageButton.setFocusable(false);
+            previousPageButton.setBounds(946,940,40,40);
+            previousPageButton.setText("<");
+            previousPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            previousPageButton.setHorizontalAlignment(JButton.CENTER);
+            previousPageButton.setForeground(new Color(0x2e582e));
+            previousPageButton.setBackground(Color.WHITE);
+            previousPageButton.setBorder(BorderFactory.createEtchedBorder());
+            previousPageButton.setFocusable(false);
 
         firstPageButton = new JButton();
-        firstPageButton.setBounds(996,940,40,40);
-        firstPageButton.setText("1");
-        firstPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        firstPageButton.setHorizontalAlignment(JButton.CENTER);
-        firstPageButton.setForeground(new Color(0x2e582e));
-        firstPageButton.setBackground(Color.WHITE);
-        firstPageButton.setBorder(BorderFactory.createEtchedBorder());
-        firstPageButton.setFocusable(false);
+            firstPageButton.setBounds(996,940,40,40);
+            firstPageButton.setText("1");
+            firstPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            firstPageButton.setHorizontalAlignment(JButton.CENTER);
+            firstPageButton.setForeground(new Color(0x2e582e));
+            firstPageButton.setBackground(Color.WHITE);
+            firstPageButton.setBorder(BorderFactory.createEtchedBorder());
+            firstPageButton.setFocusable(false);
 
         secondPageButton = new JButton();
-        secondPageButton.setBounds(1046,940,40,40);
-        secondPageButton.setText("2");
-        secondPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        secondPageButton.setHorizontalAlignment(JButton.CENTER);
-        secondPageButton.setForeground(new Color(0x2e582e));
-        secondPageButton.setBackground(Color.WHITE);
-        secondPageButton.setBorder(BorderFactory.createEtchedBorder());
-        secondPageButton.setFocusable(false);
+            secondPageButton.setBounds(1046,940,40,40);
+            secondPageButton.setText("2");
+            secondPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            secondPageButton.setHorizontalAlignment(JButton.CENTER);
+            secondPageButton.setForeground(new Color(0x2e582e));
+            secondPageButton.setBackground(Color.WHITE);
+            secondPageButton.setBorder(BorderFactory.createEtchedBorder());
+            secondPageButton.setFocusable(false);
 
         thirdPageButton = new JButton();
-        thirdPageButton.setBounds(1096,940,40,40);
-        thirdPageButton.setText("3");
-        thirdPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        thirdPageButton.setHorizontalAlignment(JButton.CENTER);
-        thirdPageButton.setForeground(new Color(0x2e582e));
-        thirdPageButton.setBackground(Color.WHITE);
-        thirdPageButton.setBorder(BorderFactory.createEtchedBorder());
-        thirdPageButton.setFocusable(false);
+            thirdPageButton.setBounds(1096,940,40,40);
+            thirdPageButton.setText("3");
+            thirdPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            thirdPageButton.setHorizontalAlignment(JButton.CENTER);
+            thirdPageButton.setForeground(new Color(0x2e582e));
+            thirdPageButton.setBackground(Color.WHITE);
+            thirdPageButton.setBorder(BorderFactory.createEtchedBorder());
+            thirdPageButton.setFocusable(false);
 
         fourthPageButton = new JButton();
-        fourthPageButton.setBounds(1146,940,40,40);
-        fourthPageButton.setText("...");
-        fourthPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        fourthPageButton.setHorizontalAlignment(JButton.CENTER);
-        fourthPageButton.setForeground(new Color(0x2e582e));
-        fourthPageButton.setBackground(Color.WHITE);
-        fourthPageButton.setBorder(BorderFactory.createEtchedBorder());
-        fourthPageButton.setFocusable(false);
+            fourthPageButton.setBounds(1146,940,40,40);
+            fourthPageButton.setText("...");
+            fourthPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            fourthPageButton.setHorizontalAlignment(JButton.CENTER);
+            fourthPageButton.setForeground(new Color(0x2e582e));
+            fourthPageButton.setBackground(Color.WHITE);
+            fourthPageButton.setBorder(BorderFactory.createEtchedBorder());
+            fourthPageButton.setFocusable(false);
 
         lastPageButton = new JButton();
-        lastPageButton.setBounds(1196,940,40,40);
-        lastPageButton.setText("25");
-        lastPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        lastPageButton.setHorizontalAlignment(JButton.CENTER);
-        lastPageButton.setForeground(new Color(0x2e582e));
-        lastPageButton.setBackground(Color.WHITE);
-        lastPageButton.setBorder(BorderFactory.createEtchedBorder());
-        lastPageButton.setFocusable(false);
+            lastPageButton.setBounds(1196,940,40,40);
+            lastPageButton.setText("25");
+            lastPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            lastPageButton.setHorizontalAlignment(JButton.CENTER);
+            lastPageButton.setForeground(new Color(0x2e582e));
+            lastPageButton.setBackground(Color.WHITE);
+            lastPageButton.setBorder(BorderFactory.createEtchedBorder());
+            lastPageButton.setFocusable(false);
 
         nextPageButton = new JButton();
-        nextPageButton.setBounds(1246,940,40,40);
-        nextPageButton.setText(">");
-        nextPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        nextPageButton.setHorizontalAlignment(JButton.CENTER);
-        nextPageButton.setForeground(new Color(0x2e582e));
-        nextPageButton.setBackground(Color.WHITE);
-        nextPageButton.setBorder(BorderFactory.createEtchedBorder());
-        nextPageButton.setFocusable(false);
+            nextPageButton.setBounds(1246,940,40,40);
+            nextPageButton.setText(">");
+            nextPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            nextPageButton.setHorizontalAlignment(JButton.CENTER);
+            nextPageButton.setForeground(new Color(0x2e582e));
+            nextPageButton.setBackground(Color.WHITE);
+            nextPageButton.setBorder(BorderFactory.createEtchedBorder());
+            nextPageButton.setFocusable(false);
 
         // Layouts -----------------------------------------------
 
@@ -1015,6 +1013,48 @@ public class ASGui extends JFrame{
     }
 
 
+        // Status ------------------------------------------------
+
+        if (statusColumnIndex != -1)
+        {
+            TableColumn statusCol = table.getColumnModel().getColumn(statusColumnIndex);
+                statusCol.setCellRenderer(new DefaultTableCellRenderer()
+                {
+                    @Override
+                    public Component getTableCellRendererComponent(JTable table, Object value,
+                                                                   boolean isSelected, boolean hasFocus,
+                                                                   int row, int column)
+                    {
+                        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                        if (value != null)
+                        {
+                            String status = value.toString();
+                            if (status.equalsIgnoreCase("Admitted")) {
+                                label.setForeground(new Color(0, 128, 0));
+                            } else if (status.equalsIgnoreCase("Discharged")) {
+                                label.setForeground(Color.RED);
+                            } else {
+                                label.setForeground(Color.BLACK);
+                            }
+                        }
+
+                        label.setFont(RobotoRegular.deriveFont(Font.PLAIN, 14f));
+                        label.setHorizontalAlignment(SwingConstants.LEFT);
+                        return label;
+                    }
+                });
+        }
+
+        // Column Width ------------------------------------------
+
+        if (columnWidths != null)
+        {
+            columnWidths.forEach((index, width) -> table.getColumnModel().getColumn(index).setPreferredWidth(width));
+        }
+
+        return table;
+    }
 
 
     public JButton getPatientButton()
