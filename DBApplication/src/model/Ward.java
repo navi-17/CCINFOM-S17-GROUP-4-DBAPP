@@ -11,9 +11,29 @@ public class Ward {
             ward_no = wn;
         }
 
+        public Ward(int id)
+        {
+            ward_id = id;
+        }
+
         public void setWard_id(int id)
         {
             ward_id = id;
+        }
+
+        public void setFloor(String f)
+        {
+            floor = f;
+        }
+
+        public void setWardNo(int no)
+        {
+            ward_no = no;
+        }
+
+        public void setStatus(String s)
+        {
+            ward_status = s;
         }
 
         public int getWard_id() {

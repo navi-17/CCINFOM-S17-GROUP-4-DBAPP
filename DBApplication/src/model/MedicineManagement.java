@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MedicineManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
@@ -38,8 +40,9 @@ public class MedicineManagement {
         }
     }
 
-    public void viewMedicineRecord()
+    public List<Medicine> viewMedicineRecord()
     {
+        List<Medicine> medicines = new ArrayList<>();
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -50,6 +53,11 @@ public class MedicineManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
+                Medicine medicine = new Medicine(rs.getInt("medicine_id"));
+                medicine.setName(rs.getString("medicine_name"));
+                medicine.setStock_qty(rs.getInt("stock_qty"));
+                medicines.add(medicine);
+
                 int mID = rs.getInt("medicine_id");
                 String mName = rs.getString("medicine_name");
                 int stock = rs.getInt("stock_qty");
@@ -64,6 +72,8 @@ public class MedicineManagement {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+
+        return medicines;
     }
 
     public boolean updateMedicineRecord(Medicine medicine)

@@ -110,7 +110,7 @@ CREATE TABLE treatment(
     FOREIGN KEY (nurseAssignment_id) REFERENCES nurse_assignment(nurseAssignment_id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (diagnosis_id) REFERENCES diagnosis(diagnosis_id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (medicine_id) REFERENCES medicine(medicine_id) ON DELETE SET NULL ON UPDATE CASCADE,
-    FOREIGN KEY (assignedPhysican_id) REFERENCES physician(physician_id) ON DELETE SET NULL ON UPDATE CASCADE
+    FOREIGN KEY (assignedPhysician_id) REFERENCES physician(physician_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE discharge(

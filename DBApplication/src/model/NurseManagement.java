@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NurseManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
@@ -42,8 +44,9 @@ public class NurseManagement {
         }
     }
 
-    public void viewNurseRecords() //READ
+    public List<Nurse> viewNurseRecords() //READ
     {
+        List<Nurse> nurses = new ArrayList<>();
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -54,12 +57,19 @@ public class NurseManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
+                Nurse nurse = new Nurse(rs.getInt("nurse_id"));
+
                 int nurseID = rs.getInt("nurse_id");
                 String ln = rs.getString("n_lastname");
                 String fn = rs.getString("n_firstname");
                 String no = rs.getString("contact_no");
 
                 System.out.println(nurseID + ", " + ln + ", " + fn + ", " + no);
+
+                nurse.setLastName(rs.getString("n_lastname"));
+                nurse.setFirstName(rs.getString("n_firstname"));
+                nurse.setContact(rs.getString("contact_no"));
+                nurses.add(nurse);
             }
 
             pstmt.close();
@@ -69,6 +79,8 @@ public class NurseManagement {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+
+        return nurses;
     }
 
     public boolean updateNurseRecord(Nurse nurse)

@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WardManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
@@ -18,11 +20,12 @@ public class WardManagement {
             System.out.println("Connection to database successful!");
 
             //2. Prepare SQL Statement --> store in PreparedStatement (dont forget to put alias for column name so u can fetch the value)
-            String sql = "INSERT INTO ward (floor, ward_no) VALUES (?, ?)";
+            String sql = "INSERT INTO ward (floor, ward_no, status) VALUES (?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, ward.getFloor());
             pstmt.setInt(2, ward.getWardNo());
+            pstmt.setString(3, ward.getStatus());
 
             pstmt.executeUpdate();
             System.out.println("Record inserted successfully!");
@@ -41,8 +44,9 @@ public class WardManagement {
         }
     }
 
-    public void viewWardRecords() // read
+    public List<Ward> viewWardRecords() // read
     {
+        List<Ward> wards = new ArrayList<>();
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -52,6 +56,11 @@ public class WardManagement {
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
+                Ward ward = new Ward(rs.getInt("ward_id"));
+                ward.setWardNo(rs.getInt("ward_no"));
+                ward.setFloor(rs.getString("floor"));
+                ward.setStatus(rs.getString("ward_status"));
+                wards.add(ward);
 
                 int ward_id = rs.getInt("ward_id");
                 int ward_no = rs.getInt("ward_no");
@@ -59,6 +68,7 @@ public class WardManagement {
                 String status = rs.getString("ward_status");
 
                 System.out.println(ward_id + " " + ward_no + " " + floor + " " + status);
+
             }
 
             pstmt.close();
@@ -68,6 +78,8 @@ public class WardManagement {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        return wards;
     }
 
     public boolean updateWard(Ward ward) {
@@ -75,12 +87,13 @@ public class WardManagement {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "UPDATE ward SET floor = ?, ward_number = ? WHERE ward_id = ?";
+            String sql = "UPDATE ward SET floor = ?, ward_number = ?, ward_status = ? WHERE ward_id = ?";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, ward.getFloor()); // new floor
             pstmt.setInt(2, ward.getWardNo());
-            pstmt.setInt(3, ward.getWard_id()); // new ward id
+            pstmt.setString(3, ward.getStatus());
+            pstmt.setInt(4, ward.getWard_id()); // new ward id
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -168,7 +181,7 @@ public class WardManagement {
        // Test delete ward
 //       wardManagement.deleteWard(3);
 //        // model.Ward record
-//        wardManagement.viewWardRecords();
+        wardManagement.viewWardRecords();
     }
 
 

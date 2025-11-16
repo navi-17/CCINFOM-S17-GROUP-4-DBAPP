@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhysicianManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
@@ -36,8 +38,9 @@ public class PhysicianManagement {
         }
     }
 
-    public void viewPhysicianRecords() //READ
+    public List<Physician> viewPhysicianRecords() //READ
     {
+        List<Physician> physicians = new ArrayList<>();
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -48,6 +51,12 @@ public class PhysicianManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
+                Physician physician = new Physician(rs.getInt("physician_id"));
+                physician.setLastName(rs.getString("ph_lastname"));
+                physician.setFirstName(rs.getString("ph_firstname"));
+                physician.setContact(rs.getString("contact_no"));
+                physician.setSpecialization(rs.getString("specialization"));
+
                 int physicianID = rs.getInt("physician_id");
                 String ln = rs.getString("ph_lastname");
                 String fn = rs.getString("ph_firstname");
@@ -55,6 +64,7 @@ public class PhysicianManagement {
                 String sp = rs.getString("specialization");
 
                 System.out.println(physicianID + ", " + ln + ", " + fn + ", " + no + ", " + sp);
+                physicians.add(physician);
             }
 
             pstmt.close();
@@ -64,6 +74,8 @@ public class PhysicianManagement {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+
+        return physicians;
     }
 
     public boolean updatePhysicianRecord(Physician physician)
@@ -138,15 +150,15 @@ public class PhysicianManagement {
 
     public static void main(String[] args)
     {
-        Physician ph = new Physician("Meredith", "Gray", "+63 9166825678", "General");
+//        Physician ph = new Physician("Meredith", "Gray", "+63 9166825678", "General");
         PhysicianManagement pm = new PhysicianManagement();
 
-        Physician updatedPh = new Physician("Meredith", "Grey", "+63 9116685678", "General");
-        updatedPh.setPhysician_id(2002);
+//        Physician updatedPh = new Physician("Meredith", "Grey", "+63 9116685678", "General");
+//        updatedPh.setPhysician_id(2002);
 
 //        pm.createPhysicianRecord(ph);
 //        pm.updatePhysicianRecord(updatedPh);
-        pm.deletePhysicianRecord(2002);
+//        pm.deletePhysicianRecord(2002);
         pm.viewPhysicianRecords();
     }
 }
