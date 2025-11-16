@@ -169,13 +169,6 @@ public class ASGui extends JFrame{
         JScrollPane scrollPane = new JScrollPane(table);
             scrollPane.setBounds(0, 0, 1226, 750);
 
-        JPanel formPanel = new JPanel();
-            formPanel.setLayout(null);
-            formPanel.setBounds(360,129,1226,785); //(1346) lr60, t70&b100
-            formPanel.setBackground(Color.BLUE);
-            formPanel.setOpaque(false);
-
-
         // Frames ------------------------------------------------
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -717,8 +710,6 @@ public class ASGui extends JFrame{
         // Layouts -----------------------------------------------
 
         this.add(wholeScreen);
-            wholeScreen.add(formPanel);
-                wholeScreen.setLayer(formPanel, 11);
             wholeScreen.add(sidePanel);
                 sidePanel.add(logoLabel);
                 sidePanel.add(mainMenuLabel);
