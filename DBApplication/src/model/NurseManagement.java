@@ -1,11 +1,13 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NurseManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
     private static final String USER = "root";
-    private static final String PASSWORD = "KC379379";
+    private static final String PASSWORD = "infom123";
     private Connection conn;
     PreparedStatement pstmt;
 
@@ -42,8 +44,9 @@ public class NurseManagement {
         }
     }
 
-    public void viewNurseRecords() //READ
+    public List<Nurse> viewNurseRecords() //READ
     {
+        List<Nurse> nurses = new ArrayList<>();
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -54,12 +57,20 @@ public class NurseManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
+                Nurse nurse = new Nurse(rs.getInt("nurse_id"));
+
                 int nurseID = rs.getInt("nurse_id");
                 String ln = rs.getString("n_lastname");
                 String fn = rs.getString("n_firstname");
                 String no = rs.getString("contact_no");
+                nurses.add(nurse);
 
                 System.out.println(nurseID + ", " + ln + ", " + fn + ", " + no);
+
+                nurse.setLastName(rs.getString("n_lastname"));
+                nurse.setFirstName(rs.getString("n_firstname"));
+                nurse.setContact(rs.getString("contact_no"));
+
             }
 
             pstmt.close();
@@ -69,6 +80,8 @@ public class NurseManagement {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+
+        return nurses;
     }
 
     public boolean updateNurseRecord(Nurse nurse)
@@ -145,7 +158,7 @@ public class NurseManagement {
         Nurse nurse = new Nurse("Marta", "Lualdi", "+63 9645138314");
         NurseManagement nurseMgmt = new NurseManagement();
 
-//        nurseMgmt.registerNurse(nurse);
+        nurseMgmt.registerNurse(nurse);
 //        nurseMgmt.deleteNurseRecord(1002);
         nurseMgmt.viewNurseRecords();
 

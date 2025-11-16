@@ -11,6 +11,21 @@ public class Discharge {
         this.discharge_date = discharge_date;
     }
 
+    public Discharge(int id)
+    {
+        discharge_id = id;
+    }
+
+    public void setAdmission_id(int admission_id)
+    {
+        this.admission_id = admission_id;
+    }
+
+    public void setDischarge_date(String discharge_date)
+    {
+        this.discharge_date = discharge_date;
+    }
+
     public int getDischarge_id() {
         return discharge_id;
     }

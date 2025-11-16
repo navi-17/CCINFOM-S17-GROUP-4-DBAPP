@@ -13,9 +13,29 @@ public class Admission {
         admission_date = date;
     }
 
+    public Admission(int id)
+    {
+        admission_id = id;
+    }
+
     public void setAdmissionID(int id)
     {
         admission_id = id;
+    }
+
+    public void setPatient_id(int patient_id)
+    {
+        this.patient_id = patient_id;
+    }
+
+    public void setWard_id(int ward_id)
+    {
+        this.ward_id = ward_id;
+    }
+
+    public void setAdmission_date(String admission_date)
+    {
+        this.admission_date = admission_date;
     }
 
     public int getAdmissionID()

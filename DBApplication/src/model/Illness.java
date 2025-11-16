@@ -12,6 +12,26 @@ public class Illness {
         this.illness_description = illness_description;
     }
 
+    public Illness(int id)
+    {
+        illness_id = id;
+    }
+
+    public void setIllnessName(String n)
+    {
+        illness_name = n;
+    }
+
+    public void setCategory(String category)
+    {
+        this.category = category;
+    }
+
+    public void setIllness_description(String illness_description)
+    {
+        this.illness_description = illness_description;
+    }
+
     public int getIllness_id() {
         return illness_id;
     }

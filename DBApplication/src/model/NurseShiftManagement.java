@@ -1,5 +1,7 @@
 package model;
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class NurseShiftManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
@@ -35,8 +37,9 @@ public class NurseShiftManagement {
         }
     }
 
-    public void viewNurseShifts()
+    public List<NurseShift> viewNurseShifts()
     {
+        List<NurseShift> nurseShifts = new ArrayList<>();
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -47,8 +50,15 @@ public class NurseShiftManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
+                NurseShift ns = new NurseShift(rs.getInt("nurseShift_id"));
+                ns.setNurse_id(rs.getInt("nurse_id"));
+                ns.setShift_day(rs.getString("shift_day"));
+                ns.setStart_time(rs.getString("start_time"));
+                ns.setEnd_time(rs.getString("end_time"));
+                nurseShifts.add(ns);
+
                 int nsID = rs.getInt("nurseShift_id");
-                String nID = rs.getString("nurse_id");
+                int nID = rs.getInt("nurse_id");
                 String sday = rs.getString("shift_day");
                 String sTime = rs.getString("start_time");
                 String eTime = rs.getString("end_time");
@@ -63,6 +73,8 @@ public class NurseShiftManagement {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+
+        return nurseShifts;
     }
 
     public boolean updateNurseShift(NurseShift ns)
@@ -141,7 +153,7 @@ public class NurseShiftManagement {
         NurseShiftManagement nsm = new NurseShiftManagement();
         NurseShift updateNs = new NurseShift(1003, "Tuesday", "09:00", "19:00");
 
-        nsm.createNurseShift(ns);
+        nsm.createNurseShift(updateNs);
 //        nsm.updateNurseShift(updateNs);
 //        nsm.deleteNurseShift(5);
         nsm.viewNurseShifts();

@@ -15,9 +15,34 @@ public class PhysicianSchedule {
         end_time = end;
     }
 
+    public PhysicianSchedule(int id)
+    {
+        physicianSchedule_id = id;
+    }
+
     public void setPhysicianScheduleID(int phsID)
     {
         physicianSchedule_id = phsID;
+    }
+
+    public void setPhysician_id(int physician_id)
+    {
+        this.physician_id = physician_id;
+    }
+
+    public void setSchedule_day(String schedule_day)
+    {
+        this.schedule_day = schedule_day;
+    }
+
+    public void setStart_time(String start_time)
+    {
+        this.start_time = start_time;
+    }
+
+    public void setEnd_time(String end_time)
+    {
+        this.end_time = end_time;
     }
 
     public int getPhysicianScheduleID()

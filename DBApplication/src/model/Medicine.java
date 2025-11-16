@@ -11,9 +11,25 @@ public class Medicine {
         stock_qty = stock;
     }
 
+    public Medicine(int id)
+    {
+        medicine_id = id;
+    }
+
+
     public void setMedicineID(int medID)
     {
         medicine_id = medID;
+    }
+
+    public void setName(String n)
+    {
+        medicine_name = n;
+    }
+
+    public void setStock_qty(int s)
+    {
+        stock_qty = s;
     }
 
     public int getMedicineID()

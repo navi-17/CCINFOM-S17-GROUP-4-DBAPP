@@ -2,8 +2,11 @@ package model;
 
 import java.sql.*;
 import java.time.*;
+import java.util.List;
+import java.util.ArrayList;
+
 public class NurseAssignmentManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
     private static final String USER = "root";
     private static final String PASSWORD = "infom123";
     private Connection conn;
@@ -83,8 +86,9 @@ public class NurseAssignmentManagement {
         }
     }
 
-    public void viewNurseAssignments() //READ
+    public List<NurseAssignment> viewNurseAssignments() //READ
     {
+        List<NurseAssignment> nurseAssignments = new ArrayList<>();
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -95,6 +99,14 @@ public class NurseAssignmentManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
+                NurseAssignment na = new NurseAssignment(rs.getInt("nurseAssignment_id"));
+                na.setNurseShift_id(rs.getInt("nurseShift_id"));
+                na.setPatient_id(rs.getInt("patient_id"));
+                na.setDate_assigned(rs.getDate("date_assigned"));
+                na.setAssigned_until(rs.getDate("assigned_until"));
+
+                nurseAssignments.add(na);
+
                 int naID = rs.getInt("nurseAssignment_id");
                 int nsID = rs.getInt("nurseShift_id");
                 int pID = rs.getInt("patient_id");
@@ -111,6 +123,8 @@ public class NurseAssignmentManagement {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+
+        return nurseAssignments;
     }
 
     public boolean updateNurseAssignment(NurseAssignment na)

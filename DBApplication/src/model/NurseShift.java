@@ -15,11 +15,35 @@ public class NurseShift {
         end_time = end;
     }
 
+    public NurseShift(int id)
+    {
+        nurseShift_id = id;
+    }
+
     public void setNurseShiftID(int nsID)
     {
         nurseShift_id = nsID;
     }
 
+    public void setNurse_id(int nurse_id)
+    {
+        this.nurse_id = nurse_id;
+    }
+
+    public void setShift_day(String shift_day)
+    {
+        this.shift_day = shift_day;
+    }
+
+    public void setStart_time(String start_time)
+    {
+        this.start_time = start_time;
+    }
+
+    public void setEnd_time(String end_time)
+    {
+        this.end_time = end_time;
+    }
 
     public int getNurseShiftID()
     {

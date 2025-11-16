@@ -15,9 +15,34 @@ public class Physician {
         this.specialization = specialization;
     }
 
+    public Physician(int id)
+    {
+        physician_id = id;
+    }
+
     public void setPhysician_id(int id)
     {
         physician_id = id;
+    }
+
+    public void setLastName(String ln)
+    {
+        ph_lastname = ln;
+    }
+
+    public void setFirstName(String fn)
+    {
+        ph_firstname = fn;
+    }
+
+    public void setContact(String c)
+    {
+        contact_no = c;
+    }
+
+    public void setSpecialization(String s)
+    {
+        specialization = s;
     }
 
     public int getPhysicianID()
