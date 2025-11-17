@@ -26,16 +26,18 @@ INSERT INTO ward(ward_id, floor)
 VALUES(501, '3rd Floor');
 
 INSERT INTO diagnosis(diagnosis_id, patient_id, physicianSchedule_id, illness_id, diagnosis_date, notes)
-VALUES(6001, 100, 3, 3001, '2025-09-11', 'Monitor patient closely');
+VALUES(6001, 101, 3, 3001, '2025-09-11', 'Monitor patient closely');	
 
 INSERT INTO nurse_assignment(nurseAssignment_id, nurseShift_id, patient_id, date_assigned, assigned_until)
-VALUES (7001, 2, 100, '2025-11-09', null);
+VALUES (7001, 2, 101, '2025-11-09', null);
 
 INSERT INTO admission(admission_id, patient_id, ward_id, admission_date)
-VALUES (8001, 100, 501, '2025-11-09');
+VALUES (8001, 101, 1, '2025-11-09');
 
-INSERT INTO treatment(treatment_id, nurseAssignment_id, diagnosis_id, medicine_id, treatment_date, treatment_procedure, remarks)
-VALUES (9001, 7001, 6001, 4001, '2025-11-09', 'Administered medicine', 'See if patient condition alleviates');
+INSERT INTO treatment(treatment_id, nurseAssignment_id, diagnosis_id, medicine_id, treatment_date, treatment_procedure, remarks, performed_by)
+VALUES (9001, 7001, 6001, 4001, '2025-11-09', 'Administered medicine', 'See if patient condition alleviates', 'Nurse');
+
+
 
 INSERT INTO discharge(discharge_id, admission_id, discharge_date)
 VALUES (1, 8001, '2025-11-10');
@@ -116,6 +118,19 @@ ALTER TABLE treatment
 DROP performed_by;	
 
 
+ALTER TABLE ward RENAME COLUMN ward_number TO ward_no;
+
+ALTER TABLE ward RENAME COLUMN ward_number TO ward_no;
+
+-- REPORTS --
+#Physician Workload Report
+SELECT COUNT(DISTINCT d.patient_id) AS TotalPatients
+FROM treatment t 
+	LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id
+    LEFT JOIN physician_schedule ps ON d.physicianSchedule_id = ps.physicianSchedule_id
+WHERE t.treatment_date = '2025-11-09'
+	AND ((t.performed_by = 'Diagnosing Physician' AND ps.physician = 1)
+    OR (t.performed_by = 'Assigned Physician' AND t.assignedPhysician_id = 1));
 
 
 

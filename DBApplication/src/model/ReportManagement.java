@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class ReportManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
     private static final String USER = "root";
     private static final String PASSWORD = "infom123";
     private Connection conn;

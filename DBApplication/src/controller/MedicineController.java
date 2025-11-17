@@ -20,6 +20,8 @@ public class MedicineController implements ActionListener{
         gui.setActionListeners(this);
     }
 
+
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
