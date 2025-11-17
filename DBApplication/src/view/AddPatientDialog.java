@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 
 public class AddPatientDialog extends JDialog {
 
-    private JTextField firstNameField, lastNameField, dobField, contactField;
+    private JTextField firstNameField, lastNameField, dobField, contactField, statusField;
     private JComboBox<String> genderBox;
     private PatientManagement patientMgmt;
 
@@ -21,7 +21,7 @@ public class AddPatientDialog extends JDialog {
         patientMgmt = new PatientManagement();
 
         // --- DIALOG BASE LAYOUT ---
-        setSize(600, 400);
+        setSize(600, 440);
         setLocationRelativeTo(parent);
         setResizable(false);
         setLayout(new BorderLayout());
@@ -55,7 +55,7 @@ public class AddPatientDialog extends JDialog {
         infoLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 1;
         formPanel.add(infoLabel, gbc);
 
         gbc.gridwidth = 1;
@@ -97,6 +97,14 @@ public class AddPatientDialog extends JDialog {
         gbc.gridx = 1;
         contactField = new JTextField(15);
         formPanel.add(contactField, gbc);
+
+        // Status
+        gbc.gridy++;
+        gbc.gridx = 0;
+        formPanel.add(new JLabel("Status"), gbc);
+        gbc.gridx = 1;
+        statusField = new JTextField(15);
+        formPanel.add(statusField, gbc);
 
         // Right panel (placeholder image)
 		JPanel imagePanel = new JPanel();
@@ -141,15 +149,17 @@ public class AddPatientDialog extends JDialog {
     private void handleSubmit() {
         String fn = firstNameField.getText().trim();
         String ln = lastNameField.getText().trim();
+        String dob = dobField.getText().trim();
         String contact = contactField.getText().trim();
-        String sex = genderBox.getSelectedItem().toString();
+        String sex = contactField.getText().trim();
+        String status = contactField.getText().trim();
 
-        if (fn.isEmpty() || ln.isEmpty() || contact.isEmpty()) {
+        if (fn.isEmpty() || ln.isEmpty() || dob.isEmpty() || contact.isEmpty() || sex.isEmpty() || status.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill out all required fields.", "Incomplete", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        Patient patient = new Patient(ln, fn, contact, sex);
+        Patient patient = new Patient(ln, fn, dob, contact, sex, status);
         boolean success = patientMgmt.createPatientRecord(patient);
 
         if (success) {

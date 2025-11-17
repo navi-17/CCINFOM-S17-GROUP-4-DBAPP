@@ -1,11 +1,14 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class IllnessManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
     private static final String USER = "root";
-    private static final String PASSWORD = "KC379379";
+    private static final String PASSWORD = "infom123";
     private Connection conn;
     PreparedStatement pstmt;
 
@@ -18,7 +21,7 @@ public class IllnessManagement {
             System.out.println("Connection to database successful!");
 
             //2. Prepare SQL Statement --> store in PreparedStatement (dont forget to put alias for column name so u can fetch the value)
-            String sql = "INSERT INTO illness (illness_name, category, illness_description) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO illness (illness_name, category, illness_description) VALUES (?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, illness.getIllness_name());
@@ -40,10 +43,11 @@ public class IllnessManagement {
             System.out.println(e.getMessage());
             return false;
         }
-
     }
-        public void viewIllnessRecords () // read
+        public List<Illness> viewIllnessRecords () // read
         {
+            List<Illness> illnesses = new ArrayList<>();
+
             try {
                 conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
                 System.out.println("Connection to database successful!");
@@ -53,6 +57,11 @@ public class IllnessManagement {
 
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
+                    Illness illness = new Illness(rs.getInt("illness_id"));
+                    illness.setIllnessName(rs.getString("illness_name"));
+                    illness.setCategory(rs.getString("category"));
+                    illness.setIllness_description(rs.getString("illness_description"));
+                    illnesses.add(illness);
 
                     int illness_id = rs.getInt("illness_id");
                     String illness_name = rs.getString("illness_name");
@@ -69,6 +78,8 @@ public class IllnessManagement {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+
+            return illnesses;
         }
 
         public boolean updateIllness (Illness illness){
@@ -142,6 +153,9 @@ public class IllnessManagement {
     }
     public static void main(String[] args){
         IllnessManagement  illnessManagement = new IllnessManagement();
+
+        Illness illness = new Illness("Pneumonia", "Infectious Disease", "Severe inflammation of the lungs");
+        illnessManagement.createIllness(illness);
         illnessManagement.viewIllnessRecords();
     }
 

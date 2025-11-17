@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Date;
+
 public class Treatment {
     private int treatment_id;
     private int nurseAssignment_id;
@@ -23,15 +25,59 @@ public class Treatment {
         performed_by = performedBy;
     }
 
+    public Treatment(int id)
+    {
+        treatment_id = id;
+    }
+
+
     public void setTreatmentID(int id)
     {
         treatment_id = id;
     }
 
-    public void setAssignedPhysician_id(Integer id)
+    public void setNurseAssignment_id(int nurseAssignment_id)
+    {
+        this.nurseAssignment_id = nurseAssignment_id;
+    }
+
+    public void setDiagnosis_id(int diagnosis_id)
+    {
+        this.diagnosis_id = diagnosis_id;
+    }
+
+    public void setMedicine_id(int medicine_id)
+    {
+        this.medicine_id = medicine_id;
+    }
+
+    public void setTreatment_date(java.sql.Date treatment_date)
+    {
+        this.treatment_date = treatment_date;
+    }
+
+    public void setTreatment_procedure(String treatment_procedure)
+    {
+        this.treatment_procedure = treatment_procedure;
+    }
+
+
+    public void setRemarks(String remarks)
+    {
+        this.remarks = remarks;
+    }
+
+    public void setAssignedPhysicianID(Integer id)
     {
         assignedPhysician_id = id;
     }
+
+    public void setPerformed_by(String performed_by)
+    {
+        this.performed_by = performed_by;
+    }
+
+
 
     public int getTreatmentID()
     {

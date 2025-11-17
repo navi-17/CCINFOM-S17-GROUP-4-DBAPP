@@ -1,8 +1,10 @@
 package model;
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class AdmissionManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
     private static final String USER = "root";
     private static final String PASSWORD = "infom123";
     private Connection conn;
@@ -49,8 +51,9 @@ public class AdmissionManagement {
         }
     }
 
-    public void viewPatientAdmission() //READ
+    public List<Admission> viewPatientAdmission() //READ
     {
+        List<Admission> admissions = new ArrayList<>();
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -61,6 +64,13 @@ public class AdmissionManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
+                Admission a = new Admission(rs.getInt("admission_id"));
+                a.setPatient_id(rs.getInt("patient_id"));
+                a.setWard_id(rs.getInt("ward_id"));
+                a.setAdmission_date(rs.getString("admission_date"));
+
+                admissions.add(a);
+
                 int admissionID = rs.getInt("admission_id");
                 int pID = rs.getInt("patient_id");
                 int wID = rs.getInt("ward_id");
@@ -76,6 +86,7 @@ public class AdmissionManagement {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+        return admissions;
     }
 
     public boolean updateAdmissionRecord(Admission admission)

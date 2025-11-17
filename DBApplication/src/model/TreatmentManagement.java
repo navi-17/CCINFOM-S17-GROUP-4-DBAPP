@@ -1,6 +1,9 @@
 package model;
 
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class TreatmentManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
@@ -127,8 +130,9 @@ public class TreatmentManagement {
     }
 
 
-    public void viewTreatmentRecords() //READ
+    public List<Treatment> viewTreatmentRecords() //READ
     {
+        List<Treatment> treatments = new ArrayList<>();
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -139,6 +143,18 @@ public class TreatmentManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
+                Treatment t = new Treatment(rs.getInt("treatment_id"));
+                t.setNurseAssignment_id(rs.getInt("nurseAssignment_id"));
+                t.setDiagnosis_id(rs.getInt("diagnosis_id"));
+                t.setMedicine_id(rs.getInt("medicine_id"));
+                t.setTreatment_date(rs.getDate("treatment_date"));
+                t.setTreatment_procedure(rs.getString("treatment_procedure"));
+                t.setRemarks(rs.getString("remarks"));
+                t.setAssignedPhysicianID((Integer) rs.getObject("assignedPhysician_id"));
+                t.setPerformed_by(rs.getString("performed_by"));
+
+                treatments.add(t);
+
                 int tID = rs.getInt("treatment_id");
                 int naID = rs.getInt("nurseAssignment_id");
                 int dID = rs.getInt("diagnosis_id");
@@ -158,6 +174,8 @@ public class TreatmentManagement {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+
+        return treatments;
     }
 
     public boolean updateTreatmentRecord(Treatment treatment)

@@ -1,15 +1,17 @@
 package model;
 
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class DischargeManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
     private static final String USER = "root";
-    private static final String PASSWORD = "KC379379";
+    private static final String PASSWORD = "infom123";
     private Connection conn;
     PreparedStatement pstmt;
 
-    public boolean createDischargeRecord(int admission_id, String discharge_date)
+    public boolean createDischargeRecord(Discharge discharge)
     {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
@@ -19,8 +21,8 @@ public class DischargeManagement {
             String sql = "INSERT INTO discharge (admission_id, discharge_date) VALUES (?, ?)";
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setInt(1, admission_id);
-            pstmt.setString(2, discharge_date);
+            pstmt.setInt(1, discharge.getAdmissionID());
+            pstmt.setString(2, discharge.getDischargeDate());
 
             pstmt.executeUpdate();
             System.out.println("Discharge Record inserted successfully!");
@@ -35,8 +37,9 @@ public class DischargeManagement {
         }
     }
 
-    public void viewDischargeRecord() //READ
+    public List<Discharge> viewDischargeRecord() //READ
     {
+        List<Discharge> discharges = new ArrayList<>();
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
@@ -47,6 +50,11 @@ public class DischargeManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
+                Discharge d = new Discharge(rs.getInt("discharge_id"));
+                d.setAdmission_id(rs.getInt("admission_id"));
+                d.setDischarge_date(rs.getString("discharge_date"));
+                discharges.add(d);
+
                 int discharge_id = rs.getInt("discharge_id");
                 int admission_id = rs.getInt("admission_id");
                 String discharge_date = rs.getString("discharge_date");
@@ -61,6 +69,7 @@ public class DischargeManagement {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+        return discharges;
     }
 
     public boolean updateDischargeRecord(Discharge discharge)
@@ -71,15 +80,15 @@ public class DischargeManagement {
 
             String sql = "UPDATE discharge SET admission_id = ?, discharge_date = ? WHERE discharge_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, discharge.getAdmission_id());
-            pstmt.setString(2, discharge.getDischarge_date());
-            pstmt.setInt(3, discharge.getDischarge_id());
+            pstmt.setInt(1, discharge.getAdmissionID());
+            pstmt.setString(2, discharge.getDischargeDate());
+            pstmt.setInt(3, discharge.getDischargeID());
 
             int rowsAffected = pstmt.executeUpdate();
 
             if(rowsAffected > 0)
             {
-                System.out.println("Discharge with id = " + discharge.getDischarge_id() + " has been updated!");
+                System.out.println("Discharge with id = " + discharge.getDischargeID() + " has been updated!");
                 pstmt.close();
                 conn.close();
                 return true;
@@ -134,9 +143,9 @@ public class DischargeManagement {
     public static void main(String[] args)
     {
         DischargeManagement dischargeManagement = new DischargeManagement();
-
-//        dischargeManagement.createDischargeRecord();
-//        dischargeManagement.viewDischargeRecord();
+//        Discharge d = new Discharge(1, 8001, "2025-11-10");
+//        dischargeManagement.createDischargeRecord(d);
+        dischargeManagement.viewDischargeRecord();
 
     }
 }

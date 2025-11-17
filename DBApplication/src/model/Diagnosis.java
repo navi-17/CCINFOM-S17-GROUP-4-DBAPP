@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Date;
+
 public class Diagnosis {
     private int diagnosis_id;
     private int physicianSchedule_id;
@@ -16,8 +18,38 @@ public class Diagnosis {
         this.notes = notes;
     }
 
+    public Diagnosis(int id)
+    {
+        diagnosis_id = id;
+    }
+
     public void setDiagnosis_id(int diagnosis_id) {
         this.diagnosis_id = diagnosis_id;
+    }
+
+    public void setPhysicianSchedule_id(int physicianSchedule_id)
+    {
+        this.physicianSchedule_id = physicianSchedule_id;
+    }
+
+    public void setPatient_id(int patient_id)
+    {
+        this.patient_id = patient_id;
+    }
+
+    public void setIllness_id(int illness_id)
+    {
+        this.illness_id = illness_id;
+    }
+
+    public void setDiagnosis_date(java.sql.Date diagnosis_date)
+    {
+        this.diagnosis_date = diagnosis_date;
+    }
+
+    public void setNotes(String notes)
+    {
+        this.notes = notes;
     }
 
     public int getDiagnosis_id() {
