@@ -1,10 +1,6 @@
 package view;
 
-import model.Patient;
-import model.PatientManagement;
-
 import java.util.*;
-import java.util.List;
 import java.io.*;
 import java.awt.*;
 import javax.swing.*;
@@ -13,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ASGui extends JFrame{
 
@@ -24,12 +21,14 @@ public class ASGui extends JFrame{
     private String placeholder = "Search...";
 
     private JScrollPane scrollPane;
+    private JTabbedPane tabbedPane;
+
     private JLayeredPane wholeScreen;
     private JLayeredPane mainPanel;
     private JLayeredPane sidePanel;
     private JPanel topPanel;
     private JPanel topPanel2;
-    private JPanel listBGPanel;
+    private JPanel tableBGPanel;
     private JPanel listAttributesPanel;
 
     private JLabel logoLabel;
@@ -70,8 +69,6 @@ public class ASGui extends JFrame{
     private JButton dropdownButton;
     private JButton dropdownButton2;
     private JButton filterByButton;
-    private JButton listViewButton;
-    private JButton tileViewButton;
     private JButton createButton;
     private JButton updateButton;
     private JButton deleteButton;
@@ -84,7 +81,7 @@ public class ASGui extends JFrame{
     private JButton lastPageButton;
     private JButton nextPageButton;
 
-    JTextField searchTextField;
+    private JTextField searchTextField;
 
     private ImageIcon backgroundImage = new ImageIcon(getClass().getResource("/backgroundImage.png"));
     private ImageIcon logoImage = new ImageIcon(getClass().getResource("/globeIcon.png"));
@@ -98,9 +95,9 @@ public class ASGui extends JFrame{
     private ImageIcon searchIcon = new ImageIcon(getClass().getResource("/searchIcon.png"));
     private ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/cancelIcon.png"));
 
-    private Font RobotoRegular;
-    private Font RobotoBold;
-    private Font MontserratBold;
+    private static Font RobotoRegular;
+    private static Font RobotoBold;
+    private static Font MontserratBold;
 
     public ASGui()
     {
@@ -108,12 +105,12 @@ public class ASGui extends JFrame{
 
         // Columns and Data --------------------------------------
 
-        PatientManagement pm = new PatientManagement();
-        List<Patient> patients = new ArrayList<>();
-        patients = pm.viewPatientRecords();
+//        PatientManagement pm = new PatientManagement();
+//        List<Patient> patients = new ArrayList<>();
+//        patients = pm.viewPatientRecords();
 
-        String[] attributes = {" ", "ID", "Patient Name", "Sex", "Birthdate", "Contact Number",
-                "Status"};
+//        String[] attributes = {" ", "ID", "Patient Name", "Sex", "Birthdate", "Contact Number",
+//                "Status"};
 
 //        Object[][] data = {{false, "12648273", new Object[]{profileIcon, "Sunwoo Han"}, "F", "January 01, 1999", "+63 927 636 2540",
 //                "Admitted"},
@@ -165,15 +162,20 @@ public class ASGui extends JFrame{
 
         // Scroll Pane -------------------------------------------
 
-//            scrollPane = new JScrollPane();
-//        scrollPane.setBounds(0, 0, 1226, 750);
-//            listBGPanel.add(scrollPane);
-
         scrollPane = new JScrollPane();
-//        scrollPane.setBounds(0, 0, 1226, 750);
-//        scrollPane.setBorder(null);
-//        scrollPane.setOpaque(false);
-//        scrollPane.getViewport().setOpaque(false);
+
+        // JTabbedPane
+
+        String[] tabs = {"Patients", "Illness", "Treatment", "Physician", "Nurse"};
+
+        JScrollPane[] placeholders = new JScrollPane[tabs.length];
+        for (int i = 0; i < placeholders.length; i++)
+        {
+            placeholders[i] = null; // optional, Java initializes to null by default
+        }
+
+        tabbedPane = createTabbedPane(tabs, placeholders);
+        tabbedPane.setBounds(-1, 1, 1230, 785); // Set size here
 
 
         // Frames ------------------------------------------------
@@ -229,11 +231,11 @@ public class ASGui extends JFrame{
         topPanel2.setBackground(Color.WHITE);
         topPanel2.setOpaque(true);
 
-        listBGPanel = new JPanel();
-        listBGPanel.setLayout(null);
-        listBGPanel.setBounds(60,184,1226,730); //(1346) lr60, t70&b100
-        listBGPanel.setBackground(Color.WHITE);
-        listBGPanel.setOpaque(true);
+        tableBGPanel = new JPanel();
+        tableBGPanel.setLayout(null);
+        tableBGPanel.setBounds(60,139,1226,785); //(1346) lr60, t70&b100
+        tableBGPanel.setBackground(Color.WHITE);
+        tableBGPanel.setOpaque(false);
 
         listAttributesPanel = new JPanel();
         listAttributesPanel.setLayout(null);
@@ -276,7 +278,7 @@ public class ASGui extends JFrame{
 
         tableLabel = new JLabel();
         tableLabel.setBounds(60,0,240,64);
-        tableLabel.setText(" ");
+        tableLabel.setText("");
         tableLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
         tableLabel.setForeground(Color.WHITE);
         tableLabel.setBackground(Color.BLUE);
@@ -335,7 +337,7 @@ public class ASGui extends JFrame{
         // pathLabel.setOpaque(true);
 
         entriesLabel = new JLabel();
-        entriesLabel.setBounds(60,940,240,40);
+        entriesLabel.setBounds(60,950,240,40);
         entriesLabel.setText("Showing 1-10 of 246 entries");
         entriesLabel.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
         entriesLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -385,11 +387,7 @@ public class ASGui extends JFrame{
 
         // Buttons -----------------------------------------------
 
-		deleteButton = new JButton();
-		deleteButton.setBounds(1246,129,40,40);
-		deleteButton.setText("D");
-		
-		patientButton = new JButton();
+        patientButton = new JButton();
         patientButton.setBounds(30,126,240,40);
         patientButton.setIcon(personIcon);
         patientButton.setText("Patient");
@@ -598,30 +596,10 @@ public class ASGui extends JFrame{
         filterByButton.setFocusable(false);
         filterByButton.setOpaque(true);
 
-        listViewButton = new JButton();
-        listViewButton.setBounds(60,129,40,40);
-        listViewButton.setText("L");
-        listViewButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        listViewButton.setHorizontalAlignment(JButton.CENTER);
-        listViewButton.setForeground(Color.WHITE);
-        listViewButton.setBackground(new Color(0x2e582e));
-        listViewButton.setBorder(BorderFactory.createEtchedBorder());
-        listViewButton.setFocusable(false);
-
-        tileViewButton = new JButton();
-        tileViewButton.setBounds(110,129,40,40);
-        tileViewButton.setText("T");
-        tileViewButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        tileViewButton.setHorizontalAlignment(JButton.CENTER);
-        tileViewButton.setForeground(Color.WHITE);
-        tileViewButton.setBackground(new Color(0x2e582e));
-        tileViewButton.setBorder(BorderFactory.createEtchedBorder());
-        tileViewButton.setFocusable(false);
-
         createButton = new JButton();
-        createButton.setBounds(1046,129,140,40);
+        createButton.setBounds(1046,139,140,40);
         createButton.setText("+ Add Patient");
-        createButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+        createButton.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
         createButton.setHorizontalAlignment(JButton.CENTER);
         createButton.setForeground(Color.WHITE);
         createButton.setBackground(new Color(0x2e582e));
@@ -629,9 +607,9 @@ public class ASGui extends JFrame{
         createButton.setFocusable(false);
 
         updateButton = new JButton();
-        updateButton.setBounds(1196,129,40,40);
+        updateButton.setBounds(1196,139,40,40);
         updateButton.setText("U");
-        updateButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+        updateButton.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
         updateButton.setHorizontalAlignment(JButton.CENTER);
         updateButton.setForeground(Color.WHITE);
         updateButton.setBackground(new Color(0x2e582e));
@@ -639,9 +617,9 @@ public class ASGui extends JFrame{
         updateButton.setFocusable(false);
 
         deleteButton = new JButton();
-        deleteButton.setBounds(1246,129,40,40);
+        deleteButton.setBounds(1246,139,40,40);
         deleteButton.setText("D");
-        deleteButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+        deleteButton.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
         deleteButton.setHorizontalAlignment(JButton.CENTER);
         deleteButton.setForeground(Color.WHITE);
         deleteButton.setBackground(new Color(0x2e582e));
@@ -649,7 +627,7 @@ public class ASGui extends JFrame{
         deleteButton.setFocusable(false);
 
         previousPageButton = new JButton();
-        previousPageButton.setBounds(946,940,40,40);
+        previousPageButton.setBounds(946,950,40,40);
         previousPageButton.setText("<");
         previousPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
         previousPageButton.setHorizontalAlignment(JButton.CENTER);
@@ -659,7 +637,7 @@ public class ASGui extends JFrame{
         previousPageButton.setFocusable(false);
 
         firstPageButton = new JButton();
-        firstPageButton.setBounds(996,940,40,40);
+        firstPageButton.setBounds(996,950,40,40);
         firstPageButton.setText("1");
         firstPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
         firstPageButton.setHorizontalAlignment(JButton.CENTER);
@@ -669,7 +647,7 @@ public class ASGui extends JFrame{
         firstPageButton.setFocusable(false);
 
         secondPageButton = new JButton();
-        secondPageButton.setBounds(1046,940,40,40);
+        secondPageButton.setBounds(1046,950,40,40);
         secondPageButton.setText("2");
         secondPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
         secondPageButton.setHorizontalAlignment(JButton.CENTER);
@@ -679,7 +657,7 @@ public class ASGui extends JFrame{
         secondPageButton.setFocusable(false);
 
         thirdPageButton = new JButton();
-        thirdPageButton.setBounds(1096,940,40,40);
+        thirdPageButton.setBounds(1096,950,40,40);
         thirdPageButton.setText("3");
         thirdPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
         thirdPageButton.setHorizontalAlignment(JButton.CENTER);
@@ -689,7 +667,7 @@ public class ASGui extends JFrame{
         thirdPageButton.setFocusable(false);
 
         fourthPageButton = new JButton();
-        fourthPageButton.setBounds(1146,940,40,40);
+        fourthPageButton.setBounds(1146,950,40,40);
         fourthPageButton.setText("...");
         fourthPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
         fourthPageButton.setHorizontalAlignment(JButton.CENTER);
@@ -699,7 +677,7 @@ public class ASGui extends JFrame{
         fourthPageButton.setFocusable(false);
 
         lastPageButton = new JButton();
-        lastPageButton.setBounds(1196,940,40,40);
+        lastPageButton.setBounds(1196,950,40,40);
         lastPageButton.setText("25");
         lastPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
         lastPageButton.setHorizontalAlignment(JButton.CENTER);
@@ -709,7 +687,7 @@ public class ASGui extends JFrame{
         lastPageButton.setFocusable(false);
 
         nextPageButton = new JButton();
-        nextPageButton.setBounds(1246,940,40,40);
+        nextPageButton.setBounds(1246,950,40,40);
         nextPageButton.setText(">");
         nextPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
         nextPageButton.setHorizontalAlignment(JButton.CENTER);
@@ -758,14 +736,15 @@ public class ASGui extends JFrame{
         sortByLabel.add(sortByTextLabel);
         sortByLabel.add(dropdownButton2);
         topPanel2.add(filterByButton);
-        mainPanel.add(listViewButton);
-        mainPanel.add(tileViewButton);
         mainPanel.add(createButton);
+        mainPanel.setLayer(createButton, 12);
         mainPanel.add(updateButton);
+        mainPanel.setLayer(updateButton, 12);
         mainPanel.add(deleteButton);
-        mainPanel.add(listBGPanel);
-        mainPanel.setLayer(listBGPanel, 10);
-//        listBGPanel.add(scrollPane);
+        mainPanel.setLayer(deleteButton, 12);
+        mainPanel.add(tableBGPanel);
+        mainPanel.setLayer(tableBGPanel, 10);
+        tableBGPanel.add(tabbedPane);
         mainPanel.add(entriesLabel);
         mainPanel.add(previousPageButton);
         mainPanel.add(firstPageButton);
@@ -776,32 +755,6 @@ public class ASGui extends JFrame{
         mainPanel.add(nextPageButton);
         mainPanel.add(backgroundLabel);
     }
-
-//    public void createFonts()
-//    {
-//        try{
-//            RobotoRegular = Font.createFont(Font.TRUETYPE_FONT, new File("RobotoRegular.ttf")).deriveFont(50f);
-//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("RobotoRegular.ttf")));
-//        }
-//        catch(IOException | FontFormatException e){
-//        }
-//        try{
-//            RobotoBold = Font.createFont(Font.TRUETYPE_FONT, new File("RobotoBold.ttf")).deriveFont(50f);
-//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("RobotoBold.ttf")));
-//        }
-//        catch(IOException | FontFormatException e){
-//        }
-//
-//        try{
-//            MontserratBold = Font.createFont(Font.TRUETYPE_FONT, new File("MontserratBold.ttf")).deriveFont(50f);
-//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("MontserratBold.ttf")));
-//        }
-//        catch(IOException | FontFormatException e){
-//        }
-//    }
 
     public void createFonts() {
         RobotoRegular = loadFont("/RobotoRegular.ttf", 50f);
@@ -843,11 +796,11 @@ public class ASGui extends JFrame{
         treatmentButton.addActionListener(listener);
         nShiftButton.addActionListener(listener);
         pScheduleButton.addActionListener(listener);
-		deleteButton.addActionListener(listener);
-		updateButton.addActionListener(listener);
+        deleteButton.addActionListener(listener);
+        updateButton.addActionListener(listener);
     }
 
-	public List<Object> getSelectedRowIDs(JTable table) {
+    public List<Object> getSelectedRowIDs(JTable table) {
         List<Object> selectedIDs = new ArrayList<>();
         if (table == null || table.getModel().getColumnCount() <= 1) {
             return selectedIDs; // Not a valid table or doesn't have an ID column
@@ -863,7 +816,9 @@ public class ASGui extends JFrame{
         return selectedIDs;
     }
 
-	public JButton getDeleteButton()
+
+
+    public JButton getDeleteButton()
     {
         return deleteButton;
     }
@@ -873,10 +828,11 @@ public class ASGui extends JFrame{
         return updateButton;
     }
 
-	public List<Object> getSelectedRowData(JTable table) {
+
+    public List<Object> getSelectedRowData(JTable table) {
         List<Object> selectedRow = null;
         int selectedCount = 0;
-        
+
         // This is a defensive check to handle when no table is displayed
         if (table == null || table.getModel() == null) {
             return null;
@@ -905,7 +861,8 @@ public class ASGui extends JFrame{
         }
         return null;
     }
-	
+
+
     public JTable createTable(
             Object[][] data,
             String[] attributes,
@@ -1070,12 +1027,69 @@ public class ASGui extends JFrame{
 
         scrollPane.setViewportView(table);
         scrollPane.setBounds(0, 0, 1226, 750);
-        listBGPanel.removeAll();
-        listBGPanel.add(scrollPane);
-        listBGPanel.revalidate();
-        listBGPanel.repaint();
+
+        tabbedPane.setComponentAt(0, scrollPane);
+        tabbedPane.revalidate();
+        tabbedPane.repaint();
 
         return table;
+    }
+
+    public static JTabbedPane createTabbedPane(String[] tabNames, JScrollPane[] tabContents)
+    {
+        // Aesthetic of Tabbed Pane
+        if (tabNames.length != tabContents.length)
+        {
+            throw new IllegalArgumentException("Tab names and contents must have the same length");
+        }
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+        tabbedPane.setForeground(Color.WHITE);
+        tabbedPane.setBorder(BorderFactory.createEmptyBorder());
+        tabbedPane.setOpaque(false);
+
+        tabbedPane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI()
+        {
+            @Override
+            protected void installDefaults() {
+                super.installDefaults();
+                contentBorderInsets = new Insets(0, 0, 0, 0);
+                tabAreaInsets = new Insets(0, 0, 0, 0);
+            }
+
+            @Override
+            protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
+                return 40; // Custom tab height
+            }
+
+            @Override
+            protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+                return 120; // Custom tab width
+            }
+
+            @Override
+            protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex,
+                                              int x, int y, int w, int h, boolean isSelected) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setColor(isSelected ? new Color(0x709a70) : new Color(0x2e582e)); // green shades
+                g2.fillRect(x, y, w, h);
+            }
+        });
+
+        // Add Tabs with Placeholder Scroll Panes
+        for (int i = 0; i < tabNames.length; i++)
+        {
+            JScrollPane scrollPane = tabContents[i];
+            if (scrollPane == null)
+            {
+                scrollPane = new JScrollPane(); // create empty placeholder if null
+            }
+
+            tabbedPane.addTab(tabNames[i], scrollPane);
+        }
+
+        return tabbedPane;
     }
 
     public JButton getPatientButton()
@@ -1148,9 +1162,9 @@ public class ASGui extends JFrame{
         return profileIcon;
     }
 
-    public JPanel getListBGPanel()
+    public JPanel getTableBGPanel()
     {
-        return listBGPanel;
+        return tableBGPanel;
     }
 
     public JScrollPane getScrollPane()
@@ -1158,15 +1172,9 @@ public class ASGui extends JFrame{
         return scrollPane;
     }
 
-    public JLabel getTableLabel()
-    {
-        return tableLabel;
-    }
-
     public void setTableLabel(String tableName)
     {
         tableLabel.setText(tableName);
     }
-
 
 }

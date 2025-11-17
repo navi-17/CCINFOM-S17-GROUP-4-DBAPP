@@ -1,4 +1,3 @@
-
 package view;
 
 import model.Patient;
@@ -152,11 +151,8 @@ public class AddPatientDialog extends JDialog {
         String dob = dobField.getText().trim();
         String contact = contactField.getText().trim();
         String sex = genderBox.getSelectedItem().toString();
-//<<<<<<< HEAD
         String status = statusBox.getSelectedItem().toString();
-//=======
-//        String status = statusBox.getSelectedItem().toString();
-//>>>>>>> e32dafa9fc28b910a2c898ae89b9534548bad975
+
 
         if (fn.isEmpty() || ln.isEmpty() || dob.isEmpty() || contact.isEmpty() || sex.isEmpty() || status.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill out all required fields.", "Incomplete", JOptionPane.WARNING_MESSAGE);

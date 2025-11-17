@@ -5,9 +5,10 @@ CREATE TABLE patient(
     p_firstname VARCHAR(50) NOT NULL,
     sex ENUM('Male', 'Female'),
     birth_date DATE,
-    contact_no VARCHAR(15),
+    contact_no VARCHAR(15),	
     p_status ENUM('Admitted', 'Discharged') NOT NULL
 );
+
 
 CREATE TABLE nurse(
 	nurse_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -105,7 +106,7 @@ CREATE TABLE treatment(
     assignedPhysician_id INT,
     treatment_date DATE NOT NULL,
     treatment_procedure VARCHAR(100),
-    performed_by ENUM('Nurse', 'Diagnosing Physician', 'Assigned Physician'),
+    performed_by ENUM('Nurse', 'Diagnosing Physician', 'Assigned Physician') NOT NULL,
     remarks VARCHAR(255),
     FOREIGN KEY (nurseAssignment_id) REFERENCES nurse_assignment(nurseAssignment_id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (diagnosis_id) REFERENCES diagnosis(diagnosis_id) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -119,6 +120,8 @@ CREATE TABLE discharge(
     discharge_date DATE,
     FOREIGN KEY (admission_id) REFERENCES admission(admission_id) ON DELETE CASCADE ON UPDATE CASCADE 	
 );
+
+
 
 
 
