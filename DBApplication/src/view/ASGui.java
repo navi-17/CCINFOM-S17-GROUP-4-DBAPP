@@ -5,7 +5,6 @@ import model.PatientManagement;
 
 import java.util.*;
 import java.util.List;
-import java.util.ArrayList;
 import java.io.*;
 import java.awt.*;
 import javax.swing.*;
@@ -386,7 +385,11 @@ public class ASGui extends JFrame{
 
         // Buttons -----------------------------------------------
 
-        patientButton = new JButton();
+		deleteButton = new JButton();
+		deleteButton.setBounds(1246,129,40,40);
+		deleteButton.setText("D");
+		
+		patientButton = new JButton();
         patientButton.setBounds(30,126,240,40);
         patientButton.setIcon(personIcon);
         patientButton.setText("Patient");
@@ -840,8 +843,69 @@ public class ASGui extends JFrame{
         treatmentButton.addActionListener(listener);
         nShiftButton.addActionListener(listener);
         pScheduleButton.addActionListener(listener);
+		deleteButton.addActionListener(listener);
+		updateButton.addActionListener(listener);
     }
 
+	public List<Object> getSelectedRowIDs(JTable table) {
+        List<Object> selectedIDs = new ArrayList<>();
+        if (table == null || table.getModel().getColumnCount() <= 1) {
+            return selectedIDs; // Not a valid table or doesn't have an ID column
+        }
+
+        for (int i = 0; i < table.getRowCount(); i++) {
+            Object checkboxValue = table.getValueAt(i, 0); // Assuming checkbox is always column 0
+            if (checkboxValue instanceof Boolean && (Boolean) checkboxValue) {
+                // Assuming ID is always in column 1 (index 1)
+                selectedIDs.add(table.getValueAt(i, 1));
+            }
+        }
+        return selectedIDs;
+    }
+
+	public JButton getDeleteButton()
+    {
+        return deleteButton;
+    }
+
+    public JButton getUpdateButton()
+    {
+        return updateButton;
+    }
+
+	public List<Object> getSelectedRowData(JTable table) {
+        List<Object> selectedRow = null;
+        int selectedCount = 0;
+        
+        // This is a defensive check to handle when no table is displayed
+        if (table == null || table.getModel() == null) {
+            return null;
+        }
+
+        for (int i = 0; i < table.getRowCount(); i++) {
+            Object checkboxValue = table.getValueAt(i, 0);
+            if (checkboxValue instanceof Boolean && (Boolean) checkboxValue) {
+                selectedCount++;
+                // Store data of the first selected row
+                if (selectedCount == 1) {
+                    selectedRow = new ArrayList<>();
+                    for (int j = 0; j < table.getColumnCount(); j++) {
+                        selectedRow.add(table.getValueAt(i, j));
+                    }
+                }
+            }
+        }
+
+        if (selectedCount == 1) {
+            return selectedRow;
+        } else if (selectedCount > 1) {
+            JOptionPane.showMessageDialog(this, "Please select only ONE record to update.", "Selection Error", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Error: No rows selected. ASGui handles this for getSelectedRowData.
+        }
+        return null;
+    }
+	
     public JTable createTable(
             Object[][] data,
             String[] attributes,
@@ -1013,9 +1077,6 @@ public class ASGui extends JFrame{
 
         return table;
     }
-
-
-
 
     public JButton getPatientButton()
     {

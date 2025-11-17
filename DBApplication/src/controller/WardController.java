@@ -52,8 +52,43 @@ public class WardController implements ActionListener {
 
             asgui.createTable(data, attributes, -1, 0, -1, colWidths);
         }
+		else if(e.getSource() == asgui.getDeleteButton()) 
+		{
+			System.out.println("Delete Button clicked for Ward!");
+			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+			if (table == null) return;
+
+			List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
+			if (selectedIDs.isEmpty()) {
+				JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			int confirm = JOptionPane.showConfirmDialog(asgui, 
+				"Are you sure you want to delete the selected " + selectedIDs.size() + " ward record(s)?", 
+				"Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+			if (confirm == JOptionPane.YES_OPTION) {
+				int deletedCount = 0;
+				for (Object id : selectedIDs) {
+					try {
+						// Create a dummy Ward object just to pass the ID for deletion
+						Ward wardToDelete = new Ward((int) id); 
+						if (wardManagement.deleteWard(wardToDelete)) {
+							deletedCount++;
+						}
+					} catch (Exception ex) {
+						System.err.println("Error deleting Ward ID " + id + ": " + ex.getMessage());
+					}
+				}
+
+				JOptionPane.showMessageDialog(asgui, deletedCount + " ward record(s) deleted successfully.", "Deletion Complete", JOptionPane.INFORMATION_MESSAGE);
+				asgui.getWardButton().doClick(); // Refresh
+			}
+		}
+		else if(e.getSource() == asgui.getUpdateButton()) 
+		{
+			JOptionPane.showMessageDialog(asgui, "Update functionality for Ward is not yet implemented.", "Coming Soon", JOptionPane.INFORMATION_MESSAGE);
+		}
     }
-
-
-
 }

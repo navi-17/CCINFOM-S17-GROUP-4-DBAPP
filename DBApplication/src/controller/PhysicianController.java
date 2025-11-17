@@ -84,6 +84,59 @@ public class PhysicianController implements ActionListener{
 
             asgui.createTable(data, attributes, -1, 0, -1, colWidths);
         }
+		else if(e.getSource() == asgui.getDeleteButton()) 
+		{
+			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+			if (table == null) return;
+			
+			String entityType = (table.getModel().getColumnCount() == 5) ? "Physician" : "Physician Schedule";
+			System.out.println("Delete Button clicked for " + entityType + "!");
+			
+			List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
+			if (selectedIDs.isEmpty()) {
+				JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			int confirm = JOptionPane.showConfirmDialog(asgui, 
+				"Are you sure you want to delete the selected " + selectedIDs.size() + " " + entityType + " record(s)?", 
+				"Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+			if (confirm == JOptionPane.YES_OPTION) {
+				int deletedCount = 0;
+				for (Object id : selectedIDs) {
+					int entityID = (int) id;
+					boolean success = false;
+					
+					try {
+						if (entityType.equals("Physician")) {
+							success = physicianManagement.deletePhysicianRecord(entityID);
+						} else if (entityType.equals("Physician Schedule")) {
+							success = physicianScheduleManagement.deletePhysicianSchedule(entityID);
+						}
+						
+						if (success) {
+							deletedCount++;
+						}
+					} catch (Exception ex) {
+						System.err.println("Error deleting " + entityType + " ID " + id + ": " + ex.getMessage());
+					}
+				}
+
+				JOptionPane.showMessageDialog(asgui, deletedCount + " " + entityType + " record(s) deleted successfully.", "Deletion Complete", JOptionPane.INFORMATION_MESSAGE);
+				
+				// Refresh the current table display
+				if (entityType.equals("Physician")) {
+					asgui.getPhysicianButton().doClick();
+				} else {
+					asgui.getpScheduleButton().doClick();
+				}
+			}
+		}
+		else if(e.getSource() == asgui.getUpdateButton()) 
+		{
+			JOptionPane.showMessageDialog(asgui, "Update functionality for Physician is not yet implemented.", "Coming Soon", JOptionPane.INFORMATION_MESSAGE);
+		}
     }
 
 }

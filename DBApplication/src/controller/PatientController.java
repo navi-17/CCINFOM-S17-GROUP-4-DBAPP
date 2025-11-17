@@ -55,7 +55,46 @@ public class PatientController implements ActionListener{
 
             asgui.createTable(data, attributes, 2, 0, 6, colWidths);
         }
+		else if(e.getSource() == asgui.getDeleteButton()) // DELETE LOGIC
+        {
+            System.out.println("Delete Button clicked for Patients!");
+            // current table from the scroll pane
+            JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+            if (table == null) {
+                JOptionPane.showMessageDialog(asgui, "No table data visible to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            // get selected row IDs
+            List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
+
+            if (selectedIDs.isEmpty()) {
+                JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(asgui, 
+                "Are you sure you want to delete the selected " + selectedIDs.size() + " patient record(s)?", 
+                "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                int deletedCount = 0;
+                for (Object id : selectedIDs) {
+                    try {
+                        if (patientManagement.deletePatientRecord((int) id)) {
+                            deletedCount++;
+                        }
+                    } catch (Exception ex) {
+                        System.err.println("Error deleting patient ID " + id + ": " + ex.getMessage());
+                    }
+                }
+
+                JOptionPane.showMessageDialog(asgui, deletedCount + " patient record(s) deleted successfully.", "Deletion Complete", JOptionPane.INFORMATION_MESSAGE);
+                
+                // refresh the table display
+                asgui.getPatientButton().doClick();
+            }
+        }
     }
 
 

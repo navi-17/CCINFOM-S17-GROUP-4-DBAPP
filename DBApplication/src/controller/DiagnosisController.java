@@ -56,5 +56,42 @@ public class DiagnosisController implements ActionListener{
 
             asgui.createTable(data, attributes, -1, 0, -1, colWidths);
         }
+		else if(e.getSource() == asgui.getDeleteButton()) 
+		{
+			System.out.println("Delete Button clicked for Diagnosis!");
+			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+			if (table == null) return;
+
+			List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
+			if (selectedIDs.isEmpty()) {
+				JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			int confirm = JOptionPane.showConfirmDialog(asgui, 
+				"Are you sure you want to delete the selected " + selectedIDs.size() + " diagnosis record(s)?", 
+				"Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+			if (confirm == JOptionPane.YES_OPTION) {
+				int deletedCount = 0;
+				for (Object id : selectedIDs) {
+					try {
+						// Assuming the delete method takes the ID (Integer)
+						if (diagnosisManagement.deleteDiagnosisRecord((int) id)) {
+							deletedCount++;
+						}
+					} catch (Exception ex) {
+						System.err.println("Error deleting Diagnosis ID " + id + ": " + ex.getMessage());
+					}
+				}
+
+				JOptionPane.showMessageDialog(asgui, deletedCount + " diagnosis record(s) deleted successfully.", "Deletion Complete", JOptionPane.INFORMATION_MESSAGE);
+				asgui.getDiagnosisButton().doClick(); // Refresh
+			}
+		}
+		else if(e.getSource() == asgui.getUpdateButton()) 
+		{
+			JOptionPane.showMessageDialog(asgui, "Update functionality for Diagnosis is not yet implemented.", "Coming Soon", JOptionPane.INFORMATION_MESSAGE);
+		}
     }
 }

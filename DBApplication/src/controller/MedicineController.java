@@ -48,7 +48,43 @@ public class MedicineController implements ActionListener{
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
             asgui.createTable(data, attributes, -1, 0, -1, colWidths);
-
         }
+		else if(e.getSource() == asgui.getDeleteButton()) 
+		{
+			System.out.println("Delete Button clicked for Medicine!");
+			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+			if (table == null) return;
+
+			List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
+			if (selectedIDs.isEmpty()) {
+				JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			int confirm = JOptionPane.showConfirmDialog(asgui, 
+				"Are you sure you want to delete the selected " + selectedIDs.size() + " medicine record(s)?", 
+				"Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+			if (confirm == JOptionPane.YES_OPTION) {
+				int deletedCount = 0;
+				for (Object id : selectedIDs) {
+					try {
+						// Assuming the delete method takes the ID (Integer)
+						if (medicineManagement.deleteMedicineRecord((int) id)) {
+							deletedCount++;
+						}
+					} catch (Exception ex) {
+						System.err.println("Error deleting Medicine ID " + id + ": " + ex.getMessage());
+					}
+				}
+
+				JOptionPane.showMessageDialog(asgui, deletedCount + " medicine record(s) deleted successfully.", "Deletion Complete", JOptionPane.INFORMATION_MESSAGE);
+				asgui.getMedicineButton().doClick(); // Refresh
+			}
+		}
+		else if(e.getSource() == asgui.getUpdateButton()) 
+		{
+			JOptionPane.showMessageDialog(asgui, "Update functionality for Medicine is not yet implemented.", "Coming Soon", JOptionPane.INFORMATION_MESSAGE);
+		}
     }
 }
