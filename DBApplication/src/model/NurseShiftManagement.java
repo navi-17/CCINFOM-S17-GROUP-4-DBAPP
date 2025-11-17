@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class NurseShiftManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
     private static final String USER = "root";
-    private static final String PASSWORD = "infom123";
+    private static final String PASSWORD = "KC379379";
     private Connection conn;
     PreparedStatement pstmt;
 
@@ -149,9 +149,9 @@ public class NurseShiftManagement {
 
     public static void main(String[] args)
     {
-        NurseShift ns = new NurseShift(1003, "Monday", "07:00", "19:00");
+        NurseShift ns = new NurseShift(1, "Monday", "07:00", "19:00");
         NurseShiftManagement nsm = new NurseShiftManagement();
-        NurseShift updateNs = new NurseShift(1003, "Tuesday", "09:00", "19:00");
+        NurseShift updateNs = new NurseShift(1, "Tuesday", "09:00", "19:00");
 
         nsm.createNurseShift(updateNs);
 //        nsm.updateNurseShift(updateNs);

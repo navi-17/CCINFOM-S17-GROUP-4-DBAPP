@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 
 public class PhysicianScheduleManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
     private static final String USER = "root";
-    private static final String PASSWORD = "infom123";
+    private static final String PASSWORD = "KC379379";
     private Connection conn;
     PreparedStatement pstmt;
 
@@ -153,9 +153,9 @@ public class PhysicianScheduleManagement {
 
     public static void main(String[] args)
     {
-        PhysicianSchedule ps = new PhysicianSchedule(2001, "Wednesday", "08:00", "20:00");
+        //PhysicianSchedule ps = new PhysicianSchedule(2001, "Wednesday", "08:00", "20:00");
         PhysicianScheduleManagement psm = new PhysicianScheduleManagement();
-        PhysicianSchedule updateps = new PhysicianSchedule(2001, "Thursday", "10:00", "20:00");
+        //PhysicianSchedule updateps = new PhysicianSchedule(2001, "Thursday", "10:00", "20:00");
 
 //        psm.createPhysicianSchedule(ps);
 //        updateps.setPhysicianScheduleID(4);

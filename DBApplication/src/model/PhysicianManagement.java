@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhysicianManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
     private static final String USER = "root";
-    private static final String PASSWORD = "infom123";
+    private static final String PASSWORD = "KC379379";
     private Connection conn;
     PreparedStatement pstmt;
 
@@ -152,7 +152,7 @@ public class PhysicianManagement {
 
     public static void main(String[] args)
     {
-        Physician ph = new Physician("Meredith", "Gray", "+63 9166825678", "General");
+        Physician ph = new Physician("Meredith", "Gray", "+639166825678", "General");
         PhysicianManagement pm = new PhysicianManagement();
 
 //        Physician updatedPh = new Physician("Meredith", "Grey", "+63 9116685678", "General");

@@ -12,8 +12,8 @@ import java.awt.event.ActionListener;
 
 public class AddPatientDialog extends JDialog {
 
-    private JTextField firstNameField, lastNameField, dobField, contactField, statusField;
-    private JComboBox<String> genderBox;
+    private JTextField firstNameField, lastNameField, dobField, contactField;
+    private JComboBox<String> genderBox, statusBox;
     private PatientManagement patientMgmt;
 
     public AddPatientDialog(JFrame parent) {
@@ -101,10 +101,10 @@ public class AddPatientDialog extends JDialog {
         // Status
         gbc.gridy++;
         gbc.gridx = 0;
-        formPanel.add(new JLabel("Status"), gbc);
+        formPanel.add(new JLabel("Status:"), gbc);
         gbc.gridx = 1;
-        statusField = new JTextField(15);
-        formPanel.add(statusField, gbc);
+        statusBox = new JComboBox<>(new String[]{"Admitted", "Discharged" });
+        formPanel.add(statusBox, gbc);
 
         // Right panel (placeholder image)
 		JPanel imagePanel = new JPanel();
@@ -152,7 +152,11 @@ public class AddPatientDialog extends JDialog {
         String dob = dobField.getText().trim();
         String contact = contactField.getText().trim();
         String sex = genderBox.getSelectedItem().toString();
+<<<<<<< HEAD
         String status = statusField.getText().trim();
+=======
+        String status = statusBox.getSelectedItem().toString();
+>>>>>>> e32dafa9fc28b910a2c898ae89b9534548bad975
 
         if (fn.isEmpty() || ln.isEmpty() || dob.isEmpty() || contact.isEmpty() || sex.isEmpty() || status.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill out all required fields.", "Incomplete", JOptionPane.WARNING_MESSAGE);

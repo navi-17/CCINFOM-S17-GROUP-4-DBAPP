@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WardManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
     private static final String USER = "root";
-    private static final String PASSWORD = "infom123";
+    private static final String PASSWORD = "KC379379";
     private Connection conn;
     PreparedStatement pstmt;
 
@@ -20,7 +20,7 @@ public class WardManagement {
             System.out.println("Connection to database successful!");
 
             //2. Prepare SQL Statement --> store in PreparedStatement (dont forget to put alias for column name so u can fetch the value)
-            String sql = "INSERT INTO ward (floor, ward_no, w_status) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO ward (floor, ward_number, w_status) VALUES (?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, ward.getFloor());
