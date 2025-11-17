@@ -25,12 +25,14 @@ public class ASGui extends JFrame{
     private String placeholder = "Search...";
 
     private JScrollPane scrollPane;
+    private JTabbedPane tabbedPane;
+
     private JLayeredPane wholeScreen;
     private JLayeredPane mainPanel;
     private JLayeredPane sidePanel;
     private JPanel topPanel;
     private JPanel topPanel2;
-    private JPanel listBGPanel;
+    private JPanel tableBGPanel;
     private JPanel listAttributesPanel;
 
     private JLabel logoLabel;
@@ -71,8 +73,6 @@ public class ASGui extends JFrame{
     private JButton dropdownButton;
     private JButton dropdownButton2;
     private JButton filterByButton;
-    private JButton listViewButton;
-    private JButton tileViewButton;
     private JButton createButton;
     private JButton updateButton;
     private JButton deleteButton;
@@ -85,7 +85,7 @@ public class ASGui extends JFrame{
     private JButton lastPageButton;
     private JButton nextPageButton;
 
-    JTextField searchTextField;
+    private JTextField searchTextField;
 
     private ImageIcon backgroundImage = new ImageIcon(getClass().getResource("/backgroundImage.png"));
     private ImageIcon logoImage = new ImageIcon(getClass().getResource("/globeIcon.png"));
@@ -99,9 +99,9 @@ public class ASGui extends JFrame{
     private ImageIcon searchIcon = new ImageIcon(getClass().getResource("/searchIcon.png"));
     private ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/cancelIcon.png"));
 
-    private Font RobotoRegular;
-    private Font RobotoBold;
-    private Font MontserratBold;
+    private static Font RobotoRegular;
+    private static Font RobotoBold;
+    private static Font MontserratBold;
 
     public ASGui()
     {
@@ -109,12 +109,12 @@ public class ASGui extends JFrame{
 
         // Columns and Data --------------------------------------
 
-        PatientManagement pm = new PatientManagement();
-        List<Patient> patients = new ArrayList<>();
-        patients = pm.viewPatientRecords();
+//        PatientManagement pm = new PatientManagement();
+//        List<Patient> patients = new ArrayList<>();
+//        patients = pm.viewPatientRecords();
 
-        String[] attributes = {" ", "ID", "Patient Name", "Sex", "Birthdate", "Contact Number",
-                "Status"};
+//        String[] attributes = {" ", "ID", "Patient Name", "Sex", "Birthdate", "Contact Number",
+//                "Status"};
 
 //        Object[][] data = {{false, "12648273", new Object[]{profileIcon, "Sunwoo Han"}, "F", "January 01, 1999", "+63 927 636 2540",
 //                "Admitted"},
@@ -166,15 +166,20 @@ public class ASGui extends JFrame{
 
         // Scroll Pane -------------------------------------------
 
-//            scrollPane = new JScrollPane();
-//        scrollPane.setBounds(0, 0, 1226, 750);
-//            listBGPanel.add(scrollPane);
-
         scrollPane = new JScrollPane();
-//        scrollPane.setBounds(0, 0, 1226, 750);
-//        scrollPane.setBorder(null);
-//        scrollPane.setOpaque(false);
-//        scrollPane.getViewport().setOpaque(false);
+
+        // JTabbedPane
+
+        String[] tabs = {"Patients", "Illness", "Treatment", "Physician", "Nurse"};
+
+        JScrollPane[] placeholders = new JScrollPane[tabs.length];
+            for (int i = 0; i < placeholders.length; i++)
+            {
+                placeholders[i] = null; // optional, Java initializes to null by default
+            }
+
+        tabbedPane = createTabbedPane(tabs, placeholders);
+            tabbedPane.setBounds(-1, 1, 1230, 785); // Set size here
 
 
         // Frames ------------------------------------------------
@@ -202,164 +207,164 @@ public class ASGui extends JFrame{
 
 
         wholeScreen = new JLayeredPane();
-        wholeScreen.setLayout(null);
-        wholeScreen.setBounds(0,0, screenWidth, screenHeight);
-        wholeScreen.setBackground(new Color(0x749ee2));
+            wholeScreen.setLayout(null);
+            wholeScreen.setBounds(0,0, screenWidth, screenHeight);
+            wholeScreen.setBackground(new Color(0x749ee2));
 
         mainPanel = new JLayeredPane();
-        mainPanel.setLayout(null);
-        mainPanel.setBounds(300,0,mainWidth,screenHeight);
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setOpaque(false);
+            mainPanel.setLayout(null);
+            mainPanel.setBounds(300,0,mainWidth,screenHeight);
+            mainPanel.setBackground(Color.WHITE);
+            mainPanel.setOpaque(false);
 
         sidePanel = new JLayeredPane();
-        sidePanel.setLayout(null);
-        sidePanel.setBounds(0,0,sideWidth,screenHeight);
-        sidePanel.setBackground(Color.WHITE);
-        sidePanel.setOpaque(true);
+            sidePanel.setLayout(null);
+            sidePanel.setBounds(0,0,sideWidth,screenHeight);
+            sidePanel.setBackground(Color.WHITE);
+            sidePanel.setOpaque(true);
 
         topPanel = new JPanel();
-        topPanel.setLayout(null);
-        topPanel.setBounds(0,0,mainWidth,64);
-        topPanel.setBackground(new Color(0x2e582e));
-        topPanel.setOpaque(true);
+            topPanel.setLayout(null);
+            topPanel.setBounds(0,0,mainWidth,64);
+            topPanel.setBackground(new Color(0x2e582e));
+            topPanel.setOpaque(true);
 
         topPanel2 = new JPanel();
-        topPanel2.setLayout(null);
-        topPanel2.setBounds(0,64,mainWidth,50);
-        topPanel2.setBackground(Color.WHITE);
-        topPanel2.setOpaque(true);
+            topPanel2.setLayout(null);
+            topPanel2.setBounds(0,64,mainWidth,50);
+            topPanel2.setBackground(Color.WHITE);
+            topPanel2.setOpaque(true);
 
-        listBGPanel = new JPanel();
-        listBGPanel.setLayout(null);
-        listBGPanel.setBounds(60,184,1226,730); //(1346) lr60, t70&b100
-        listBGPanel.setBackground(Color.WHITE);
-        listBGPanel.setOpaque(true);
+        tableBGPanel = new JPanel();
+            tableBGPanel.setLayout(null);
+            tableBGPanel.setBounds(60,139,1226,785); //(1346) lr60, t70&b100
+            tableBGPanel.setBackground(Color.WHITE);
+            tableBGPanel.setOpaque(false);
 
         listAttributesPanel = new JPanel();
-        listAttributesPanel.setLayout(null);
-        listAttributesPanel.setBounds(0,0,1226,50);
-        listAttributesPanel.setBackground(new Color(0xd5e3d5));
-        listAttributesPanel.setOpaque(true);
+            listAttributesPanel.setLayout(null);
+            listAttributesPanel.setBounds(0,0,1226,50);
+            listAttributesPanel.setBackground(new Color(0xd5e3d5));
+            listAttributesPanel.setOpaque(true);
 
         // Labels ------------------------------------------------
 
         logoLabel = new JLabel();
-        logoLabel.setIcon(logoImage);
-        logoLabel.setBounds(45,0,240,64);
-        logoLabel.setText("AdmitSys");
-        logoLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
-        logoLabel.setVerticalTextPosition(JLabel.CENTER);
-        logoLabel.setHorizontalTextPosition(JLabel.RIGHT);
-        logoLabel.setForeground(new Color(0x2e582e));
-        logoLabel.setBackground(Color.BLUE);
+            logoLabel.setIcon(logoImage);
+            logoLabel.setBounds(45,0,240,64);
+            logoLabel.setText("AdmitSys");
+            logoLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
+            logoLabel.setVerticalTextPosition(JLabel.CENTER);
+            logoLabel.setHorizontalTextPosition(JLabel.RIGHT);
+            logoLabel.setForeground(new Color(0x2e582e));
+            logoLabel.setBackground(Color.BLUE);
 
         mainMenuLabel = new JLabel();
-        mainMenuLabel.setBounds(50,64,240,50);
-        mainMenuLabel.setText("Main Menu");
-        mainMenuLabel.setFont(MontserratBold.deriveFont(Font.BOLD,20f));
-        mainMenuLabel.setForeground(new Color(0x2e582e));
-        mainMenuLabel.setBackground(Color.BLUE);
+            mainMenuLabel.setBounds(50,64,240,50);
+            mainMenuLabel.setText("Main Menu");
+            mainMenuLabel.setFont(MontserratBold.deriveFont(Font.BOLD,20f));
+            mainMenuLabel.setForeground(new Color(0x2e582e));
+            mainMenuLabel.setBackground(Color.BLUE);
 
         transactionsLabel = new JLabel();
-        transactionsLabel.setBounds(50,438,240,50);
-        transactionsLabel.setText("Transactions");
-        transactionsLabel.setFont(MontserratBold.deriveFont(Font.BOLD,20f));
-        transactionsLabel.setForeground(new Color(0x2e582e));
-        transactionsLabel.setBackground(Color.BLUE);
+            transactionsLabel.setBounds(50,438,240,50);
+            transactionsLabel.setText("Transactions");
+            transactionsLabel.setFont(MontserratBold.deriveFont(Font.BOLD,20f));
+            transactionsLabel.setForeground(new Color(0x2e582e));
+            transactionsLabel.setBackground(Color.BLUE);
 
         recordsLabel = new JLabel();
-        recordsLabel.setBounds(50,760,240,50);
-        recordsLabel.setText("Records");
-        recordsLabel.setFont(MontserratBold.deriveFont(Font.BOLD,20f));
-        recordsLabel.setForeground(new Color(0x2e582e));
-        recordsLabel.setBackground(Color.BLUE);
+            recordsLabel.setBounds(50,760,240,50);
+            recordsLabel.setText("Records");
+            recordsLabel.setFont(MontserratBold.deriveFont(Font.BOLD,20f));
+            recordsLabel.setForeground(new Color(0x2e582e));
+            recordsLabel.setBackground(Color.BLUE);
 
         patientListLabel = new JLabel();
-        patientListLabel.setBounds(60,0,240,64);
-        patientListLabel.setText("Patient List");
-        patientListLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
-        patientListLabel.setForeground(Color.WHITE);
-        patientListLabel.setBackground(Color.BLUE);
+            patientListLabel.setBounds(60,0,240,64);
+            patientListLabel.setText("Patient List");
+            patientListLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
+            patientListLabel.setForeground(Color.WHITE);
+            patientListLabel.setBackground(Color.BLUE);
 
         profileLabel = new JLabel();
-        profileLabel.setIcon(profileIcon);
-        profileLabel.setBounds(1166,0,180,64);
-        profileLabel.setForeground(new Color(0x2e582e));
-        profileLabel.setBackground(Color.BLUE);
+            profileLabel.setIcon(profileIcon);
+            profileLabel.setBounds(1166,0,180,64);
+            profileLabel.setForeground(new Color(0x2e582e));
+            profileLabel.setBackground(Color.BLUE);
 
         profileNameLabel = new JLabel();
-        profileNameLabel.setBounds(50,16,120,20);
-        profileNameLabel.setText("Ian Lopez");
-        profileNameLabel.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
-        profileNameLabel.setForeground(Color.WHITE);
-        profileNameLabel.setBackground(Color.WHITE);
+            profileNameLabel.setBounds(50,16,120,20);
+            profileNameLabel.setText("Ian Lopez");
+            profileNameLabel.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+            profileNameLabel.setForeground(Color.WHITE);
+            profileNameLabel.setBackground(Color.WHITE);
 
         profileJobLabel = new JLabel();
-        profileJobLabel.setBounds(50,28,120,20);
-        profileJobLabel.setText("Physician");
-        profileJobLabel.setFont(RobotoBold.deriveFont(Font.BOLD,10f));
-        profileJobLabel.setForeground(Color.WHITE);
-        profileJobLabel.setBackground(Color.RED);
-        // profileJobLabel.setOpaque(true);
+            profileJobLabel.setBounds(50,28,120,20);
+            profileJobLabel.setText("Physician");
+            profileJobLabel.setFont(RobotoBold.deriveFont(Font.BOLD,10f));
+            profileJobLabel.setForeground(Color.WHITE);
+            profileJobLabel.setBackground(Color.RED);
+            // profileJobLabel.setOpaque(true);
 
         searchBarLabel = new JLabel();
-        searchBarLabel.setBounds(736,10,300,30);
-        searchBarLabel.setForeground(new Color(0x2e582e));
-        searchBarLabel.setBackground(new Color(0xd5e3d5));
-        searchBarLabel.setBorder(BorderFactory.createEtchedBorder());
-        searchBarLabel.setOpaque(true);
+            searchBarLabel.setBounds(736,10,300,30);
+            searchBarLabel.setForeground(new Color(0x2e582e));
+            searchBarLabel.setBackground(new Color(0xd5e3d5));
+            searchBarLabel.setBorder(BorderFactory.createEtchedBorder());
+            searchBarLabel.setOpaque(true);
 
         sortByLabel = new JLabel();
-        sortByLabel.setBounds(1046,10,190,30);
-        sortByLabel.setForeground(new Color(0x2e582e));
-        sortByLabel.setBackground(new Color(0xd5e3d5));
-        sortByLabel.setBorder(BorderFactory.createEtchedBorder());
-        sortByLabel.setOpaque(true);
+            sortByLabel.setBounds(1046,10,190,30);
+            sortByLabel.setForeground(new Color(0x2e582e));
+            sortByLabel.setBackground(new Color(0xd5e3d5));
+            sortByLabel.setBorder(BorderFactory.createEtchedBorder());
+            sortByLabel.setOpaque(true);
 
         sortByTextLabel = new JLabel();
-        sortByTextLabel.setBounds(20,0,140,30);
-        sortByTextLabel.setText("Sort By: Name");
-        sortByTextLabel.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
-        sortByTextLabel.setForeground(new Color(0x2e582e));
+            sortByTextLabel.setBounds(20,0,140,30);
+            sortByTextLabel.setText("Sort By: Name");
+            sortByTextLabel.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+            sortByTextLabel.setForeground(new Color(0x2e582e));
 
         pathLabel = new JLabel();
-        pathLabel.setIcon(houseIcon);
-        pathLabel.setBounds(60,0,240,50);
-        pathLabel.setText("Home   /   Patient   /");
-        pathLabel.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        pathLabel.setVerticalTextPosition(JLabel.CENTER);
-        pathLabel.setHorizontalTextPosition(JLabel.RIGHT);
-        pathLabel.setIconTextGap(10);
-        pathLabel.setForeground(new Color(0x2e582e));
-        pathLabel.setBackground(Color.BLUE);
-        // pathLabel.setOpaque(true);
+            pathLabel.setIcon(houseIcon);
+            pathLabel.setBounds(60,0,240,50);
+            pathLabel.setText("Home   /   Patient   /");
+            pathLabel.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            pathLabel.setVerticalTextPosition(JLabel.CENTER);
+            pathLabel.setHorizontalTextPosition(JLabel.RIGHT);
+            pathLabel.setIconTextGap(10);
+            pathLabel.setForeground(new Color(0x2e582e));
+            pathLabel.setBackground(Color.BLUE);
+            // pathLabel.setOpaque(true);
 
         entriesLabel = new JLabel();
-        entriesLabel.setBounds(60,940,240,40);
-        entriesLabel.setText("Showing 1-10 of 246 entries");
-        entriesLabel.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
-        entriesLabel.setHorizontalAlignment(JLabel.CENTER);
-        entriesLabel.setForeground(new Color(0x2e582e));
-        entriesLabel.setBackground(Color.WHITE);
-        entriesLabel.setBorder(BorderFactory.createEtchedBorder());
-        entriesLabel.setOpaque(true);
+            entriesLabel.setBounds(60,950,240,40);
+            entriesLabel.setText("Showing 1-10 of 246 entries");
+            entriesLabel.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+            entriesLabel.setHorizontalAlignment(JLabel.CENTER);
+            entriesLabel.setForeground(new Color(0x2e582e));
+            entriesLabel.setBackground(Color.WHITE);
+            entriesLabel.setBorder(BorderFactory.createEtchedBorder());
+            entriesLabel.setOpaque(true);
 
         backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(backgroundImage);
-        backgroundLabel.setBounds(0,114,mainWidth,915);
-        backgroundLabel.setBackground(Color.WHITE);
-        backgroundLabel.setOpaque(true);
+            backgroundLabel.setIcon(backgroundImage);
+            backgroundLabel.setBounds(0,114,mainWidth,915);
+            backgroundLabel.setBackground(Color.WHITE);
+            backgroundLabel.setOpaque(true);
 
         // Text Field --------------------------------------------
 
         searchTextField = new JTextField();
-        searchTextField.setBounds(50,0,210,30);
-        searchTextField.setText(placeholder);
-        searchTextField.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
-        searchTextField.setBorder(null);
-        searchTextField.setForeground(new Color(0x2e582e));
-        searchTextField.setBackground(new Color(0xd5e3d5));
+            searchTextField.setBounds(50,0,210,30);
+            searchTextField.setText(placeholder);
+            searchTextField.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+            searchTextField.setBorder(null);
+            searchTextField.setForeground(new Color(0x2e582e));
+            searchTextField.setBackground(new Color(0xd5e3d5));
 
         searchTextField.addFocusListener(new java.awt.event.FocusAdapter()
         {
@@ -387,418 +392,373 @@ public class ASGui extends JFrame{
         // Buttons -----------------------------------------------
 
         patientButton = new JButton();
-        patientButton.setBounds(30,126,240,40);
-        patientButton.setIcon(personIcon);
-        patientButton.setText("Patient");
-        patientButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        patientButton.setHorizontalAlignment(JLabel.LEFT);
-        patientButton.setIconTextGap(10);
-        patientButton.setForeground(new Color(0x2e582e));
-        patientButton.setBackground(new Color(0xd5e3d5));
-        patientButton.setBorder(BorderFactory.createEtchedBorder());
-        patientButton.setFocusable(false);
+            patientButton.setBounds(30,126,240,40);
+            patientButton.setIcon(personIcon);
+            patientButton.setText("Patient");
+            patientButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            patientButton.setHorizontalAlignment(JLabel.LEFT);
+            patientButton.setIconTextGap(10);
+            patientButton.setForeground(new Color(0x2e582e));
+            patientButton.setBackground(new Color(0xd5e3d5));
+            patientButton.setBorder(BorderFactory.createEtchedBorder());
+            patientButton.setFocusable(false);
 
         physicianButton = new JButton();
-        physicianButton.setBounds(30,178,240,40);
-        physicianButton.setIcon(personIcon);
-        physicianButton.setText("Physician");
-        physicianButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        physicianButton.setHorizontalAlignment(JLabel.LEFT);
-        physicianButton.setIconTextGap(10);
-        physicianButton.setForeground(new Color(0x2e582e));
-        physicianButton.setBackground(new Color(0xd5e3d5));
-        physicianButton.setBorder(BorderFactory.createEtchedBorder());
-        physicianButton.setFocusable(false);
+            physicianButton.setBounds(30,178,240,40);
+            physicianButton.setIcon(personIcon);
+            physicianButton.setText("Physician");
+            physicianButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            physicianButton.setHorizontalAlignment(JLabel.LEFT);
+            physicianButton.setIconTextGap(10);
+            physicianButton.setForeground(new Color(0x2e582e));
+            physicianButton.setBackground(new Color(0xd5e3d5));
+            physicianButton.setBorder(BorderFactory.createEtchedBorder());
+            physicianButton.setFocusable(false);
 
         nurseButton = new JButton();
-        nurseButton.setBounds(30,230,240,40);
-        nurseButton.setIcon(personIcon);
-        nurseButton.setText("Nurse");
-        nurseButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        nurseButton.setHorizontalAlignment(JLabel.LEFT);
-        nurseButton.setIconTextGap(10);
-        nurseButton.setForeground(new Color(0x2e582e));
-        nurseButton.setBackground(new Color(0xd5e3d5));
-        nurseButton.setBorder(BorderFactory.createEtchedBorder());
-        nurseButton.setFocusable(false);
+            nurseButton.setBounds(30,230,240,40);
+            nurseButton.setIcon(personIcon);
+            nurseButton.setText("Nurse");
+            nurseButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            nurseButton.setHorizontalAlignment(JLabel.LEFT);
+            nurseButton.setIconTextGap(10);
+            nurseButton.setForeground(new Color(0x2e582e));
+            nurseButton.setBackground(new Color(0xd5e3d5));
+            nurseButton.setBorder(BorderFactory.createEtchedBorder());
+            nurseButton.setFocusable(false);
 
         wardButton = new JButton();
-        wardButton.setBounds(30,282,240,40);
-        wardButton.setIcon(personIcon);
-        wardButton.setText("Ward");
-        wardButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        wardButton.setHorizontalAlignment(JLabel.LEFT);
-        wardButton.setIconTextGap(10);
-        wardButton.setForeground(new Color(0x2e582e));
-        wardButton.setBackground(new Color(0xd5e3d5));
-        wardButton.setBorder(BorderFactory.createEtchedBorder());
-        wardButton.setFocusable(false);
+            wardButton.setBounds(30,282,240,40);
+            wardButton.setIcon(personIcon);
+            wardButton.setText("Ward");
+            wardButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            wardButton.setHorizontalAlignment(JLabel.LEFT);
+            wardButton.setIconTextGap(10);
+            wardButton.setForeground(new Color(0x2e582e));
+            wardButton.setBackground(new Color(0xd5e3d5));
+            wardButton.setBorder(BorderFactory.createEtchedBorder());
+            wardButton.setFocusable(false);
 
         medicineButton = new JButton();
-        medicineButton.setBounds(30,334,240,40);
-        medicineButton.setIcon(personIcon);
-        medicineButton.setText("Medicine");
-        medicineButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        medicineButton.setHorizontalAlignment(JLabel.LEFT);
-        medicineButton.setIconTextGap(10);
-        medicineButton.setForeground(new Color(0x2e582e));
-        medicineButton.setBackground(new Color(0xd5e3d5));
-        medicineButton.setBorder(BorderFactory.createEtchedBorder());
-        medicineButton.setFocusable(false);
+            medicineButton.setBounds(30,334,240,40);
+            medicineButton.setIcon(personIcon);
+            medicineButton.setText("Medicine");
+            medicineButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            medicineButton.setHorizontalAlignment(JLabel.LEFT);
+            medicineButton.setIconTextGap(10);
+            medicineButton.setForeground(new Color(0x2e582e));
+            medicineButton.setBackground(new Color(0xd5e3d5));
+            medicineButton.setBorder(BorderFactory.createEtchedBorder());
+            medicineButton.setFocusable(false);
 
         ailmentButton = new JButton();
-        ailmentButton.setBounds(30,386,240,40);
-        ailmentButton.setIcon(personIcon);
-        ailmentButton.setText("Ailment");
-        ailmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        ailmentButton.setHorizontalAlignment(JLabel.LEFT);
-        ailmentButton.setIconTextGap(10);
-        ailmentButton.setForeground(new Color(0x2e582e));
-        ailmentButton.setBackground(new Color(0xd5e3d5));
-        ailmentButton.setBorder(BorderFactory.createEtchedBorder());
-        ailmentButton.setFocusable(false);
+            ailmentButton.setBounds(30,386,240,40);
+            ailmentButton.setIcon(personIcon);
+            ailmentButton.setText("Ailment");
+            ailmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            ailmentButton.setHorizontalAlignment(JLabel.LEFT);
+            ailmentButton.setIconTextGap(10);
+            ailmentButton.setForeground(new Color(0x2e582e));
+            ailmentButton.setBackground(new Color(0xd5e3d5));
+            ailmentButton.setBorder(BorderFactory.createEtchedBorder());
+            ailmentButton.setFocusable(false);
 
         admissionButton = new JButton();
-        admissionButton.setBounds(30,500,240,40);
-        admissionButton.setIcon(personIcon);
-        admissionButton.setText("Admission");
-        admissionButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        admissionButton.setHorizontalAlignment(JLabel.LEFT);
-        admissionButton.setIconTextGap(10);
-        admissionButton.setForeground(new Color(0x2e582e));
-        admissionButton.setBackground(new Color(0xd5e3d5));
-        admissionButton.setBorder(BorderFactory.createEtchedBorder());
-        admissionButton.setFocusable(false);
+            admissionButton.setBounds(30,500,240,40);
+            admissionButton.setIcon(personIcon);
+            admissionButton.setText("Admission");
+            admissionButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            admissionButton.setHorizontalAlignment(JLabel.LEFT);
+            admissionButton.setIconTextGap(10);
+            admissionButton.setForeground(new Color(0x2e582e));
+            admissionButton.setBackground(new Color(0xd5e3d5));
+            admissionButton.setBorder(BorderFactory.createEtchedBorder());
+            admissionButton.setFocusable(false);
 
         dischargeButton = new JButton();
-        dischargeButton.setBounds(30,552,240,40);
-        dischargeButton.setIcon(personIcon);
-        dischargeButton.setText("Discharge");
-        dischargeButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        dischargeButton.setHorizontalAlignment(JLabel.LEFT);
-        dischargeButton.setIconTextGap(10);
-        dischargeButton.setForeground(new Color(0x2e582e));
-        dischargeButton.setBackground(new Color(0xd5e3d5));
-        dischargeButton.setBorder(BorderFactory.createEtchedBorder());
-        dischargeButton.setFocusable(false);
+            dischargeButton.setBounds(30,552,240,40);
+            dischargeButton.setIcon(personIcon);
+            dischargeButton.setText("Discharge");
+            dischargeButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            dischargeButton.setHorizontalAlignment(JLabel.LEFT);
+            dischargeButton.setIconTextGap(10);
+            dischargeButton.setForeground(new Color(0x2e582e));
+            dischargeButton.setBackground(new Color(0xd5e3d5));
+            dischargeButton.setBorder(BorderFactory.createEtchedBorder());
+            dischargeButton.setFocusable(false);
 
         diagnosisButton = new JButton();
-        diagnosisButton.setBounds(30,604,240,40);
-        diagnosisButton.setIcon(personIcon);
-        diagnosisButton.setText("Diagnosis");
-        diagnosisButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
-        diagnosisButton.setHorizontalAlignment(JLabel.LEFT);
-        diagnosisButton.setIconTextGap(10);
-        diagnosisButton.setForeground(new Color(0x2e582e));
-        diagnosisButton.setBackground(new Color(0xd5e3d5));
-        diagnosisButton.setBorder(BorderFactory.createEtchedBorder());
-        diagnosisButton.setFocusable(false);
+            diagnosisButton.setBounds(30,604,240,40);
+            diagnosisButton.setIcon(personIcon);
+            diagnosisButton.setText("Diagnosis");
+            diagnosisButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+            diagnosisButton.setHorizontalAlignment(JLabel.LEFT);
+            diagnosisButton.setIconTextGap(10);
+            diagnosisButton.setForeground(new Color(0x2e582e));
+            diagnosisButton.setBackground(new Color(0xd5e3d5));
+            diagnosisButton.setBorder(BorderFactory.createEtchedBorder());
+            diagnosisButton.setFocusable(false);
 
         nAssignmentButton = new JButton();
-        nAssignmentButton.setBounds(30,656,240,40);
-        nAssignmentButton.setIcon(personIcon);
-        nAssignmentButton.setText("Nurse Assignment");
-        nAssignmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
-        nAssignmentButton.setHorizontalAlignment(JLabel.LEFT);
-        nAssignmentButton.setIconTextGap(10);
-        nAssignmentButton.setForeground(new Color(0x2e582e));
-        nAssignmentButton.setBackground(new Color(0xd5e3d5));
-        nAssignmentButton.setBorder(BorderFactory.createEtchedBorder());
-        nAssignmentButton.setFocusable(false);
+            nAssignmentButton.setBounds(30,656,240,40);
+            nAssignmentButton.setIcon(personIcon);
+            nAssignmentButton.setText("Nurse Assignment");
+            nAssignmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+            nAssignmentButton.setHorizontalAlignment(JLabel.LEFT);
+            nAssignmentButton.setIconTextGap(10);
+            nAssignmentButton.setForeground(new Color(0x2e582e));
+            nAssignmentButton.setBackground(new Color(0xd5e3d5));
+            nAssignmentButton.setBorder(BorderFactory.createEtchedBorder());
+            nAssignmentButton.setFocusable(false);
 
         treatmentButton = new JButton();
-        treatmentButton.setBounds(30,708,240,40);
-        treatmentButton.setIcon(personIcon);
-        treatmentButton.setText("Treatment");
-        treatmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
-        treatmentButton.setHorizontalAlignment(JLabel.LEFT);
-        treatmentButton.setIconTextGap(10);
-        treatmentButton.setForeground(new Color(0x2e582e));
-        treatmentButton.setBackground(new Color(0xd5e3d5));
-        treatmentButton.setBorder(BorderFactory.createEtchedBorder());
-        treatmentButton.setFocusable(false);
+            treatmentButton.setBounds(30,708,240,40);
+            treatmentButton.setIcon(personIcon);
+            treatmentButton.setText("Treatment");
+            treatmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+            treatmentButton.setHorizontalAlignment(JLabel.LEFT);
+            treatmentButton.setIconTextGap(10);
+            treatmentButton.setForeground(new Color(0x2e582e));
+            treatmentButton.setBackground(new Color(0xd5e3d5));
+            treatmentButton.setBorder(BorderFactory.createEtchedBorder());
+            treatmentButton.setFocusable(false);
 
         pScheduleButton = new JButton();
-        pScheduleButton.setBounds(30,822,240,40);
-        pScheduleButton.setIcon(personIcon);
-        pScheduleButton.setText("Physician Schedule");
-        pScheduleButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        pScheduleButton.setHorizontalAlignment(JLabel.LEFT);
-        pScheduleButton.setIconTextGap(10);
-        pScheduleButton.setForeground(new Color(0x2e582e));
-        pScheduleButton.setBackground(new Color(0xd5e3d5));
-        pScheduleButton.setBorder(BorderFactory.createEtchedBorder());
-        pScheduleButton.setFocusable(false);
+            pScheduleButton.setBounds(30,822,240,40);
+            pScheduleButton.setIcon(personIcon);
+            pScheduleButton.setText("Physician Schedule");
+            pScheduleButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            pScheduleButton.setHorizontalAlignment(JLabel.LEFT);
+            pScheduleButton.setIconTextGap(10);
+            pScheduleButton.setForeground(new Color(0x2e582e));
+            pScheduleButton.setBackground(new Color(0xd5e3d5));
+            pScheduleButton.setBorder(BorderFactory.createEtchedBorder());
+            pScheduleButton.setFocusable(false);
 
         nShiftButton = new JButton();
-        nShiftButton.setBounds(30,874,240,40);
-        nShiftButton.setIcon(personIcon);
-        nShiftButton.setText("Nurse Shift");
-        nShiftButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
-        nShiftButton.setHorizontalAlignment(JLabel.LEFT);
-        nShiftButton.setIconTextGap(10);
-        nShiftButton.setForeground(new Color(0x2e582e));
-        nShiftButton.setBackground(new Color(0xd5e3d5));
-        nShiftButton.setBorder(BorderFactory.createEtchedBorder());
-        nShiftButton.setFocusable(false);
+            nShiftButton.setBounds(30,874,240,40);
+            nShiftButton.setIcon(personIcon);
+            nShiftButton.setText("Nurse Shift");
+            nShiftButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
+            nShiftButton.setHorizontalAlignment(JLabel.LEFT);
+            nShiftButton.setIconTextGap(10);
+            nShiftButton.setForeground(new Color(0x2e582e));
+            nShiftButton.setBackground(new Color(0xd5e3d5));
+            nShiftButton.setBorder(BorderFactory.createEtchedBorder());
+            nShiftButton.setFocusable(false);
 
         settingsButton = new JButton();
-        settingsButton.setBounds(1086,22,20,20);
-        settingsButton.setIcon(settingsIcon);
-        settingsButton.setContentAreaFilled(false);
-        // settingsButton.setBorderPainted(false);
-        settingsButton.setFocusable(false);
+            settingsButton.setBounds(1086,22,20,20);
+            settingsButton.setIcon(settingsIcon);
+            settingsButton.setContentAreaFilled(false);
+            // settingsButton.setBorderPainted(false);
+            settingsButton.setFocusable(false);
 
         notificationButton = new JButton();
-        notificationButton.setBounds(1126,22,20,20);
-        notificationButton.setIcon(bellIcon);
-        notificationButton.setContentAreaFilled(false);
-        // notificationButton.setBorderPainted(false);
-        notificationButton.setFocusable(false);
+            notificationButton.setBounds(1126,22,20,20);
+            notificationButton.setIcon(bellIcon);
+            notificationButton.setContentAreaFilled(false);
+            // notificationButton.setBorderPainted(false);
+            notificationButton.setFocusable(false);
 
         searchButton = new JButton();
-        searchButton.setBounds(10,5,20,20);
-        searchButton.setIcon(searchIcon);
-        searchButton.setContentAreaFilled(false);
-        // searchButton.setBorderPainted(false);
-        searchButton.setFocusable(false);
+            searchButton.setBounds(10,5,20,20);
+            searchButton.setIcon(searchIcon);
+            searchButton.setContentAreaFilled(false);
+            // searchButton.setBorderPainted(false);
+            searchButton.setFocusable(false);
 
         cancelButton = new JButton();
-        cancelButton.setBounds(270,5,20,20);
-        cancelButton.setIcon(cancelIcon);
-        cancelButton.setContentAreaFilled(false);
-        // cancelButton.setBorderPainted(false);
-        cancelButton.setFocusable(false);
+            cancelButton.setBounds(270,5,20,20);
+            cancelButton.setIcon(cancelIcon);
+            cancelButton.setContentAreaFilled(false);
+            // cancelButton.setBorderPainted(false);
+            cancelButton.setFocusable(false);
 
         dropdownButton = new JButton();
-        dropdownButton.setBounds(140,20,20,20);
-        dropdownButton.setIcon(dropdownIcon);
-        dropdownButton.setContentAreaFilled(false);
-        // dropdownButton.setBorderPainted(false);
-        dropdownButton.setFocusable(false);
+            dropdownButton.setBounds(140,20,20,20);
+            dropdownButton.setIcon(dropdownIcon);
+            dropdownButton.setContentAreaFilled(false);
+            // dropdownButton.setBorderPainted(false);
+            dropdownButton.setFocusable(false);
 
         dropdownButton2 = new JButton();
-        dropdownButton2.setBounds(160,5,20,20);
-        dropdownButton2.setIcon(dropdownIcon2);
-        dropdownButton2.setContentAreaFilled(false);
-        // dropdownButton2.setBorderPainted(false);
-        dropdownButton2.setFocusable(false);
+            dropdownButton2.setBounds(160,5,20,20);
+            dropdownButton2.setIcon(dropdownIcon2);
+            dropdownButton2.setContentAreaFilled(false);
+            // dropdownButton2.setBorderPainted(false);
+            dropdownButton2.setFocusable(false);
 
         filterByButton = new JButton();
-        filterByButton.setBounds(1246,10,40,30);
-        filterByButton.setText("F");
-        filterByButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        filterByButton.setHorizontalAlignment(JButton.CENTER);
-        filterByButton.setForeground(new Color(0x2e582e));
-        filterByButton.setBackground(new Color(0xd5e3d5));
-        filterByButton.setBorder(BorderFactory.createEtchedBorder());
-        filterByButton.setFocusable(false);
-        filterByButton.setOpaque(true);
-
-        listViewButton = new JButton();
-        listViewButton.setBounds(60,129,40,40);
-        listViewButton.setText("L");
-        listViewButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        listViewButton.setHorizontalAlignment(JButton.CENTER);
-        listViewButton.setForeground(Color.WHITE);
-        listViewButton.setBackground(new Color(0x2e582e));
-        listViewButton.setBorder(BorderFactory.createEtchedBorder());
-        listViewButton.setFocusable(false);
-
-        tileViewButton = new JButton();
-        tileViewButton.setBounds(110,129,40,40);
-        tileViewButton.setText("T");
-        tileViewButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        tileViewButton.setHorizontalAlignment(JButton.CENTER);
-        tileViewButton.setForeground(Color.WHITE);
-        tileViewButton.setBackground(new Color(0x2e582e));
-        tileViewButton.setBorder(BorderFactory.createEtchedBorder());
-        tileViewButton.setFocusable(false);
+            filterByButton.setBounds(1246,10,40,30);
+            filterByButton.setText("F");
+            filterByButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            filterByButton.setHorizontalAlignment(JButton.CENTER);
+            filterByButton.setForeground(new Color(0x2e582e));
+            filterByButton.setBackground(new Color(0xd5e3d5));
+            filterByButton.setBorder(BorderFactory.createEtchedBorder());
+            filterByButton.setFocusable(false);
+            filterByButton.setOpaque(true);
 
         createButton = new JButton();
-        createButton.setBounds(1046,129,140,40);
-        createButton.setText("+ Add Patient");
-        createButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        createButton.setHorizontalAlignment(JButton.CENTER);
-        createButton.setForeground(Color.WHITE);
-        createButton.setBackground(new Color(0x2e582e));
-        createButton.setBorder(BorderFactory.createEtchedBorder());
-        createButton.setFocusable(false);
+            createButton.setBounds(1046,139,140,40);
+            createButton.setText("+ Add Patient");
+            createButton.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+            createButton.setHorizontalAlignment(JButton.CENTER);
+            createButton.setForeground(Color.WHITE);
+            createButton.setBackground(new Color(0x2e582e));
+            createButton.setBorder(BorderFactory.createEtchedBorder());
+            createButton.setFocusable(false);
 
         updateButton = new JButton();
-        updateButton.setBounds(1196,129,40,40);
-        updateButton.setText("U");
-        updateButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        updateButton.setHorizontalAlignment(JButton.CENTER);
-        updateButton.setForeground(Color.WHITE);
-        updateButton.setBackground(new Color(0x2e582e));
-        updateButton.setBorder(BorderFactory.createEtchedBorder());
-        updateButton.setFocusable(false);
+            updateButton.setBounds(1196,139,40,40);
+            updateButton.setText("U");
+            updateButton.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+            updateButton.setHorizontalAlignment(JButton.CENTER);
+            updateButton.setForeground(Color.WHITE);
+            updateButton.setBackground(new Color(0x2e582e));
+            updateButton.setBorder(BorderFactory.createEtchedBorder());
+            updateButton.setFocusable(false);
 
         deleteButton = new JButton();
-        deleteButton.setBounds(1246,129,40,40);
-        deleteButton.setText("D");
-        deleteButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        deleteButton.setHorizontalAlignment(JButton.CENTER);
-        deleteButton.setForeground(Color.WHITE);
-        deleteButton.setBackground(new Color(0x2e582e));
-        deleteButton.setBorder(BorderFactory.createEtchedBorder());
-        deleteButton.setFocusable(false);
+            deleteButton.setBounds(1246,139,40,40);
+            deleteButton.setText("D");
+            deleteButton.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+            deleteButton.setHorizontalAlignment(JButton.CENTER);
+            deleteButton.setForeground(Color.WHITE);
+            deleteButton.setBackground(new Color(0x2e582e));
+            deleteButton.setBorder(BorderFactory.createEtchedBorder());
+            deleteButton.setFocusable(false);
 
         previousPageButton = new JButton();
-        previousPageButton.setBounds(946,940,40,40);
-        previousPageButton.setText("<");
-        previousPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        previousPageButton.setHorizontalAlignment(JButton.CENTER);
-        previousPageButton.setForeground(new Color(0x2e582e));
-        previousPageButton.setBackground(Color.WHITE);
-        previousPageButton.setBorder(BorderFactory.createEtchedBorder());
-        previousPageButton.setFocusable(false);
+            previousPageButton.setBounds(946,950,40,40);
+            previousPageButton.setText("<");
+            previousPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            previousPageButton.setHorizontalAlignment(JButton.CENTER);
+            previousPageButton.setForeground(new Color(0x2e582e));
+            previousPageButton.setBackground(Color.WHITE);
+            previousPageButton.setBorder(BorderFactory.createEtchedBorder());
+            previousPageButton.setFocusable(false);
 
         firstPageButton = new JButton();
-        firstPageButton.setBounds(996,940,40,40);
-        firstPageButton.setText("1");
-        firstPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        firstPageButton.setHorizontalAlignment(JButton.CENTER);
-        firstPageButton.setForeground(new Color(0x2e582e));
-        firstPageButton.setBackground(Color.WHITE);
-        firstPageButton.setBorder(BorderFactory.createEtchedBorder());
-        firstPageButton.setFocusable(false);
+            firstPageButton.setBounds(996,950,40,40);
+            firstPageButton.setText("1");
+            firstPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            firstPageButton.setHorizontalAlignment(JButton.CENTER);
+            firstPageButton.setForeground(new Color(0x2e582e));
+            firstPageButton.setBackground(Color.WHITE);
+            firstPageButton.setBorder(BorderFactory.createEtchedBorder());
+            firstPageButton.setFocusable(false);
 
         secondPageButton = new JButton();
-        secondPageButton.setBounds(1046,940,40,40);
-        secondPageButton.setText("2");
-        secondPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        secondPageButton.setHorizontalAlignment(JButton.CENTER);
-        secondPageButton.setForeground(new Color(0x2e582e));
-        secondPageButton.setBackground(Color.WHITE);
-        secondPageButton.setBorder(BorderFactory.createEtchedBorder());
-        secondPageButton.setFocusable(false);
+            secondPageButton.setBounds(1046,950,40,40);
+            secondPageButton.setText("2");
+            secondPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            secondPageButton.setHorizontalAlignment(JButton.CENTER);
+            secondPageButton.setForeground(new Color(0x2e582e));
+            secondPageButton.setBackground(Color.WHITE);
+            secondPageButton.setBorder(BorderFactory.createEtchedBorder());
+            secondPageButton.setFocusable(false);
 
         thirdPageButton = new JButton();
-        thirdPageButton.setBounds(1096,940,40,40);
-        thirdPageButton.setText("3");
-        thirdPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        thirdPageButton.setHorizontalAlignment(JButton.CENTER);
-        thirdPageButton.setForeground(new Color(0x2e582e));
-        thirdPageButton.setBackground(Color.WHITE);
-        thirdPageButton.setBorder(BorderFactory.createEtchedBorder());
-        thirdPageButton.setFocusable(false);
+            thirdPageButton.setBounds(1096,950,40,40);
+            thirdPageButton.setText("3");
+            thirdPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            thirdPageButton.setHorizontalAlignment(JButton.CENTER);
+            thirdPageButton.setForeground(new Color(0x2e582e));
+            thirdPageButton.setBackground(Color.WHITE);
+            thirdPageButton.setBorder(BorderFactory.createEtchedBorder());
+            thirdPageButton.setFocusable(false);
 
         fourthPageButton = new JButton();
-        fourthPageButton.setBounds(1146,940,40,40);
-        fourthPageButton.setText("...");
-        fourthPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        fourthPageButton.setHorizontalAlignment(JButton.CENTER);
-        fourthPageButton.setForeground(new Color(0x2e582e));
-        fourthPageButton.setBackground(Color.WHITE);
-        fourthPageButton.setBorder(BorderFactory.createEtchedBorder());
-        fourthPageButton.setFocusable(false);
+            fourthPageButton.setBounds(1146,950,40,40);
+            fourthPageButton.setText("...");
+            fourthPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            fourthPageButton.setHorizontalAlignment(JButton.CENTER);
+            fourthPageButton.setForeground(new Color(0x2e582e));
+            fourthPageButton.setBackground(Color.WHITE);
+            fourthPageButton.setBorder(BorderFactory.createEtchedBorder());
+            fourthPageButton.setFocusable(false);
 
         lastPageButton = new JButton();
-        lastPageButton.setBounds(1196,940,40,40);
-        lastPageButton.setText("25");
-        lastPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        lastPageButton.setHorizontalAlignment(JButton.CENTER);
-        lastPageButton.setForeground(new Color(0x2e582e));
-        lastPageButton.setBackground(Color.WHITE);
-        lastPageButton.setBorder(BorderFactory.createEtchedBorder());
-        lastPageButton.setFocusable(false);
+            lastPageButton.setBounds(1196,950,40,40);
+            lastPageButton.setText("25");
+            lastPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            lastPageButton.setHorizontalAlignment(JButton.CENTER);
+            lastPageButton.setForeground(new Color(0x2e582e));
+            lastPageButton.setBackground(Color.WHITE);
+            lastPageButton.setBorder(BorderFactory.createEtchedBorder());
+            lastPageButton.setFocusable(false);
 
         nextPageButton = new JButton();
-        nextPageButton.setBounds(1246,940,40,40);
-        nextPageButton.setText(">");
-        nextPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        nextPageButton.setHorizontalAlignment(JButton.CENTER);
-        nextPageButton.setForeground(new Color(0x2e582e));
-        nextPageButton.setBackground(Color.WHITE);
-        nextPageButton.setBorder(BorderFactory.createEtchedBorder());
-        nextPageButton.setFocusable(false);
+            nextPageButton.setBounds(1246,950,40,40);
+            nextPageButton.setText(">");
+            nextPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+            nextPageButton.setHorizontalAlignment(JButton.CENTER);
+            nextPageButton.setForeground(new Color(0x2e582e));
+            nextPageButton.setBackground(Color.WHITE);
+            nextPageButton.setBorder(BorderFactory.createEtchedBorder());
+            nextPageButton.setFocusable(false);
 
         // Layouts -----------------------------------------------
 
         this.add(wholeScreen);
-        wholeScreen.add(sidePanel);
-        sidePanel.add(logoLabel);
-        sidePanel.add(mainMenuLabel);
-        sidePanel.add(patientButton);
-        sidePanel.add(physicianButton);
-        sidePanel.add(nurseButton);
-        sidePanel.add(wardButton);
-        sidePanel.add(medicineButton);
-        sidePanel.add(ailmentButton);
-        sidePanel.add(transactionsLabel);
-        sidePanel.add(admissionButton);
-        sidePanel.add(dischargeButton);
-        sidePanel.add(diagnosisButton);
-        sidePanel.add(nAssignmentButton);
-        sidePanel.add(treatmentButton);
-        sidePanel.add(recordsLabel);
-        sidePanel.add(pScheduleButton);
-        sidePanel.add(nShiftButton);
-        wholeScreen.add(mainPanel);
-        mainPanel.add(topPanel);
-        topPanel.add(patientListLabel);
-        topPanel.add(settingsButton);
-        topPanel.add(notificationButton);
-        topPanel.add(profileLabel);
-        profileLabel.add(profileNameLabel);
-        profileLabel.add(profileJobLabel);
-        profileLabel.add(dropdownButton);
-        mainPanel.add(topPanel2);
-        topPanel2.add(pathLabel);
-        topPanel2.add(searchBarLabel);
-        searchBarLabel.add(searchButton);
-        searchBarLabel.add(searchTextField);
-        searchBarLabel.add(cancelButton);
-        topPanel2.add(sortByLabel);
-        sortByLabel.add(sortByTextLabel);
-        sortByLabel.add(dropdownButton2);
-        topPanel2.add(filterByButton);
-        mainPanel.add(listViewButton);
-        mainPanel.add(tileViewButton);
-        mainPanel.add(createButton);
-        mainPanel.add(updateButton);
-        mainPanel.add(deleteButton);
-        mainPanel.add(listBGPanel);
-        mainPanel.setLayer(listBGPanel, 10);
-//        listBGPanel.add(scrollPane);
-        mainPanel.add(entriesLabel);
-        mainPanel.add(previousPageButton);
-        mainPanel.add(firstPageButton);
-        mainPanel.add(secondPageButton);
-        mainPanel.add(thirdPageButton);
-        mainPanel.add(fourthPageButton);
-        mainPanel.add(lastPageButton);
-        mainPanel.add(nextPageButton);
-        mainPanel.add(backgroundLabel);
+            wholeScreen.add(sidePanel);
+                sidePanel.add(logoLabel);
+                sidePanel.add(mainMenuLabel);
+                    sidePanel.add(patientButton);
+                    sidePanel.add(physicianButton);
+                    sidePanel.add(nurseButton);
+                    sidePanel.add(wardButton);
+                    sidePanel.add(medicineButton);
+                    sidePanel.add(ailmentButton);
+                sidePanel.add(transactionsLabel);
+                    sidePanel.add(admissionButton);
+                    sidePanel.add(dischargeButton);
+                    sidePanel.add(diagnosisButton);
+                    sidePanel.add(nAssignmentButton);
+                    sidePanel.add(treatmentButton);
+                sidePanel.add(recordsLabel);
+                    sidePanel.add(pScheduleButton);
+                    sidePanel.add(nShiftButton);
+            wholeScreen.add(mainPanel);
+                mainPanel.add(topPanel);
+                    topPanel.add(patientListLabel);
+                    topPanel.add(settingsButton);
+                    topPanel.add(notificationButton);
+                    topPanel.add(profileLabel);
+                        profileLabel.add(profileNameLabel);
+                        profileLabel.add(profileJobLabel);
+                        profileLabel.add(dropdownButton);
+            mainPanel.add(topPanel2);
+                topPanel2.add(pathLabel);
+                topPanel2.add(searchBarLabel);
+                    searchBarLabel.add(searchButton);
+                    searchBarLabel.add(searchTextField);
+                    searchBarLabel.add(cancelButton);
+                topPanel2.add(sortByLabel);
+                    sortByLabel.add(sortByTextLabel);
+                    sortByLabel.add(dropdownButton2);
+                topPanel2.add(filterByButton);
+            mainPanel.add(createButton);
+                mainPanel.setLayer(createButton, 12);
+            mainPanel.add(updateButton);
+                mainPanel.setLayer(updateButton, 12);
+            mainPanel.add(deleteButton);
+                mainPanel.setLayer(deleteButton, 12);
+            mainPanel.add(tableBGPanel);
+            mainPanel.setLayer(tableBGPanel, 10);
+                tableBGPanel.add(tabbedPane);
+            mainPanel.add(entriesLabel);
+            mainPanel.add(previousPageButton);
+            mainPanel.add(firstPageButton);
+            mainPanel.add(secondPageButton);
+            mainPanel.add(thirdPageButton);
+            mainPanel.add(fourthPageButton);
+            mainPanel.add(lastPageButton);
+            mainPanel.add(nextPageButton);
+            mainPanel.add(backgroundLabel);
     }
-
-//    public void createFonts()
-//    {
-//        try{
-//            RobotoRegular = Font.createFont(Font.TRUETYPE_FONT, new File("RobotoRegular.ttf")).deriveFont(50f);
-//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("RobotoRegular.ttf")));
-//        }
-//        catch(IOException | FontFormatException e){
-//        }
-//        try{
-//            RobotoBold = Font.createFont(Font.TRUETYPE_FONT, new File("RobotoBold.ttf")).deriveFont(50f);
-//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("RobotoBold.ttf")));
-//        }
-//        catch(IOException | FontFormatException e){
-//        }
-//
-//        try{
-//            MontserratBold = Font.createFont(Font.TRUETYPE_FONT, new File("MontserratBold.ttf")).deriveFont(50f);
-//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("MontserratBold.ttf")));
-//        }
-//        catch(IOException | FontFormatException e){
-//        }
-//    }
 
     public void createFonts() {
         RobotoRegular = loadFont("/RobotoRegular.ttf", 50f);
@@ -1006,16 +966,70 @@ public class ASGui extends JFrame{
 
         scrollPane.setViewportView(table);
         scrollPane.setBounds(0, 0, 1226, 750);
-        listBGPanel.removeAll();
-        listBGPanel.add(scrollPane);
-        listBGPanel.revalidate();
-        listBGPanel.repaint();
+
+        tabbedPane.setComponentAt(0, scrollPane);
+        tabbedPane.revalidate();
+        tabbedPane.repaint();
 
         return table;
     }
 
+    public static JTabbedPane createTabbedPane(String[] tabNames, JScrollPane[] tabContents)
+    {
+        // Aesthetic of Tabbed Pane
+        if (tabNames.length != tabContents.length)
+        {
+            throw new IllegalArgumentException("Tab names and contents must have the same length");
+        }
 
+        JTabbedPane tabbedPane = new JTabbedPane();
+            tabbedPane.setFont(RobotoBold.deriveFont(Font.BOLD,14f));
+            tabbedPane.setForeground(Color.WHITE);
+            tabbedPane.setBorder(BorderFactory.createEmptyBorder());
+            tabbedPane.setOpaque(false);
 
+        tabbedPane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI()
+        {
+            @Override
+            protected void installDefaults() {
+                super.installDefaults();
+                contentBorderInsets = new Insets(0, 0, 0, 0);
+                tabAreaInsets = new Insets(0, 0, 0, 0);
+            }
+
+            @Override
+            protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
+                return 40; // Custom tab height
+            }
+
+            @Override
+            protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+                return 120; // Custom tab width
+            }
+
+            @Override
+            protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex,
+                                              int x, int y, int w, int h, boolean isSelected) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setColor(isSelected ? new Color(0x709a70) : new Color(0x2e582e)); // green shades
+                g2.fillRect(x, y, w, h);
+            }
+        });
+
+        // Add Tabs with Placeholder Scroll Panes
+        for (int i = 0; i < tabNames.length; i++)
+        {
+            JScrollPane scrollPane = tabContents[i];
+            if (scrollPane == null)
+            {
+                scrollPane = new JScrollPane(); // create empty placeholder if null
+            }
+
+            tabbedPane.addTab(tabNames[i], scrollPane);
+        }
+
+        return tabbedPane;
+    }
 
     public JButton getPatientButton()
     {
@@ -1087,15 +1101,14 @@ public class ASGui extends JFrame{
         return profileIcon;
     }
 
-    public JPanel getListBGPanel()
+    public JPanel getTableBGPanel()
     {
-        return listBGPanel;
+        return tableBGPanel;
     }
 
     public JScrollPane getScrollPane()
     {
         return scrollPane;
     }
-
 
 }
