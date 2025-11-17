@@ -142,7 +142,7 @@ public class AddPatientDialog extends JDialog {
         String fn = firstNameField.getText().trim();
         String ln = lastNameField.getText().trim();
         String contact = contactField.getText().trim();
-        String sex = contactField.getText().trim();
+        String sex = genderBox.getSelectedItem().toString();
 
         if (fn.isEmpty() || ln.isEmpty() || contact.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill out all required fields.", "Incomplete", JOptionPane.WARNING_MESSAGE);
