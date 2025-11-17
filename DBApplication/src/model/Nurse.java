@@ -39,6 +39,11 @@ public class Nurse {
         this.contact_no = contact_no;
     }
 
+	public void setNurseID(int id) 
+    {
+        nurse_id = id;
+    }
+	
     public int getNurseID()
     {
         return nurse_id;
