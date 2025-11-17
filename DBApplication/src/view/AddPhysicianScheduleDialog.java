@@ -69,7 +69,7 @@ public class AddPhysicianScheduleDialog extends JDialog {
         // Schedule Day ID
         gbc.gridy++;
         gbc.gridx = 0;
-        formPanel.add(new JLabel("Ward ID:"), gbc);
+        formPanel.add(new JLabel("Schedule Day:"), gbc);
         gbc.gridx = 1;
         scheduleDayField = new JTextField(15);
         formPanel.add(scheduleDayField, gbc);

@@ -120,7 +120,7 @@ public class AddNurseAssignmentDialog extends JDialog {
     }
 
     private void handleSubmit() {
-        String nurseShiftIDText = patientIDField.getText().trim();
+        String nurseShiftIDText = nurseShiftIDField.getText().trim();
         String patientIDText = patientIDField.getText().trim();
         String assignedDateText = assignedDateField.getText().trim();
         String assignedUntilText = assignedUntilField.getText().trim();
@@ -130,14 +130,15 @@ public class AddNurseAssignmentDialog extends JDialog {
             return;
         }
 
-        int nurseShiftID;
-        int patientID;
+        int nurseShiftID = Integer.parseInt(nurseShiftIDText);
+        int patientID = Integer.parseInt(patientIDText);;
         java.sql.Date assignedDate = java.sql.Date.valueOf(assignedDateText);
         java.sql.Date assignedUntil = java.sql.Date.valueOf(assignedUntilText);
 
+
         try {
-            nurseShiftID = Integer.parseInt(nurseShiftIDText);
-            patientID = Integer.parseInt(patientIDText);
+            if (nurseShiftID < 0 || patientID < 0)
+            JOptionPane.showMessageDialog(this, "Ward number cannot be a negative number", "Invalid Input", JOptionPane.WARNING_MESSAGE);
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this,

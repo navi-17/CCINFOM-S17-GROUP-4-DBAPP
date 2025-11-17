@@ -69,7 +69,7 @@ public class AddNurseShiftDialog extends JDialog {
         // Shift Day ID
         gbc.gridy++;
         gbc.gridx = 0;
-        formPanel.add(new JLabel("Ward ID:"), gbc);
+        formPanel.add(new JLabel("Schedule Day:"), gbc);
         gbc.gridx = 1;
         shiftDayField = new JTextField(15);
         formPanel.add(shiftDayField, gbc);

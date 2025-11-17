@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PatientManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
     private static final String USER = "root";
-    private static final String PASSWORD = "infom123";
+    private static final String PASSWORD = "KC379379";
     private Connection conn;
     PreparedStatement pstmt;
 
@@ -20,7 +20,7 @@ public class PatientManagement {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "INSERT INTO patient (p_lastname, p_firstname, birth_date, contact_no, sex, patient_status) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO patient (p_lastname, p_firstname, birth_date, contact_no, sex, p_status) VALUES (?, ?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, patient.getLastName());
