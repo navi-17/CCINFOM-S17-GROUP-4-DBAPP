@@ -25,6 +25,9 @@ public class NurseAssignmentController implements ActionListener{
     {
         if(e.getSource() == asgui.getnAssignmentButton())
         {
+            asgui.setButtonValue(9);
+            asgui.setCreateButtonText("Add Assignment");
+            asgui.showOnlyTabs("Nurse Assignments");
             asgui.setTableLabel("Nurse Assignment Records");
             System.out.println("Nurse Assignment Button clicked!");
             List<NurseAssignment> nurseAssignments = nurseAssignmentManagement.viewNurseAssignments();
@@ -51,7 +54,16 @@ public class NurseAssignmentController implements ActionListener{
                     5, 242//assigned until
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
-            asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JTable nurseAssignmentTable = asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JScrollPane nurseAssignmentScrollPane = new JScrollPane(nurseAssignmentTable);
+
+            int tabIndex = asgui.getTabIndex("Nurse Assignments");
+            if(tabIndex != -1) {
+                asgui.getTabbedPane().setComponentAt(tabIndex, nurseAssignmentScrollPane);
+                asgui.getTabbedPane().setSelectedIndex(tabIndex);
+            } else {
+                System.err.println("Tab 'Nurse Assignments' not found!");
+            }
         }
 		else if(e.getSource() == asgui.getDeleteButton()) 
 		{

@@ -26,6 +26,8 @@ public class NurseController implements ActionListener{
     {
         if(e.getSource() == asgui.getNurseButton())
         {
+            asgui.setButtonValue(2);
+            asgui.setCreateButtonText("Add Nurse");
             asgui.showOnlyTabs("Nurse", "Nurse Related Records");
             asgui.setTableLabel("Nurse Records");
             System.out.println("Nurse Button clicked!");
@@ -63,6 +65,9 @@ public class NurseController implements ActionListener{
         }
         else if(e.getSource() == asgui.getnShiftButton())
         {
+            asgui.setButtonValue(12);
+            asgui.setCreateButtonText("Add Nurse Shift");
+            asgui.showOnlyTabs("Nurse Shifts");
             asgui.setTableLabel("Nurse Shift Records");
             System.out.println("NurseShift Button clicked!");
             List<NurseShift> nurseShifts = nurseShiftManagement.viewNurseShifts();
@@ -90,7 +95,16 @@ public class NurseController implements ActionListener{
                     5, 242
             ); //1226 total: (1226-106) / 3 attributes =
 
-            asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JTable nurseShiftTable = asgui.createTable(data, attributes, 2, 0, -1, colWidths);
+            JScrollPane nurseShiftScrollPane = new JScrollPane(nurseShiftTable);
+
+            int tabIndex = asgui.getTabIndex("Nurse Shifts");
+            if(tabIndex != -1) {
+                asgui.getTabbedPane().setComponentAt(tabIndex, nurseShiftScrollPane);
+                asgui.getTabbedPane().setSelectedIndex(tabIndex);
+            } else {
+                System.err.println("Tab 'Nurse Shifts' not found!");
+            }
         }
 		else if(e.getSource() == asgui.getDeleteButton()) 
 		{

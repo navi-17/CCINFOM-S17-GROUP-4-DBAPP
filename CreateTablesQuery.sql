@@ -122,6 +122,8 @@ CREATE TABLE discharge(
 );
 
 
+UPDATE treatment SET performed_by = 'Diagnosing Physician' WHERE treatment_id = 9001;
+
 
 
 

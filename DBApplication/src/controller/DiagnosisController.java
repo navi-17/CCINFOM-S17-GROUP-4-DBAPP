@@ -27,6 +27,9 @@ public class DiagnosisController implements ActionListener{
     {
         if(e.getSource() == asgui.getDiagnosisButton())
         {
+            asgui.setButtonValue(8);
+            asgui.setCreateButtonText("Add Diagnosis");
+            asgui.showOnlyTabs("Diagnosis");
             asgui.setTableLabel("Diagnosis Records");
             System.out.println("Diagnosis Button clicked!");
             List<Diagnosis> diagnoses = diagnosisManagement.viewPatientDiagnosis();
@@ -55,7 +58,16 @@ public class DiagnosisController implements ActionListener{
                     6, 194
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
-            asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JTable diagnosisTable = asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JScrollPane diagnosisScrollPane = new JScrollPane(diagnosisTable);
+
+            int tabIndex = asgui.getTabIndex("Diagnosis");
+            if(tabIndex != -1) {
+                asgui.getTabbedPane().setComponentAt(tabIndex, diagnosisScrollPane);
+                asgui.getTabbedPane().setSelectedIndex(tabIndex);
+            } else {
+                System.err.println("Tab 'Diagnosis' not found!");
+            }
         }
 		else if(e.getSource() == asgui.getDeleteButton()) 
 		{

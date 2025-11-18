@@ -134,5 +134,126 @@ WHERE t.treatment_date = '2025-11-09'
 
 
 
+#Viewing patient record, which includes the illness of the patient, treatment record, and physician 
+#and nurse record related to that patient, and the ward the patient is occupying
+SELECT CONCAT(p.p_lastname, ', ', p.p_firstname) AS PatientName, i.illness_name, t.treatment_procedure, w.ward_no, CONCAT(ph.ph_lastname, ', ', ph.ph_firstname) AS Assigned_Physician, CONCAT(n.n_lastname, ', ', n.n_firstname) AS Assigned_Nurse
+FROM patient p 
+	LEFT JOIN diagnosis d ON p.patient_id = d.patient_id
+    LEFT JOIN illness i ON d.illness_id = i.illness_id
+    LEFT JOIN treatment t ON d.diagnosis_id = t.diagnosis_id
+	LEFT JOIN nurse_assignment na ON t.nurseAssignment_id = na.nurseAssignment_id
+    LEFT JOIN nurse_shift ns ON na.nurseShift_id = ns.nurseShift_id
+    LEFT JOIN admission a ON p.patient_id = a.patient_id
+    LEFT JOIN ward w ON a.ward_id = w.ward_id
+    LEFT JOIN physician_schedule ps ON d.physicianSchedule_id = ps.physicianSchedule_id
+    LEFT JOIN physician ph ON ps.physician_id = ph.physician_id
+    LEFT JOIN nurse n ON ns.nurse_id = n.nurse_id
+WHERE p.patient_id = 101;	
+
+#Viewing an illness record, the patients that have been diagnosed with that illness and the treatment
+SELECT 
+    i.illness_name,
+    d.diagnosis_date,
+    CONCAT (p.p_lastname, ', ', p.p_firstname) AS patient_name,
+    t.treatment_date,
+    t.treatment_procedure
+FROM diagnosis d
+JOIN patient p ON d.patient_id = p.patient_id
+LEFT JOIN treatment t ON d.diagnosis_id = t.diagnosis_id
+LEFT JOIN illness i ON d.illness_id = i.illness_id
+WHERE d.illness_id = 3001;
+
+SELECT
+    m.medicine_name,
+    CONCAT(p.p_lastname, ', ', p.p_firstname) AS patient_name,
+    i.illness_name,
+    CONCAT(ph.ph_lastname, ', ', ph.ph_firstname) AS physician_name,
+    t.treatment_date,
+    t.treatment_procedure,
+    t.remarks
+FROM treatment t
+    LEFT JOIN medicine m ON t.medicine_id = m.medicine_id
+    LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id
+    LEFT JOIN patient p ON d.patient_id = p.patient_id
+    LEFT JOIN illness i ON d.illness_id = i.illness_id
+    LEFT JOIN physician_schedule pa ON d.physicianSchedule_id = pa.physicianSchedule_id
+    LEFT JOIN physician ph ON pa.physician_id = ph.physician_id
+WHERE m.medicine_id = 4001;
+
+SELECT
+    CONCAT(ph.ph_lastname, ', ', ph.ph_firstname) AS physician_name,
+    ph.specialization,
+    CONCAT(p.p_lastname, ', ', p.p_firstname) AS patient_name,
+    i.illness_name,
+    t.treatment_id,
+    t.treatment_date,
+    t.treatment_procedure,
+    t.remarks
+FROM physician ph
+    LEFT JOIN treatment t ON ph.physician_id = t.assignedPhysician_id
+    LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id
+    LEFT JOIN patient p ON d.patient_id = p.patient_id
+    LEFT JOIN illness i ON d.illness_id = i.illness_id
+    LEFT JOIN physician_schedule ps ON d.physicianSchedule_id = ps.physicianSchedule_id
+    LEFT JOIN physician dp ON ps.physician_id = dp.physician_id
+WHERE (performed_by = 'Assigned Physician' OR performed_by = 'Diagnosing Physician') AND ph.physician_id = 2001;
+
+
+SELECT
+	CONCAT(pd.ph_lastname, ', ', pd.ph_firstname) AS physician_name,
+    CONCAT(p.p_lastname, ', ', p.p_firstname) AS patient_name,
+    i.illness_name,
+    t.treatment_id,
+    t.treatment_date,
+    t.treatment_procedure
+FROM treatment t
+LEFT JOIN nurse_assignment na ON t.nurseAssignment_id = na.nurseAssignment_id
+LEFT JOIN patient p ON na.patient_id = p.patient_id
+LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id
+LEFT JOIN physician_schedule ps ON d.physicianSchedule_id = ps.physicianSchedule_id
+LEFT JOIN physician pd ON ps.physician_id = pd.physician_id
+LEFT JOIN physician pa ON t.assignedPhysician_id = pa.physician_id
+LEFT JOIN illness i ON d.illness_id = i.illness_id
+WHERE t.performed_by LIKE '%Physician%' AND (pa.physician_id = 2001 OR pd.physician_id = 2001);
+
+
+#WARD:
+SELECT
+    w.ward_no,
+    w.floor,
+    CONCAT (p.p_lastname, ', ', p.p_firstname) AS admitted_patient,
+    CONCAT (n.n_lastname, ', ', n_firstname) AS assigned_nurse
+FROM ward w
+LEFT JOIN admission a ON w.ward_id = a.ward_id
+LEFT JOIN  patient p ON a.patient_id = p.patient_id
+LEFT JOIN  nurse_assignment na ON na.patient_id = p.patient_id
+LEFT JOIN  nurse_shift ns ON na.nurseShift_id = ns.nurseShift_id
+LEFT JOIN  nurse n ON ns.nurse_id = n.nurse_id
+WHERE w.ward_id = ?;
+
+#Viewing a specific nurse record and the list of patients assigned to that nurse, 
+#the wards that the nurse is handling, and treatments involved
+
+SELECT CONCAT(n.n_lastname, ', ', n.n_firstname) AS nurse_name,
+	   CONCAT(p.p_lastname, ', ', p.p_firstname) AS patient_name,
+       w.ward_no, w.floor,
+	   t.treatment_procedure,
+       t.treatment_date
+FROM nurse n
+	LEFT JOIN nurse_shift ns ON n.nurse_id = ns.nurse_id
+    LEFT JOIN nurse_assignment na ON ns.nurseShift_id = na.nurseShift_id
+    LEFT JOIN patient p ON na.patient_id = p.patient_id
+    LEFT JOIN treatment t ON na.nurseAssignment_id = t.nurseAssignment_id
+    LEFT JOIN admission a ON p.patient_id = a.patient_id
+    LEFT JOIN ward w ON a.ward_id = w.ward_id
+WHERE  n.nurse_id = 1001;
+
+
+
+
+
+
+
+
 
 

@@ -17,5 +17,6 @@ public class ASMain{
         TreatmentController treatmentController = new TreatmentController(gui);
         DischargeController dischargeController = new DischargeController(gui);
         SearchController searchController = new SearchController(gui);
+        CreateController createController = new CreateController(gui);
     }
 }

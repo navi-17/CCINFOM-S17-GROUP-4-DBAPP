@@ -25,6 +25,9 @@ public class DischargeController implements ActionListener{
     {
         if(e.getSource() == asgui.getDischargeButton())
         {
+            asgui.setButtonValue(7);
+            asgui.setCreateButtonText("Add Discharge");
+            asgui.showOnlyTabs("Discharges");
             asgui.setTableLabel("Discharge Records");
             System.out.println("DischargeAilment Button clicked!");
             List<Discharge> discharges = dischargeManagement.viewDischargeRecord();
@@ -48,7 +51,16 @@ public class DischargeController implements ActionListener{
                     3, 373  //Date
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
-            asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JTable dischargeTable = asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JScrollPane dischargeScrollPane = new JScrollPane(dischargeTable);
+
+            int tabIndex = asgui.getTabIndex("Discharges");
+            if(tabIndex != -1) {
+                asgui.getTabbedPane().setComponentAt(tabIndex, dischargeScrollPane);
+                asgui.getTabbedPane().setSelectedIndex(tabIndex);
+            } else {
+                System.err.println("Tab 'Discharges' not found!");
+            }
         }
 		else if(e.getSource() == asgui.getDeleteButton()) 
 		{

@@ -25,6 +25,9 @@ public class TreatmentController implements ActionListener{
     {
         if(e.getSource() == asgui.getTreatmentButton())
         {
+            asgui.setButtonValue(10);
+            asgui.setCreateButtonText("Add Treatment");
+            asgui.showOnlyTabs("Treatments");
             asgui.setTableLabel("Treatment Records");
             System.out.println("Treatment Button clicked!");
             List<Treatment> treatments = treatmentManagement.viewTreatmentRecords();
@@ -60,7 +63,16 @@ public class TreatmentController implements ActionListener{
 
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
-            asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JTable treatmentTable = asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JScrollPane treatmentScrollPane = new JScrollPane(treatmentTable);
+
+            int tabIndex = asgui.getTabIndex("Treatments");
+            if(tabIndex != -1) {
+                asgui.getTabbedPane().setComponentAt(tabIndex, treatmentScrollPane);
+                asgui.getTabbedPane().setSelectedIndex(tabIndex);
+            } else {
+                System.err.println("Tab 'Treatments' not found!");
+            }
         }
 		else if(e.getSource() == asgui.getDeleteButton()) 
 		{
