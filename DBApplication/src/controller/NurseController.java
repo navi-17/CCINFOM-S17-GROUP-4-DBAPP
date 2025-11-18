@@ -1,12 +1,14 @@
 package controller;
+
 import model.*;
 import view.ASGui;
+import view.UpdateNurseDialog;
+import view.UpdateNurseShiftDialog;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
-import view.UpdateNurseDialog;
 
 public class NurseController implements ActionListener{
     private NurseManagement nurseManagement;
@@ -106,61 +108,67 @@ public class NurseController implements ActionListener{
                 System.err.println("Tab 'Nurse Shifts' not found!");
             }
         }
-		else if(e.getSource() == asgui.getDeleteButton()) 
-		{
-			System.out.println("Delete Button clicked for Nurses!");
-			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
-			if (table == null) {
-				JOptionPane.showMessageDialog(asgui, "No table data visible to delete.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
+        else if(e.getSource() == asgui.getDeleteButton()) 
+        {
+            String currentLabel = asgui.getTableLabel().getText();
+            if (!currentLabel.equals("Nurse Records") && !currentLabel.equals("Nurse Shift Records")) return;
 
-			List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
+            System.out.println("Delete Button clicked for " + currentLabel + "!");
+            JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+            if (table == null) return;
 
-			if (selectedIDs.isEmpty()) {
-				JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
+            List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
 
-			int confirm = JOptionPane.showConfirmDialog(asgui, 
-				"Are you sure you want to delete the selected " + selectedIDs.size() + " nurse record(s)?", 
-				"Confirm Deletion", JOptionPane.YES_NO_OPTION);
+            if (selectedIDs.isEmpty()) {
+                JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-			if (confirm == JOptionPane.YES_OPTION) {
-				int deletedCount = 0;
-				for (Object id : selectedIDs) {
-					try {
-						if (nurseManagement.deleteNurseRecord((int) id)) {
-							deletedCount++;
-						}
-					} catch (Exception ex) {
-						System.err.println("Error deleting nurse ID " + id + ": " + ex.getMessage());
-					}
-				}
+            int confirm = JOptionPane.showConfirmDialog(asgui, 
+                "Are you sure you want to delete the selected " + selectedIDs.size() + " " + currentLabel + " record(s)?", 
+                "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-				JOptionPane.showMessageDialog(asgui, deletedCount + " nurse record(s) deleted successfully.", "Deletion Complete", JOptionPane.INFORMATION_MESSAGE);
-				
-				// Refresh the table display
-				asgui.getNurseButton().doClick();
-			}
-		}
+            if (confirm == JOptionPane.YES_OPTION) {
+                int deletedCount = 0;
+                boolean isShift = currentLabel.equals("Nurse Shift Records");
+
+                for (Object id : selectedIDs) {
+                    try {
+                        boolean success = isShift ? 
+                            nurseShiftManagement.deleteNurseShift((int) id) : 
+                            nurseManagement.deleteNurseRecord((int) id);
+                        
+                        if (success) {
+                            deletedCount++;
+                        }
+                    } catch (Exception ex) {
+                        System.err.println("Error deleting record ID " + id + ": " + ex.getMessage());
+                    }
+                }
+
+                JOptionPane.showMessageDialog(asgui, deletedCount + " " + currentLabel + " record(s) deleted successfully.", "Deletion Complete", JOptionPane.INFORMATION_MESSAGE);
+                
+                if (isShift) {
+                    asgui.getnShiftButton().doClick();
+                } else {
+                    asgui.getNurseButton().doClick();
+                }
+            }
+        }
         else if(e.getSource() == asgui.getUpdateButton())
         {
+            String currentLabel = asgui.getTableLabel().getText();
             JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
             if (table == null) return;
 
             List<Object> selectedData = asgui.getSelectedRowData(table);
-
-            if (selectedData != null) {
-                // Check if the current table is the Nurse table (column count 4)
-                if (table.getModel().getColumnCount() != 4) {
-                    JOptionPane.showMessageDialog(asgui, "Update is only supported for Nurse records on this page.", "Update Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                
-                try {
-                    int nurseID = (int) selectedData.get(1); // Column 1 is ID
-                    Object[] nameObj = (Object[]) selectedData.get(2); // Column 2 is {ImageIcon, "LastName, FirstName"}
+            if (selectedData == null) return;
+            
+            try {
+                if (currentLabel.equals("Nurse Records")) {
+                    // [0:Chk] [1:ID] [2:Name Object] [3:Contact] 
+                    int nurseID = (int) selectedData.get(1);
+                    Object[] nameObj = (Object[]) selectedData.get(2);
                     String fullName = (String) nameObj[1];
                     String[] names = fullName.split(", ");
                     String lastName = names[0];
@@ -170,17 +178,31 @@ public class NurseController implements ActionListener{
                     Nurse selectedNurse = new Nurse(lastName, firstName, contact);
                     selectedNurse.setNurse_id(nurseID); 
 
-                    // Open the Update Dialog
-                    UpdateNurseDialog updateDialog = new UpdateNurseDialog(asgui, selectedNurse);
+                    UpdateNurseDialog updateDialog = new UpdateNurseDialog(asgui, selectedNurse); // Correct constructor call
                     updateDialog.setVisible(true);
-
-                    // After the dialog closes, refresh the table
                     asgui.getNurseButton().doClick();
 
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(asgui, "Error processing selected Nurse data: " + ex.getMessage(), "Data Error", JOptionPane.ERROR_MESSAGE);
-                    ex.printStackTrace();
+                } else if (currentLabel.equals("Nurse Shift Records")) {
+                    // [0:Chk] [1:Shift ID] [2:Nurse ID] [3:Day] [4:Start Time] [5:End Time]
+                    int shiftID = (int) selectedData.get(1);
+                    int nurseID = Integer.parseInt(selectedData.get(2).toString());
+                    String day = (String) selectedData.get(3);
+                    String startTime = (String) selectedData.get(4);
+                    String endTime = (String) selectedData.get(5);
+
+                    NurseShift selectedShift = new NurseShift(nurseID, day, startTime, endTime);
+                    selectedShift.setNurseShiftID(shiftID);
+                    
+                    UpdateNurseShiftDialog updateDialog = new UpdateNurseShiftDialog(asgui, selectedShift);
+                    updateDialog.setVisible(true);
+                    asgui.getnShiftButton().doClick();
+                } else {
+                    JOptionPane.showMessageDialog(asgui, "Update not supported for the current table view.", "Update Error", JOptionPane.ERROR_MESSAGE);
                 }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(asgui, "Error processing selected data for update: " + ex.getMessage(), "Data Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
             }
         }
     }

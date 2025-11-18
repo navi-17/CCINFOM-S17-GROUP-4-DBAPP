@@ -1,7 +1,7 @@
 package view;
 
-import model.Nurse;
-import model.NurseManagement;
+import model.Illness;
+import model.IllnessManagement;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -9,15 +9,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UpdateNurseDialog extends JDialog {
-    private JTextField firstNameField, lastNameField, contactField;
-    private NurseManagement nurseManagement;
-    private Nurse originalNurse;
+public class UpdateIllnessDialog extends JDialog {
 
-    public UpdateNurseDialog(JFrame parent, Nurse nurse) {
-        super(parent, "Update Nurse: " + nurse.getNurseID(), true);
-        nurseManagement = new NurseManagement();
-        this.originalNurse = nurse;
+    private JTextField illnessNameField, categoryField, illnessDescriptionField;
+    private IllnessManagement illnessManagement;
+    private Illness originalIllness;
+
+    public UpdateIllnessDialog(JFrame parent, Illness illness) {
+        super(parent, "Update Illness: " + illness.getIllness_id(), true);
+        illnessManagement = new IllnessManagement();
+        this.originalIllness = illness;
 
         // DIALOG BASE LAYOUT
         setSize(600, 400);
@@ -30,7 +31,7 @@ public class UpdateNurseDialog extends JDialog {
         headerPanel.setBackground(new Color(76, 110, 70)); // green
         headerPanel.setPreferredSize(new Dimension(600, 50));
 
-        JLabel headerLabel = new JLabel("Update Nurse: " + nurse.getNurseID(), SwingConstants.CENTER);
+        JLabel headerLabel = new JLabel("Update Illness: " + illness.getIllness_id(), SwingConstants.CENTER);
         headerLabel.setForeground(Color.WHITE);
         headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         headerPanel.add(headerLabel, BorderLayout.CENTER);
@@ -50,7 +51,7 @@ public class UpdateNurseDialog extends JDialog {
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.anchor = GridBagConstraints.WEST;
 
-        JLabel infoLabel = new JLabel("Nurse Information");
+        JLabel infoLabel = new JLabel("Illness Information");
         infoLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -60,39 +61,52 @@ public class UpdateNurseDialog extends JDialog {
         gbc.gridwidth = 1;
         gbc.gridy++;
 
-        // First & Last Name
+        // Name
         gbc.gridx = 0;
-        formPanel.add(new JLabel("First Name:"), gbc);
+        formPanel.add(new JLabel("Illness Name:"), gbc);
         gbc.gridx = 1;
-        firstNameField = new JTextField(15);
-        firstNameField.setText(nurse.getFirstName());
-        formPanel.add(firstNameField, gbc);
+        illnessNameField = new JTextField(15);
+        illnessNameField.setText(illness.getIllness_name());
+        formPanel.add(illnessNameField, gbc);
 
+        // Category
         gbc.gridy++;
         gbc.gridx = 0;
-        formPanel.add(new JLabel("Last Name:"), gbc);
+        formPanel.add(new JLabel("Category:"), gbc);
         gbc.gridx = 1;
-        lastNameField = new JTextField(15);
-        lastNameField.setText(nurse.getLastName());
-        formPanel.add(lastNameField, gbc);
+        categoryField = new JTextField(15);
+        categoryField.setText(illness.getCategory());
+        formPanel.add(categoryField, gbc);
 
-        // Contact Number
+        // Description
         gbc.gridy++;
         gbc.gridx = 0;
-        formPanel.add(new JLabel("Contact Number:"), gbc);
+        formPanel.add(new JLabel("Description:"), gbc);
         gbc.gridx = 1;
-        contactField = new JTextField(15);
-        contactField.setText(nurse.getContactNo());
-        formPanel.add(contactField, gbc);
+        illnessDescriptionField = new JTextField(25);
+        illnessDescriptionField.setText(illness.getIllness_description());
+        formPanel.add(illnessDescriptionField, gbc);
+
+
+        // Right panel (placeholder image)
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(Color.WHITE);
+        imagePanel.setPreferredSize(new Dimension(180, 200));
+        JLabel profilePic = new JLabel();
+        profilePic.setPreferredSize(new Dimension(120, 120));
+        profilePic.setOpaque(false);
+        profilePic.setHorizontalAlignment(SwingConstants.CENTER);
+        profilePic.setVerticalAlignment(SwingConstants.CENTER);
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(Color.WHITE);
         centerPanel.add(formPanel, BorderLayout.CENTER);
+        centerPanel.add(imagePanel, BorderLayout.EAST);
 
         contentPanel.add(centerPanel, BorderLayout.CENTER);
         add(contentPanel, BorderLayout.CENTER);
 
-        // UPDATE BUTTON
+        // SUBMIT BUTTON
         JButton updateBtn = new JButton("UPDATE");
         updateBtn.setBackground(new Color(76, 110, 70));
         updateBtn.setForeground(Color.WHITE);
@@ -115,25 +129,26 @@ public class UpdateNurseDialog extends JDialog {
     }
 
     private void handleSubmit() {
-        String fn = firstNameField.getText().trim();
-        String ln = lastNameField.getText().trim();
-        String contact = contactField.getText().trim();
+        String in = illnessNameField.getText().trim();
+        String cy = categoryField.getText().trim();
+        String idn = illnessDescriptionField.getText().trim();
 
-        if (fn.isEmpty() || ln.isEmpty() || contact.isEmpty()) {
+        if (in.isEmpty() || cy.isEmpty() || idn.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill out all required fields.", "Incomplete", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        Nurse updatedNurse = new Nurse(ln, fn, contact);
-        updatedNurse.setNurse_id(originalNurse.getNurseID());
 
-        boolean success = nurseManagement.updateNurseRecord(updatedNurse);
+        // Create updated Illness object, preserving the ID
+        Illness updatedIllness = new Illness(in, cy, idn);
+        updatedIllness.setIllness_id(originalIllness.getIllness_id());
+
+        boolean success = illnessManagement.updateIllness(updatedIllness);
 
         if (success) {
-            JOptionPane.showMessageDialog(this, "Nurse record updated successfully!");
+            JOptionPane.showMessageDialog(this, "Illness record updated successfully!");
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Failed to update nurse record.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Failed to update illness record. Check database constraints.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

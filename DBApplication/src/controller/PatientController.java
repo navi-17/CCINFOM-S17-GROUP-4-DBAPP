@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 import view.ASGui;
+import view.UpdatePatientDialog; // Correct Import
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -45,18 +46,11 @@ public class PatientController implements ActionListener{
                 data[i][6] = p.getStatus();
             }
 
-            String[] attributes = {" ", "ID", "Patient Name", "Sex", "Birthdate", "Contact Number",
-                    "Status"};
+            String[] attributes = {" ", "ID", "Patient Name", "Sex", "Birthdate", "Contact Number", "Status"};
 
             Map<Integer, Integer> colWidths = Map.of(
-                    0, 106,  // checkbox
-                    1, 150,  // ID
-                    2, 260,  // Name
-                    3, 120,  // Sex
-                    4, 220,  // Birthdate
-                    5, 220,  // Contact
-                    6, 150  // Status
-            ); //1226 total = 106 checkbox, 150 ID
+                    0, 106, 1, 150, 2, 260, 3, 120, 4, 220, 5, 220, 6, 150
+            );
 
             JTable patientTable = asgui.createTable(data, attributes, 2, 0, 6, colWidths);
             JScrollPane patientScrollPane = new JScrollPane(patientTable);
@@ -70,17 +64,16 @@ public class PatientController implements ActionListener{
             }
 
         }
-		else if(e.getSource() == asgui.getDeleteButton()) // DELETE LOGIC
+        else if(e.getSource() == asgui.getDeleteButton()) 
         {
+            if (!asgui.getTableLabel().getText().equals("Patient Records")) return;
             System.out.println("Delete Button clicked for Patients!");
-            // current table from the scroll pane
             JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
             if (table == null) {
                 JOptionPane.showMessageDialog(asgui, "No table data visible to delete.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            // get selected row IDs
             List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
 
             if (selectedIDs.isEmpty()) {
@@ -105,35 +98,50 @@ public class PatientController implements ActionListener{
                 }
 
                 JOptionPane.showMessageDialog(asgui, deletedCount + " patient record(s) deleted successfully.", "Deletion Complete", JOptionPane.INFORMATION_MESSAGE);
-                
-                // refresh the table display
                 asgui.getPatientButton().doClick();
             }
         }
+        else if(e.getSource() == asgui.getUpdateButton()) 
+        {
+            if (!asgui.getTableLabel().getText().equals("Patient Records")) return;
+            
+            System.out.println("Update Button clicked for Patient!");
+			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+			if (table == null) return;
+
+			List<Object> selectedData = asgui.getSelectedRowData(table);
+
+			if (selectedData != null) {
+				if (table.getModel().getColumnCount() != 7) {
+					JOptionPane.showMessageDialog(asgui, "Update function available only for Patient Records view.", "Update Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				try {
+					// Extract data: [0:Chk] [1:ID] [2:Name Object] [3:Sex] [4:Birthdate] [5:Contact] [6:Status]
+					int patientID = (int) selectedData.get(1);
+					Object[] nameObj = (Object[]) selectedData.get(2);
+					String fullName = (String) nameObj[1];
+					String[] names = fullName.split(", ");
+					String lastName = names[0].trim();
+					String firstName = names.length > 1 ? names[1].trim() : "";
+					String sex = (String) selectedData.get(3);
+					String birthDate = (String) selectedData.get(4);
+					String contact = (String) selectedData.get(5);
+					String status = (String) selectedData.get(6);
+
+					Patient selectedPatient = new Patient(lastName, firstName, birthDate, contact, sex, status);
+					selectedPatient.setPatientID(patientID);
+					
+					UpdatePatientDialog updateDialog = new UpdatePatientDialog(asgui, selectedPatient);
+					updateDialog.setVisible(true);
+					asgui.getPatientButton().doClick();
+
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(asgui, "Error processing selected Patient data.", "Data Error", JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
+			}
+        }
     }
-
-
-    public List<Patient> getAllPatients() {
-        return patientManagement.viewPatientRecords();
-    }
-
-    public boolean addPatient(Patient patient) {
-        return patientManagement.createPatientRecord(patient);
-    }
-
-    public boolean updatePatient(Patient patient) {
-        return patientManagement.updatePatientRecord(patient);
-    }
-
-    public boolean deletePatient(int patientID) {
-        return patientManagement.deletePatientRecord(patientID);
-    }
-
-
-    /**
-     * Search patients by name or other criteria
-     */
-//    public List<Patient> searchPatients(String keyword) {
-//        return patientManagement.searchPatients(keyword);
-//    }
 }

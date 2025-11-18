@@ -5,6 +5,8 @@ import model.PhysicianSchedule;
 import model.PhysicianScheduleManagement;
 
 import view.ASGui;
+import view.UpdatePhysicianDialog;
+import view.UpdatePhysicianScheduleDialog;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -112,17 +114,19 @@ public class PhysicianController implements ActionListener{
         }
 		else if(e.getSource() == asgui.getDeleteButton()) 
 		{
+            String currentLabel = asgui.getTableLabel().getText();
+            if (!currentLabel.equals("Physician Records") && !currentLabel.equals("Physician Schedule Records")) return;
+            
 			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
 			if (table == null) return;
 			
-			String entityType = (table.getModel().getColumnCount() == 5) ? "Physician" : "Physician Schedule";
-			System.out.println("Delete Button clicked for " + entityType + "!");
+			String entityType = (currentLabel.equals("Physician Records")) ? "Physician" : "Physician Schedule";
 			
 			List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
-			if (selectedIDs.isEmpty()) {
-				JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
+            if (selectedIDs.isEmpty()) {
+                JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
 			int confirm = JOptionPane.showConfirmDialog(asgui, 
 				"Are you sure you want to delete the selected " + selectedIDs.size() + " " + entityType + " record(s)?", 
@@ -161,8 +165,53 @@ public class PhysicianController implements ActionListener{
 		}
 		else if(e.getSource() == asgui.getUpdateButton()) 
 		{
-			JOptionPane.showMessageDialog(asgui, "Update functionality for Physician is not yet implemented.", "Coming Soon", JOptionPane.INFORMATION_MESSAGE);
+            String currentLabel = asgui.getTableLabel().getText();
+            JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+            if (table == null) return;
+            List<Object> selectedData = asgui.getSelectedRowData(table);
+            if (selectedData == null) return;
+
+            try {
+                if (currentLabel.equals("Physician Records")) {
+                    // [0:Chk] [1:ID] [2:Name Object] [3:Contact] [4:Specialization]
+                    int physicianID = (int) selectedData.get(1);
+                    Object[] nameObj = (Object[]) selectedData.get(2);
+                    String fullName = (String) nameObj[1];
+                    String[] names = fullName.split(", ");
+                    String lastName = names[0];
+                    String firstName = names[1];
+                    String contact = (String) selectedData.get(3);
+                    String specialization = (String) selectedData.get(4);
+
+                    Physician selectedPhysician = new Physician(firstName, lastName, contact, specialization);
+                    selectedPhysician.setPhysician_id(physicianID); 
+
+                    UpdatePhysicianDialog updateDialog = new UpdatePhysicianDialog(asgui, selectedPhysician);
+                    updateDialog.setVisible(true);
+                    asgui.getPhysicianButton().doClick();
+
+                } else if (currentLabel.equals("Physician Schedule Records")) {
+                    // [0:Chk] [1:Schedule ID] [2:Physician ID] [3:Day] [4:Start Time] [5:End Time]
+                    int scheduleID = (int) selectedData.get(1);
+                    int physicianID = (int) selectedData.get(2);
+                    String day = (String) selectedData.get(3);
+                    String startTime = (String) selectedData.get(4);
+                    String endTime = (String) selectedData.get(5);
+
+                    PhysicianSchedule selectedSchedule = new PhysicianSchedule(physicianID, day, startTime, endTime);
+                    selectedSchedule.setPhysicianScheduleID(scheduleID);
+                    
+                    UpdatePhysicianScheduleDialog updateDialog = new UpdatePhysicianScheduleDialog(asgui, selectedSchedule);
+                    updateDialog.setVisible(true);
+                    asgui.getpScheduleButton().doClick(); // Refresh
+                } else {
+                    JOptionPane.showMessageDialog(asgui, "Update not supported for the current table view.", "Update Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(asgui, "Error processing selected data for update: " + ex.getMessage(), "Data Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
 		}
     }
-
 }

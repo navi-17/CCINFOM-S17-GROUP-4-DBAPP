@@ -4,6 +4,7 @@ import model.IllnessManagement;
 
 
 import view.ASGui;
+import view.UpdateIllnessDialog;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,6 +56,7 @@ public class IllnessController implements ActionListener {
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
             JTable illnessTable = asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+			asgui.setActionListeners(this);
             JScrollPane illnessScrollPane = new JScrollPane(illnessTable);
 
             int tabIndex = asgui.getTabIndex("Illnesses");
@@ -67,6 +69,7 @@ public class IllnessController implements ActionListener {
         }
 		else if(e.getSource() == asgui.getDeleteButton()) 
 		{
+			if (!asgui.getTableLabel().getText().equals("Illness Records")) return;
 			System.out.println("Delete Button clicked for Ailment!");
 			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
 			if (table == null) return;
@@ -99,9 +102,45 @@ public class IllnessController implements ActionListener {
 				asgui.getAilmentButton().doClick(); // Refresh
 			}
 		}
-		else if(e.getSource() == asgui.getUpdateButton()) 
+		else if(e.getSource() == asgui.getUpdateButton())
 		{
-			JOptionPane.showMessageDialog(asgui, "Update functionality for Ailment is not yet implemented.", "Coming Soon", JOptionPane.INFORMATION_MESSAGE);
+			if (!asgui.getTableLabel().getText().equals("Illness Records")) return;
+
+			System.out.println("Update Button clicked for Ailment!");
+			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+			if (table == null) return;
+
+			List<Object> selectedData = asgui.getSelectedRowData(table);
+
+			if (selectedData != null) {
+				if (table.getModel().getColumnCount() != 5) {
+					JOptionPane.showMessageDialog(asgui, "Update function available only for Illness Records view.", "Update Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				try {
+					// Extract data:
+					int illnessID = (int) selectedData.get(1);
+					String name = (String) selectedData.get(2);
+					String category = (String) selectedData.get(3);
+					String description = (String) selectedData.get(4);
+					
+					// Create Illness object
+					Illness selectedIllness = new Illness(name, category, description);
+					selectedIllness.setIllness_id(illnessID);
+					
+					// Open the Update Dialog
+					UpdateIllnessDialog updateDialog = new UpdateIllnessDialog(asgui, selectedIllness);
+					updateDialog.setVisible(true);
+
+					// Refresh the table
+					asgui.getAilmentButton().doClick();
+
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(asgui, "Error processing selected Illness data.", "Data Error", JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
+			}
 		}
     }
 }
