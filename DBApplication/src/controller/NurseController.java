@@ -95,7 +95,7 @@ public class NurseController implements ActionListener{
                     5, 242
             ); //1226 total: (1226-106) / 3 attributes =
 
-            JTable nurseShiftTable = asgui.createTable(data, attributes, 2, 0, -1, colWidths);
+            JTable nurseShiftTable = asgui.createTable(data, attributes, -1, 0, -1, colWidths);
             JScrollPane nurseShiftScrollPane = new JScrollPane(nurseShiftTable);
 
             int tabIndex = asgui.getTabIndex("Nurse Shifts");

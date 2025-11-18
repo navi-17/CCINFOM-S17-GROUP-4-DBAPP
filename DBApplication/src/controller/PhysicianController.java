@@ -99,7 +99,7 @@ public class PhysicianController implements ActionListener{
                     5, 242// Contact
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
-            JTable physicianSchedulesTable = asgui.createTable(data, attributes, 2, 0, -1, colWidths);
+            JTable physicianSchedulesTable = asgui.createTable(data, attributes, -1, 0, -1, colWidths);
             JScrollPane physicianSchedulesScrollPane = new JScrollPane(physicianSchedulesTable);
 
             int tabIndex = asgui.getTabIndex("Physician Schedules");
