@@ -163,4 +163,75 @@ public class ReportManagement {
 
         return totalPatients;
     }
+
+    public int getTreatmentStatistics(String type, int treatmentID, String dateOrMonth, Integer year)
+    {
+        int totalPatients = 0;
+
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            System.out.println("Connection to database successful!");
+
+            String sql = "";
+
+            if (type.equalsIgnoreCase("day"))
+            {
+                sql = "SELECT COUNT(DISTINCT d.patient_id) AS Total_Patients " +
+                        "FROM treatment t " +
+                        "LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id" +
+                        "WHERE t.treatment_id = ? " +
+                        "AND t.treatment_date = ?";
+
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, treatmentID);
+                pstmt.setString(2, dateOrMonth);
+
+            }
+            else if (type.equalsIgnoreCase("month"))
+            {
+                sql = "SELECT COUNT(DISTINCT d.patient_id) AS Total_Patients " +
+                        "FROM treatment t " +
+                        "LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id " +
+                        "WHERE t.treatment_id = ? " +
+                        "AND MONTH(t.treatment_date) = ? " +
+                        "AND YEAR(t.treatment_date) = ?";
+
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, treatmentID);
+                pstmt.setInt(2, Integer.parseInt(dateOrMonth)); // month
+                pstmt.setInt(3, year);
+
+            }
+            else
+            {
+                sql = "SELECT COUNT(DISTINCT d.patient_id) AS Total_Patients " +
+                        "FROM treatment t " +
+                        "LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id " +
+                        "WHERE t.treatment_id = ? " +
+                        "AND YEAR(t.treatment_date) = ?";
+
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, treatmentID);
+                pstmt.setInt(2, year);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next())
+            {
+                totalPatients = rs.getInt("Total_Patients");
+                System.out.println(totalPatients);
+            }
+
+
+            rs.close();
+            pstmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return totalPatients;
+    }
 }
