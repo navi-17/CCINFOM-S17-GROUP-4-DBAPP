@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
-
 public class TreatmentManagement {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
     private static final String USER = "root";

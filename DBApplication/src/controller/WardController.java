@@ -26,6 +26,7 @@ public class WardController implements ActionListener {
     {
         if(e.getSource() == asgui.getWardButton())
         {
+            asgui.showOnlyTabs("Wards", "Ward Related Records");
             asgui.setTableLabel("Ward Records");
             System.out.println("Ward Button clicked!");
             List<Ward> wards = wardManagement.viewWardRecords();
@@ -51,7 +52,16 @@ public class WardController implements ActionListener {
                     4, 323 //specialization
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
-            asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JTable wardTable = asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JScrollPane wardScrollPane = new JScrollPane(wardTable);
+
+            int tabIndex = asgui.getTabIndex("Wards");
+            if(tabIndex != -1) {
+                asgui.getTabbedPane().setComponentAt(tabIndex, wardScrollPane);
+                asgui.getTabbedPane().setSelectedIndex(tabIndex);
+            } else {
+                System.err.println("Tab 'Wards' not found!");
+            }
         }
 		else if(e.getSource() == asgui.getDeleteButton()) 
 		{

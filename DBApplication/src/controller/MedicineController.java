@@ -27,8 +27,9 @@ public class MedicineController implements ActionListener{
     {
         if(e.getSource() == asgui.getMedicineButton())
         {
+            asgui.showOnlyTabs("Medicines", "Medicine Related Records");
             asgui.setTableLabel("Medicine Records");
-            System.out.println("Ailment Button clicked!");
+            System.out.println("Medicine button clicked!");
             List<Medicine> medicines = medicineManagement.viewMedicineRecord();
             Object[][] data = new Object[medicines.size()][4];
             for(int i = 0; i < medicines.size(); i++)
@@ -50,7 +51,16 @@ public class MedicineController implements ActionListener{
                     3, 373  //stock
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
-            asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JTable medicineTable = asgui.createTable(data, attributes, -1, 0, -1, colWidths);
+            JScrollPane medicineScrollPane = new JScrollPane(medicineTable);
+
+            int tabIndex = asgui.getTabIndex("Medicines");
+            if(tabIndex != -1) {
+                asgui.getTabbedPane().setComponentAt(tabIndex, medicineScrollPane);
+                asgui.getTabbedPane().setSelectedIndex(tabIndex);
+            } else {
+                System.err.println("Tab 'Medicines' not found!");
+            }
         }
 		else if(e.getSource() == asgui.getDeleteButton()) 
 		{

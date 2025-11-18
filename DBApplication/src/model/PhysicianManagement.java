@@ -148,6 +148,59 @@ public class PhysicianManagement {
         }
     }
 
+    public List<Object[]> physicianRelatedRecord(int id)
+    {
+        List<Object[]> records = new ArrayList<>();
+        try{
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            System.out.println("Connection to database successful!");
+
+            String sql = "SELECT\n" +
+                    "\tCONCAT(pd.ph_lastname, ', ', pd.ph_firstname) AS physician_name,\n" +
+                    "    CONCAT(p.p_lastname, ', ', p.p_firstname) AS patient_name,\n" +
+                    "    i.illness_name,\n" +
+                    "    t.treatment_id,\n" +
+                    "    t.treatment_date,\n" +
+                    "    t.treatment_procedure\n" +
+                    "FROM treatment t\n" +
+                    "LEFT JOIN nurse_assignment na ON t.nurseAssignment_id = na.nurseAssignment_id\n" +
+                    "LEFT JOIN patient p ON na.patient_id = p.patient_id\n" +
+                    "LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id\n" +
+                    "LEFT JOIN physician_schedule ps ON d.physicianSchedule_id = ps.physicianSchedule_id\n" +
+                    "LEFT JOIN physician pd ON ps.physician_id = pd.physician_id\n" +
+                    "LEFT JOIN physician pa ON t.assignedPhysician_id = pa.physician_id\n" +
+                    "LEFT JOIN illness i ON d.illness_id = i.illness_id\n" +
+                    "WHERE t.performed_by LIKE '%Physician%' AND (pa.physician_id = ? OR pd.physician_id = ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            pstmt.setInt(2, id);
+
+
+            ResultSet rs = pstmt.executeQuery();// used for queries that returns result
+            while(rs.next())
+            {
+                Object[] row = new Object[6];
+                row[0] = rs.getString("physician_name");
+                row[1] = rs.getString("patient_name");
+                row[2] = rs.getString("illness_name");
+                row[3] = rs.getString("treatment_id");
+                row[4] = rs.getString("treatment_date");
+                row[5] = rs.getString("treatment_procedure");
+                records.add(row);
+            }
+
+            pstmt.close();
+            rs.close();
+            conn.close();
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return records;
+    }
+
+
 
 
     public static void main(String[] args)

@@ -153,6 +153,52 @@ public class NurseManagement {
         }
     }
 
+    public List<Object[]> nurseRelatedRecord(int id)
+    {
+        List<Object[]> records = new ArrayList<>();
+        try{
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            System.out.println("Connection to database successful!");
+
+            String sql = "SELECT CONCAT(n.n_lastname, ', ', n.n_firstname) AS nurse_name,\n" +
+                    "\t   CONCAT(p.p_lastname, ', ', p.p_firstname) AS patient_name,\n" +
+                    "       w.ward_no, w.floor,\n" +
+                    "\t   t.treatment_procedure,\n" +
+                    "       t.treatment_date\n" +
+                    "FROM nurse n\n" +
+                    "\tLEFT JOIN nurse_shift ns ON n.nurse_id = ns.nurse_id\n" +
+                    "    LEFT JOIN nurse_assignment na ON ns.nurseShift_id = na.nurseShift_id\n" +
+                    "    LEFT JOIN patient p ON na.patient_id = p.patient_id\n" +
+                    "    LEFT JOIN treatment t ON na.nurseAssignment_id = t.nurseAssignment_id\n" +
+                    "    LEFT JOIN admission a ON p.patient_id = a.patient_id\n" +
+                    "    LEFT JOIN ward w ON a.ward_id = w.ward_id\n" +
+                    "WHERE  n.nurse_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+
+            ResultSet rs = pstmt.executeQuery();// used for queries that returns result
+            while(rs.next())
+            {
+                Object[] row = new Object[6];
+                row[0] = rs.getString("nurse_name");
+                row[1] = rs.getString("patient_name");
+                row[2] = rs.getString("ward_no");
+                row[3] = rs.getString("floor");
+                row[4] = rs.getString("treatment_date");
+                row[5] = rs.getString("treatment_procedure");
+                records.add(row);
+            }
+
+            pstmt.close();
+            rs.close();
+            conn.close();
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return records;
+    }
+
 
     public static void main(String[] args){
         Nurse nurse = new Nurse("Marta", "Lualdi", "+63 9645138314");

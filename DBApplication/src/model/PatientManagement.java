@@ -149,6 +149,53 @@ public class PatientManagement {
         }
     }
 
+    public List<Object[]> patientRelatedRecord(int id)
+    {
+        List<Object[]> records = new ArrayList<>();
+        try{
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            System.out.println("Connection to database successful!");
+
+            String sql = "SELECT CONCAT(p.p_lastname, ', ', p.p_firstname) AS PatientName, i.illness_name, t.treatment_procedure, w.ward_no, CONCAT(ph.ph_lastname, ', ', ph.ph_firstname) AS Assigned_Physician, CONCAT(n.n_lastname, ', ', n.n_firstname) AS Assigned_Nurse\n" +
+                    "FROM patient p \n" +
+                    "\tLEFT JOIN diagnosis d ON p.patient_id = d.patient_id\n" +
+                    "    LEFT JOIN illness i ON d.illness_id = i.illness_id\n" +
+                    "    LEFT JOIN treatment t ON d.diagnosis_id = t.diagnosis_id\n" +
+                    "\tLEFT JOIN nurse_assignment na ON t.nurseAssignment_id = na.nurseAssignment_id\n" +
+                    "    LEFT JOIN nurse_shift ns ON na.nurseShift_id = ns.nurseShift_id\n" +
+                    "    LEFT JOIN admission a ON p.patient_id = a.patient_id\n" +
+                    "    LEFT JOIN ward w ON a.ward_id = w.ward_id\n" +
+                    "    LEFT JOIN physician_schedule ps ON d.physicianSchedule_id = ps.physicianSchedule_id\n" +
+                    "    LEFT JOIN physician ph ON ps.physician_id = ph.physician_id\n" +
+                    "    LEFT JOIN nurse n ON ns.nurse_id = n.nurse_id\n" +
+                    "WHERE p.patient_id = ?;\t";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+
+            ResultSet rs = pstmt.executeQuery();// used for queries that returns result
+            while(rs.next())
+            {
+                Object[] row = new Object[6];
+                row[0] = rs.getString("PatientName");
+                row[1] = rs.getString("illness_name");
+                row[2] = rs.getString("treatment_procedure");
+                row[3] = rs.getString("ward_no");
+                row[4] = rs.getString("Assigned_Physician");
+                row[5] = rs.getString("Assigned_Nurse");
+                records.add(row);
+            }
+
+            pstmt.close();
+            rs.close();
+            conn.close();
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return records;
+    }
+
     public static void main(String[] args)
     {
         Patient p = new Patient("Yeager","Eren", "2000-01-01","+63 9184398952", "Male", "Pending");
