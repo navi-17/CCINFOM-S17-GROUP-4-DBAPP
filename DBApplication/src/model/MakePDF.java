@@ -17,8 +17,8 @@ public class MakePDF {
     //kinopya ko yung fonts ha
     static {
         try {
-            BaseFont regularf = BaseFont.createFont("/RobotoRegular.ttf",  BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            BaseFont boldf = BaseFont.createFont("/RobotoBold.ttf",  BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont regularf = BaseFont.createFont("RobotoRegular.ttf",  BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont boldf = BaseFont.createFont("RobotoBold.ttf",  BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             bf = new Font(boldf, 18, Font.BOLD);
             rf = new Font(regularf, 18, Font.NORMAL);
         } catch (DocumentException e) {

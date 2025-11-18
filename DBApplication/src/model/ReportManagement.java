@@ -5,9 +5,9 @@ import model.MakePDF;
 import java.sql.*;
 
 public class ReportManagement {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/DB";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/dbhospital_final";
     private static final String USER = "root";
-    private static final String PASSWORD = "KC379379";
+    private static final String PASSWORD = "infom123";
     private Connection conn;
     PreparedStatement pstmt;
 
@@ -85,8 +85,8 @@ public class ReportManagement {
         //return totalPatients;
     }
 
-    public void getIllnessOccurenceReport (String type, String illness, String dateOrMonth, Integer year){
-        //int totalPatients = 0;
+    public void getIllnessOccurrenceReport (String type, String illness, String dateOrMonth, Integer year){
+        int totalPatients = 0;
 
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
@@ -96,10 +96,10 @@ public class ReportManagement {
 
             if(type.equalsIgnoreCase("day"))
             {
-                sql = "SELECT COUNT(DISTINCT p.patient_id) AS Total_Patients " +
+                sql = "SELECT COUNT(DISTINCT patient_id) AS Total_Patients " +
                         "FROM illness_occurrence_view " +
-                        "WHERE d.illness = ? " +
-                        "AND t.treatment_date = ?";
+                        "WHERE illness_name = ? " +
+                        "AND treatment_date = ?";
 
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, illness);
@@ -109,11 +109,11 @@ public class ReportManagement {
             }
             else if(type.equalsIgnoreCase("month"))
             {
-                sql = "SELECT COUNT(DISTINCT p.patient_id) AS Total_Patients " +
+                sql = "SELECT COUNT(DISTINCT patient_id) AS Total_Patients " +
                         "FROM illness_occurrence_view " +
-                        "WHERE d.illness = ? " +
-                        "AND MONTH(t.treatment_date) = ? " +
-                        "AND YEAR(t.treatment_date) = ? ";
+                        "WHERE illness_name = ? " +
+                        "AND MONTH(treatment_date) = ? " +
+                        "AND YEAR(treatment_date) = ? ";
 
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, illness);
@@ -122,10 +122,10 @@ public class ReportManagement {
             }
             else
             {
-                sql = "SELECT COUNT(DISTINCT p.patient_id) AS Total_Patients " +
-                        "FROM illness_occurence_view " +
-                        "WHERE d.illness = ? " +
-                        "AND YEAR(t.treatment_date) = ?";
+                sql = "SELECT COUNT(DISTINCT patient_id) AS Total_Patients " +
+                        "FROM illness_occurrence_view " +
+                        "WHERE illness_name = ? " +
+                        "AND YEAR(treatment_date) = ?";
 
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, illness);
@@ -133,13 +133,13 @@ public class ReportManagement {
             }
 
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
+            MakePDF.exportToPDF(rs, "illness_report.pdf");
 
-//            if(rs.next())
-//            {
-//                totalPatients = rs.getInt("Total_Patients");
-//                System.out.println(totalPatients);
-//
-//            }
+            if(rs.next())
+            {
+                totalPatients = rs.getInt("Total_Patients");
+                System.out.println(totalPatients);
+            }
 
             pstmt.close();
             rs.close();
@@ -149,7 +149,7 @@ public class ReportManagement {
             System.out.println(e.getMessage());
         }
 
-        //return totalPatients;
+//        return totalPatients;
     }
 
     public void getTreatmentStatistics(String type, int treatmentID, String dateOrMonth, Integer year)
@@ -222,9 +222,10 @@ public class ReportManagement {
        // return totalPatients;
     }
 
-//    public static void main(String[] args) throws SQLException {
-//        ReportManagement rm = new ReportManagement();
-//
-//        rm.getIllnessOccurenceReport();
-//    }
+    public static void main(String[] args) throws SQLException {
+        ReportManagement rm = new ReportManagement();
+
+        rm.getIllnessOccurrenceReport("year", "coronary artery disease", "none", 2025);
+
+    }
 }
