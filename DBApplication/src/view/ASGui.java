@@ -19,6 +19,7 @@ public class ASGui extends JFrame{
     private int mainWidth;
     private int sideWidth;
     private String placeholder = "Search...";
+    private int buttonValue;
 
     private JScrollPane scrollPane;
     private JTabbedPane tabbedPane;
@@ -181,7 +182,9 @@ public class ASGui extends JFrame{
 //        tabbedPane = createTabbedPane(tabs, placeholders);
 //        tabbedPane.setBounds(-1, 1, 1230, 785); // Set size here
 
-        String[] tabs = {"Patients", "Patient Related Records", "Illnesses", "Illness Related Records", "Wards", "Ward Related Records", "Nurse", "Nurse Related Records", "Physician", "Physician Related Records", "Medicines", "Medicine Related Records"};
+        String[] tabs = {"Patients", "Patient Related Records", "Illnesses", "Illness Related Records", "Wards", "Physician Schedules",
+                "Ward Related Records", "Nurse", "Nurse Related Records", "Physician", "Physician Related Records", "Nurse Shifts",
+                "Medicines", "Medicine Related Records", "Diagnosis", "Nurse Assignments", "Admissions", "Treatments", "Discharges"};
         JScrollPane[] placeholders = new JScrollPane[tabs.length];
         for (int i = 0; i < placeholders.length; i++) {
             placeholders[i] = new JScrollPane(); // empty placeholder
@@ -409,6 +412,7 @@ public class ASGui extends JFrame{
         });
 
         // Buttons -----------------------------------------------
+        buttonValue = 0;
 
         patientButton = new JButton();
         patientButton.setBounds(30,126,240,40);
@@ -820,6 +824,7 @@ public class ASGui extends JFrame{
         treatmentButton.addActionListener(listener);
         nShiftButton.addActionListener(listener);
         pScheduleButton.addActionListener(listener);
+        createButton.addActionListener(listener);
         deleteButton.addActionListener(listener);
         updateButton.addActionListener(listener);
         searchButton.addActionListener(listener);
@@ -841,7 +846,10 @@ public class ASGui extends JFrame{
         return selectedIDs;
     }
 
-
+    public JButton getCreateButton()
+    {
+        return createButton;
+    }
 
     public JButton getDeleteButton()
     {
@@ -1243,5 +1251,20 @@ public class ASGui extends JFrame{
     public JTextField getSearchTextField()
     {
         return searchTextField;
+    }
+
+    public void setCreateButtonText(String createText)
+    {
+        createButton.setText(createText);
+    }
+
+    public int getButtonValue()
+    {
+        return buttonValue;
+    }
+
+    public void setButtonValue(int newValue)
+    {
+        buttonValue = newValue;
     }
 }

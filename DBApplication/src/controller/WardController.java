@@ -26,6 +26,8 @@ public class WardController implements ActionListener {
     {
         if(e.getSource() == asgui.getWardButton())
         {
+            asgui.setButtonValue(3);
+            asgui.setCreateButtonText("Add Ward");
             asgui.showOnlyTabs("Wards", "Ward Related Records");
             asgui.setTableLabel("Ward Records");
             System.out.println("Ward Button clicked!");
