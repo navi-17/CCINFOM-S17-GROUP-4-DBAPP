@@ -28,6 +28,7 @@ public class PhysicianController implements ActionListener{
     {
         if(e.getSource() == asgui.getPhysicianButton())
         {
+            asgui.showOnlyTabs("Physician", "Physician Related Records");
             asgui.setTableLabel("Physician Records");
             System.out.println("Physician Button clicked!");
             List<Physician> physicians = physicianManagement.viewPhysicianRecords();
@@ -38,7 +39,7 @@ public class PhysicianController implements ActionListener{
 
                 data[i][0] = false;
                 data[i][1] = p.getPhysicianID();
-                data[i][2] = new Object[]{ asgui.getProfileIcon(), p.getLastName() + ", " + p.getFirstName()};
+                data[i][2] = new Object[]{asgui.getProfileIcon(), p.getLastName() + ", " + p.getFirstName()};
                 data[i][3] = p.getContact();
                 data[i][4] = p.getSpecialization();
             }
@@ -53,7 +54,16 @@ public class PhysicianController implements ActionListener{
                     4, 323 //specialization
             ); //1226 total = 106 checkbox, 150 ID, 970 left
 
-            asgui.createTable(data, attributes, 2, 0, -1, colWidths);
+            JTable physicianTable = asgui.createTable(data, attributes, 2, 0, -1, colWidths);
+            JScrollPane physicianScrollPane = new JScrollPane(physicianTable);
+
+            int tabIndex = asgui.getTabIndex("Physician");
+            if(tabIndex != -1) {
+                asgui.getTabbedPane().setComponentAt(tabIndex, physicianScrollPane);
+                asgui.getTabbedPane().setSelectedIndex(tabIndex);
+            } else {
+                System.err.println("Tab 'Physician' not found!");
+            }
         }
         else if(e.getSource() == asgui.getpScheduleButton())
         {

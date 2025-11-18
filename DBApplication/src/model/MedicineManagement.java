@@ -144,6 +144,55 @@ public class MedicineManagement {
         }
     }
 
+    public List<Object[]> medicineRelatedRecord(int id)
+    {
+        List<Object[]> records = new ArrayList<>();
+        try{
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            System.out.println("Connection to database successful!");
+
+            String sql = "SELECT\n" +
+                    "    m.medicine_name,\n" +
+                    "    CONCAT(p.p_lastname, ', ', p.p_firstname) AS patient_name,\n" +
+                    "    i.illness_name,\n" +
+                    "    CONCAT(ph.ph_lastname, ', ', ph.ph_firstname) AS physician_name,\n" +
+                    "    t.treatment_date,\n" +
+                    "    t.treatment_procedure\n" +
+                    "FROM treatment t\n" +
+                    "    LEFT JOIN medicine m ON t.medicine_id = m.medicine_id\n" +
+                    "    LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id\n" +
+                    "    LEFT JOIN patient p ON d.patient_id = p.patient_id\n" +
+                    "    LEFT JOIN illness i ON d.illness_id = i.illness_id\n" +
+                    "    LEFT JOIN physician_schedule pa ON d.physicianSchedule_id = pa.physicianSchedule_id\n" +
+                    "    LEFT JOIN physician ph ON pa.physician_id = ph.physician_id\n" +
+                    "WHERE m.medicine_id = ?;";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+
+            ResultSet rs = pstmt.executeQuery();// used for queries that returns result
+            while(rs.next())
+            {
+                Object[] row = new Object[6];
+                row[0] = rs.getString("medicine_name");
+                row[1] = rs.getString("patient_name");
+                row[2] = rs.getString("illness_name");
+                row[3] = rs.getString("physician_name");
+                row[4] = rs.getString("treatment_date");
+                row[5] = rs.getString("treatment_procedure");
+                records.add(row);
+            }
+
+            pstmt.close();
+            rs.close();
+            conn.close();
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return records;
+    }
+
 
 
 
@@ -160,6 +209,7 @@ public class MedicineManagement {
 //        mm.updateMedicineRecord(updatedMed);
 //        mm.deleteMedicineRecord(4002);
         mm.viewMedicineRecord();
+        mm.medicineRelatedRecord(4001);
     }
 }
 

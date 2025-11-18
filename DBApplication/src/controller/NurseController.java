@@ -26,6 +26,7 @@ public class NurseController implements ActionListener{
     {
         if(e.getSource() == asgui.getNurseButton())
         {
+            asgui.showOnlyTabs("Nurse", "Nurse Related Records");
             asgui.setTableLabel("Nurse Records");
             System.out.println("Nurse Button clicked!");
             List<Nurse> nurses = nurseManagement.viewNurseRecords();
@@ -49,7 +50,16 @@ public class NurseController implements ActionListener{
                     3, 373  // Contact
             ); //1226 total: (1226-106) / 3 attributes =
 
-            asgui.createTable(data, attributes, 2, 0, -1, colWidths);
+            JTable nurseTable = asgui.createTable(data, attributes, 2, 0, -1, colWidths);
+            JScrollPane nurseScrollPane = new JScrollPane(nurseTable);
+
+            int tabIndex = asgui.getTabIndex("Nurse");
+            if(tabIndex != -1) {
+                asgui.getTabbedPane().setComponentAt(tabIndex, nurseScrollPane);
+                asgui.getTabbedPane().setSelectedIndex(tabIndex);
+            } else {
+                System.err.println("Tab 'Physician' not found!");
+            }
         }
         else if(e.getSource() == asgui.getnShiftButton())
         {

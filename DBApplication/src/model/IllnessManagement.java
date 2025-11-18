@@ -151,6 +151,51 @@ public class IllnessManagement {
             }
         }
     }
+
+    public List<Object[]> illnessRelatedRecord(int id)
+    {
+        List<Object[]> records = new ArrayList<>();
+        try{
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            System.out.println("Connection to database successful!");
+
+            String sql = "SELECT \n" +
+                    "    i.illness_name,\n" +
+                    "    d.diagnosis_date,\n" +
+                    "    CONCAT (p.p_lastname, ', ', p.p_firstname) AS patient_name,\n" +
+                    "    t.treatment_date,\n" +
+                    "    t.treatment_procedure\n" +
+                    "FROM diagnosis d\n" +
+                    "JOIN patient p ON d.patient_id = p.patient_id\n" +
+                    "LEFT JOIN treatment t ON d.diagnosis_id = t.diagnosis_id\n" +
+                    "LEFT JOIN illness i ON d.illness_id = i.illness_id\n" +
+                    "WHERE d.illness_id = ?;";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+
+            ResultSet rs = pstmt.executeQuery();// used for queries that returns result
+            while(rs.next())
+            {
+                Object[] row = new Object[5];
+                row[0] = rs.getString("illness_name");
+                row[1] = rs.getString("diagnosis_date");
+                row[2] = rs.getString("patient_name");
+                row[3] = rs.getString("treatment_date");
+                row[4] = rs.getString("treatment_procedure");
+                records.add(row);
+            }
+
+            pstmt.close();
+            rs.close();
+            conn.close();
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return records;
+    }
+
     public static void main(String[] args){
         IllnessManagement  illnessManagement = new IllnessManagement();
 
