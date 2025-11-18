@@ -25,6 +25,8 @@ public class DischargeController implements ActionListener{
     {
         if(e.getSource() == asgui.getDischargeButton())
         {
+            asgui.setButtonValue(7);
+            asgui.setCreateButtonText("Add Discharge");
             asgui.setTableLabel("Discharge Records");
             System.out.println("DischargeAilment Button clicked!");
             List<Discharge> discharges = dischargeManagement.viewDischargeRecord();

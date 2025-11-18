@@ -25,6 +25,8 @@ public class TreatmentController implements ActionListener{
     {
         if(e.getSource() == asgui.getTreatmentButton())
         {
+            asgui.setButtonValue(10);
+            asgui.setCreateButtonText("Add Treatment");
             asgui.setTableLabel("Treatment Records");
             System.out.println("Treatment Button clicked!");
             List<Treatment> treatments = treatmentManagement.viewTreatmentRecords();

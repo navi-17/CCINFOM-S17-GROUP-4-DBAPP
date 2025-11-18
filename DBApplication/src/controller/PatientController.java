@@ -24,6 +24,8 @@ public class PatientController implements ActionListener{
     {
         if(e.getSource() == asgui.getPatientButton())
         {
+            asgui.setButtonValue(0);
+            asgui.setCreateButtonText("Add Patient");
             asgui.setTableLabel("Patient Records");
             System.out.println("Patient Button clicked!");
             List<Patient> patients = patientManagement.viewPatientRecords();

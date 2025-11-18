@@ -19,6 +19,7 @@ public class ASGui extends JFrame{
     private int mainWidth;
     private int sideWidth;
     private String placeholder = "Search...";
+    private int buttonValue;
 
     private JScrollPane scrollPane;
     private JTabbedPane tabbedPane;
@@ -387,6 +388,8 @@ public class ASGui extends JFrame{
 
         // Buttons -----------------------------------------------
 
+        buttonValue = 0;
+
         patientButton = new JButton();
         patientButton.setBounds(30,126,240,40);
         patientButton.setIcon(personIcon);
@@ -450,7 +453,7 @@ public class ASGui extends JFrame{
         ailmentButton = new JButton();
         ailmentButton.setBounds(30,386,240,40);
         ailmentButton.setIcon(personIcon);
-        ailmentButton.setText("Ailment");
+        ailmentButton.setText("Illness");
         ailmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
         ailmentButton.setHorizontalAlignment(JLabel.LEFT);
         ailmentButton.setIconTextGap(10);
@@ -487,7 +490,7 @@ public class ASGui extends JFrame{
         diagnosisButton.setBounds(30,604,240,40);
         diagnosisButton.setIcon(personIcon);
         diagnosisButton.setText("Diagnosis");
-        diagnosisButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+        diagnosisButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
         diagnosisButton.setHorizontalAlignment(JLabel.LEFT);
         diagnosisButton.setIconTextGap(10);
         diagnosisButton.setForeground(new Color(0x2e582e));
@@ -499,7 +502,7 @@ public class ASGui extends JFrame{
         nAssignmentButton.setBounds(30,656,240,40);
         nAssignmentButton.setIcon(personIcon);
         nAssignmentButton.setText("Nurse Assignment");
-        nAssignmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+        nAssignmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
         nAssignmentButton.setHorizontalAlignment(JLabel.LEFT);
         nAssignmentButton.setIconTextGap(10);
         nAssignmentButton.setForeground(new Color(0x2e582e));
@@ -511,7 +514,7 @@ public class ASGui extends JFrame{
         treatmentButton.setBounds(30,708,240,40);
         treatmentButton.setIcon(personIcon);
         treatmentButton.setText("Treatment");
-        treatmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+        treatmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
         treatmentButton.setHorizontalAlignment(JLabel.LEFT);
         treatmentButton.setIconTextGap(10);
         treatmentButton.setForeground(new Color(0x2e582e));
@@ -796,6 +799,7 @@ public class ASGui extends JFrame{
         treatmentButton.addActionListener(listener);
         nShiftButton.addActionListener(listener);
         pScheduleButton.addActionListener(listener);
+        createButton.addActionListener(listener);
         deleteButton.addActionListener(listener);
         updateButton.addActionListener(listener);
     }
@@ -816,7 +820,10 @@ public class ASGui extends JFrame{
         return selectedIDs;
     }
 
-
+    public JButton getCreateButton()
+    {
+        return createButton;
+    }
 
     public JButton getDeleteButton()
     {
@@ -1175,6 +1182,21 @@ public class ASGui extends JFrame{
     public void setTableLabel(String tableName)
     {
         tableLabel.setText(tableName);
+    }
+
+    public void setCreateButtonText(String createText)
+    {
+        createButton.setText(createText);
+    }
+
+    public int getButtonValue()
+    {
+        return buttonValue;
+    }
+
+    public void setButtonValue(int newValue)
+    {
+        buttonValue = newValue;
     }
 
 }

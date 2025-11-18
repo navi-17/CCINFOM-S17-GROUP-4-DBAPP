@@ -27,6 +27,8 @@ public class AdmissionController implements ActionListener{
     {
         if(e.getSource() == asgui.getAdmissionButton())
         {
+            asgui.setButtonValue(6);
+            asgui.setCreateButtonText("Add Admission");
             asgui.setTableLabel("Admission Records");
             System.out.println("Admission Button clicked!");
             List<Admission> admissions = admissionManagement.viewPatientAdmission();
