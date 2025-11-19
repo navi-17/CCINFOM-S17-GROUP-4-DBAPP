@@ -45,6 +45,9 @@ public class ASGui extends JFrame{
     private JLabel sortByLabel;
     private JLabel sortByTextLabel;
     private JLabel backgroundLabel;
+    private JLabel welcomeImageLabel;
+
+    private JButton getStartedButton;
 
     private JButton patientButton;
     private JButton physicianButton;
@@ -82,6 +85,7 @@ public class ASGui extends JFrame{
 
 	private String lastViewButtonName = "";
 
+    private ImageIcon welcomeImage = new ImageIcon(getClass().getResource("/resources/welcomeImage.png"));
     private ImageIcon backgroundImage = new ImageIcon(getClass().getResource("/resources/backgroundImage.png"));
     private ImageIcon logoImage = new ImageIcon(getClass().getResource("/resources/globeIcon.png"));
     private ImageIcon houseIcon = new ImageIcon(getClass().getResource("/resources/houseIcon.png"));
@@ -216,10 +220,10 @@ public class ASGui extends JFrame{
 
         // Frames ------------------------------------------------
 
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        screenWidth = 1920;
-        screenHeight = 1080;
+        screenWidth = 1646;
+        screenHeight = 1029;
         mainWidth = 1346;
         sideWidth = 300;
 
@@ -383,6 +387,12 @@ public class ASGui extends JFrame{
         pathLabel.setBackground(Color.BLUE);
         // pathLabel.setOpaque(true);
 
+        welcomeImageLabel = new JLabel();
+        welcomeImageLabel.setIcon(welcomeImage);
+        welcomeImageLabel.setBounds(0,0,screenWidth,screenHeight);
+        welcomeImageLabel.setBackground(Color.WHITE);
+        welcomeImageLabel.setOpaque(true);
+
         backgroundLabel = new JLabel();
         backgroundLabel.setIcon(backgroundImage);
         backgroundLabel.setBounds(0,114,mainWidth,915);
@@ -424,6 +434,18 @@ public class ASGui extends JFrame{
 
         // Buttons -----------------------------------------------
         buttonValue = 0;
+
+        getStartedButton = new JButton();
+        getStartedButton.setBounds(600,720,450,95);
+        getStartedButton.setText("Get Started");
+        getStartedButton.setFont(MontserratBold.deriveFont(Font.BOLD,40f));
+        getStartedButton.setHorizontalAlignment(JLabel.CENTER);
+        getStartedButton.setForeground(Color.WHITE);
+        getStartedButton.setFocusable(false);
+        getStartedButton.setContentAreaFilled(false);   // removes background fill
+        getStartedButton.setBorderPainted(false);       // removes border
+        getStartedButton.setFocusPainted(false);        // removes focus highlight
+        getStartedButton.setOpaque(false);
 
         patientButton = new JButton();
         patientButton.setBounds(30,126,240,40);
@@ -708,6 +730,10 @@ public class ASGui extends JFrame{
         // Layouts -----------------------------------------------
 
         this.add(wholeScreen);
+        wholeScreen.add(getStartedButton);
+        wholeScreen.setLayer(getStartedButton, 20);
+        wholeScreen.add(welcomeImageLabel);
+        wholeScreen.setLayer(welcomeImageLabel, 20);
         wholeScreen.add(sidePanel);
         sidePanel.add(logoLabel);
         sidePanel.add(mainMenuLabel);
@@ -787,6 +813,7 @@ public class ASGui extends JFrame{
 
     public void setActionListeners(ActionListener listener)
     {
+        getStartedButton.addActionListener(listener);
         patientButton.addActionListener(listener);
         physicianButton.addActionListener(listener);
         nurseButton.addActionListener(listener);
@@ -1489,6 +1516,19 @@ public class ASGui extends JFrame{
         return admissionTable;
     }
 
+    public JButton getGetStartedButton() { return getStartedButton; }
+
+    public void removeGetStartedButton() {
+        wholeScreen.remove(getStartedButton);
+        wholeScreen.revalidate();
+        wholeScreen.repaint();
+    }
+
+    public void removeWelcomeImageLabel() {
+        wholeScreen.remove(welcomeImageLabel);
+        wholeScreen.revalidate();
+        wholeScreen.repaint();
+    }
 
 
 
