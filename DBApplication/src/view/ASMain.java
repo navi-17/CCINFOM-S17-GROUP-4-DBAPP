@@ -5,6 +5,7 @@ import controller.*;
 public class ASMain{
     public static void main(String[] args){
         ASGui gui = new ASGui();
+        WelcomeController welcomeController= new WelcomeController(gui);
         PatientController patientController = new PatientController(gui);
         NurseController nurseController = new NurseController(gui);
         PhysicianController physicianController = new PhysicianController(gui);
