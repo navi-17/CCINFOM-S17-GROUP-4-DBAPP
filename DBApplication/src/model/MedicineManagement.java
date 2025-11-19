@@ -155,7 +155,8 @@ public class MedicineManagement {
                     "    m.medicine_name,\n" +
                     "    CONCAT(p.p_lastname, ', ', p.p_firstname) AS patient_name,\n" +
                     "    i.illness_name,\n" +
-                    "    CONCAT(ph.ph_lastname, ', ', ph.ph_firstname) AS physician_name,\n" +
+                    "    CONCAT(ph_diag.ph_lastname, ', ', ph_diag.ph_firstname) AS diagnosing_physician,\n" +
+                    "    CONCAT(ph_assig.ph_lastname, ', ', ph_assig.ph_firstname) AS assigned_physician,\n" +
                     "    t.treatment_date,\n" +
                     "    t.treatment_procedure\n" +
                     "FROM treatment t\n" +
@@ -164,7 +165,8 @@ public class MedicineManagement {
                     "    LEFT JOIN patient p ON d.patient_id = p.patient_id\n" +
                     "    LEFT JOIN illness i ON d.illness_id = i.illness_id\n" +
                     "    LEFT JOIN physician_schedule pa ON d.physicianSchedule_id = pa.physicianSchedule_id\n" +
-                    "    LEFT JOIN physician ph ON pa.physician_id = ph.physician_id\n" +
+                    "    LEFT JOIN physician ph_diag ON pa.physician_id = ph_diag.physician_id\n" + // for diagnosing physician (connected to the sched)
+                    "    LEFT JOIN physician ph_assig ON t.assignedPhysician_id = ph_assig.physician_id\n" + // for assigned physician (connected to the treatment)
                     "WHERE m.medicine_id = ?;";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
@@ -172,13 +174,14 @@ public class MedicineManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             while(rs.next())
             {
-                Object[] row = new Object[6];
+                Object[] row = new Object[7];
                 row[0] = rs.getString("medicine_name");
                 row[1] = rs.getString("patient_name");
                 row[2] = rs.getString("illness_name");
-                row[3] = rs.getString("physician_name");
-                row[4] = rs.getString("treatment_date");
-                row[5] = rs.getString("treatment_procedure");
+                row[3] = rs.getString("diagnosing_physician");
+                row[4] = rs.getString("assigned_physician") != null ? rs.getString("assigned_physician") : "N/A"; // in case walang assigned physician
+                row[5] = rs.getString("treatment_date");
+                row[6] = rs.getString("treatment_procedure");
                 records.add(row);
             }
 

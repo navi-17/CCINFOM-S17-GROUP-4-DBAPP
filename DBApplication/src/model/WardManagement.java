@@ -177,7 +177,7 @@ public class WardManagement {
             System.out.println("Connection to database successful!");
 
             String sql = "SELECT\n" +
-                    "    w.ward_no,\n" +
+                    "    w.ward_number,\n" +
                     "    w.floor,\n" +
                     "    CONCAT (p.p_lastname, ', ', p.p_firstname) AS admitted_patient,\n" +
                     "    CONCAT (n.n_lastname, ', ', n.n_firstname) AS assigned_nurse\n" +
@@ -195,7 +195,7 @@ public class WardManagement {
             while(rs.next())
             {
                 Object[] row = new Object[4];
-                row[0] = rs.getInt("ward_no");
+                row[0] = rs.getInt("ward_number");
                 row[1] = rs.getString("floor");
                 row[2] = rs.getString("admitted_patient");
                 row[3] = rs.getString("assigned_nurse");

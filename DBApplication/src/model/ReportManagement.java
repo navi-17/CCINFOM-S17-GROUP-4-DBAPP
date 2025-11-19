@@ -186,7 +186,7 @@ public class ReportManagement {
             if (type.equalsIgnoreCase("day"))
             {
                 sql = "SELECT COUNT(DISTINCT patient_id) AS Total_Patients, " +
-                        "CONCAT(p_lastname, ', ', p_firstname) AS patient_name" +
+                        "GROUP_CONCAT(CONCAT(p_lastname, ', ', p_firstname) SEPARATOR '\n ') AS patient_name " +
                         "FROM treatment_stats_view " +
                         "WHERE treatment_id = ? " +
                         "AND treatment_date = ? " +
@@ -200,7 +200,7 @@ public class ReportManagement {
             else if (type.equalsIgnoreCase("month"))
             {
                 sql = "SELECT COUNT(DISTINCT patient_id) AS Total_Patients, " +
-                        "CONCAT(p_lastname, ', ', p_firstname) AS patient_name " +
+                        "GROUP_CONCAT(CONCAT(p_lastname, ', ', p_firstname) SEPARATOR '\n ') AS patient_name " +
                         "FROM treatment_stats_view " +
                         "WHERE treatment_id = ? " +
                         "AND MONTH(treatment_date) = ? " +
@@ -216,7 +216,7 @@ public class ReportManagement {
             else
             {
                 sql = "SELECT COUNT(DISTINCT patient_id) AS Total_Patients, " +
-                        "CONCAT(p_lastname, ', ', p_firstname) AS patient_name " +
+                        "GROUP_CONCAT(CONCAT(p_lastname, ', ', p_firstname) SEPARATOR '\n ') AS patient_name " +
                         "FROM treatment_stats_view " +
                         "WHERE treatment_id = ? " +
                         "AND YEAR(treatment_date) = ? " +
@@ -260,10 +260,9 @@ public class ReportManagement {
             if(type.equalsIgnoreCase("day"))
             {
                 sql = "SELECT COUNT(DISTINCT patient_id) AS total_patients," +
-                        "CONCAT(p_lastname, ', ', p_firstname) AS patient_name " +
+                        "GROUP_CONCAT(CONCAT(p_lastname, ', ', p_firstname) SEPARATOR '\n ') AS patient_name " +
                         "FROM admission_rate_view " +
-                        "WHERE diagnosis_date = ? " +
-                        "GROUP BY p_lastname, p_firstname;";
+                        "WHERE diagnosis_date = ?; ";
 
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, dateOrMonth);
@@ -273,11 +272,10 @@ public class ReportManagement {
             else if(type.equalsIgnoreCase("month"))
             {
                 sql = "SELECT COUNT(DISTINCT patient_id) AS total_patients," +
-                        "CONCAT(p_lastname, ', ', p_firstname) AS patient_name " +
+                        "GROUP_CONCAT(CONCAT(p_lastname, ', ', p_firstname) SEPARATOR '\n ') AS patient_name " +
                         "FROM admission_rate_view " +
                         "WHERE MONTH(diagnosis_date) = ? " +
-                        "AND YEAR(diagnosis_date) = ? " +
-                        "GROUP BY p_lastname, p_firstname;";
+                        "AND YEAR(diagnosis_date) = ?; ";
 
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, Integer.parseInt(dateOrMonth));
@@ -286,10 +284,9 @@ public class ReportManagement {
             else
             {
                 sql = "SELECT COUNT(DISTINCT patient_id) AS total_patients," +
-                        "CONCAT(p_lastname, ', ', p_firstname) AS patient_name " +
+                        "GROUP_CONCAT(CONCAT(p_lastname, ', ', p_firstname) SEPARATOR '\n ') AS patient_name " +
                         "FROM admission_rate_view " +
-                        "WHERE YEAR(diagnosis_date) = ? " +
-                        "GROUP BY p_lastname, p_firstname;";
+                        "WHERE YEAR(diagnosis_date) = ?; ";
 
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, year);
