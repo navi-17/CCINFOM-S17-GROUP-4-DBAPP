@@ -238,10 +238,11 @@ public class ASGui extends JFrame{
 
         this.setTitle("AdmitSys");
         this.setLayout(null);
-        this.setSize(screenWidth, screenHeight);
-        this.setResizable(false);
-        this.setExtendedState(Frame.MAXIMIZED_BOTH);
-        this.setUndecorated(true);
+		// MAKE SIZE DYNAMIC
+        this.setSize(1646, 1029);
+		this.setResizable(true);
+		this.setExtendedState(Frame.NORMAL);
+		this.setUndecorated(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 

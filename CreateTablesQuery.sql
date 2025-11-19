@@ -3,10 +3,10 @@ CREATE TABLE patient(
 	patient_id INT AUTO_INCREMENT PRIMARY KEY,
     p_lastname VARCHAR(50) NOT NULL, 
     p_firstname VARCHAR(50) NOT NULL,
-    sex ENUM('Male', 'Female') NOT NULL,
+    sex ENUM('M', 'F') NOT NULL,
     birth_date DATE NOT NULL,
-    contact_no VARCHAR(15) NOT NULL,	
-    p_status ENUM('Admitted', 'Discharged') NOT NULL
+    contact_no VARCHAR(30) NOT NULL,	
+    p_status ENUM('Active', 'Inactive') NOT NULL
 );
 
 
@@ -14,7 +14,7 @@ CREATE TABLE nurse(
 	nurse_id INT AUTO_INCREMENT PRIMARY KEY,
     n_firstname VARCHAR(50) NOT NULL,
     n_lastname VARCHAR(50) NOT NULL,
-	contact_no VARCHAR(15) NOT NULL 
+	contact_no VARCHAR(30) NOT NULL 
 );
 
 CREATE TABLE nurse_shift(
@@ -31,7 +31,7 @@ CREATE TABLE physician(
 	physician_id INT AUTO_INCREMENT PRIMARY KEY,
     ph_firstname VARCHAR(50) NOT NULL,
     ph_lastname VARCHAR(50) NOT NULL,
-	contact_no VARCHAR(15) NOT NULL,
+	contact_no VARCHAR(30) NOT NULL,
     specialization VARCHAR(80) NOT NULL
 );
 

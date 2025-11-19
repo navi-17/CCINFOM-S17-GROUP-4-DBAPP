@@ -17,7 +17,7 @@ public class TreatmentManagement {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
             //ensure treatment date is consistent w/ nurse, physician from diagnosis, or assigned physician
-            if(treatment.getPerformedBy().equalsIgnoreCase("Assigned Physician")) //if there is an assigned physician, compare that physicians schedule to treatment date
+            if(treatment.getPerformedBy().equalsIgnoreCase("Assigned Physician") && treatment.getAssignedPhysician() != null) //if there is an assigned physician, compare that physicians schedule to treatment date
             {
                 String getPhysicianSched = "SELECT schedule_day FROM physician_schedule ps " +
                                             "WHERE physician_id = ?";
@@ -43,7 +43,7 @@ public class TreatmentManagement {
                 rs.close();
                 pstmt.close();
             }
-            else if(treatment.getPerformedBy().equalsIgnoreCase("Diagnosing Physician")) //otherwise, compare diagnosing physician or nurse schedule
+            else if(treatment.getPerformedBy().equalsIgnoreCase("Diagnosing Physician") && treatment.getAssignedPhysician() == null) //otherwise, compare diagnosing physician or nurse schedule
             {
                 String getPhysicianSched = "SELECT schedule_day FROM physician_schedule ps " +
                         "JOIN diagnosis d ON ps.physicianSchedule_id = d.physicianSchedule_id " +
@@ -184,7 +184,7 @@ public class TreatmentManagement {
             System.out.println("Connection to database successful!");
 
             //ensure treatment date is consistent w/ nurse, physician from diagnosis, or assigned physician
-            if(treatment.getPerformedBy().equalsIgnoreCase("Assigned Physician")) //if there is an assigned physician, compare that physicians schedule to treatment date
+            if(treatment.getPerformedBy().equalsIgnoreCase("Assigned Physician") && treatment.getAssignedPhysician() != null) //if there is an assigned physician, compare that physicians schedule to treatment date
             {
                 String getPhysicianSched = "SELECT schedule_day FROM physician_schedule ps " +
                         "WHERE physician_id = ?";
@@ -211,7 +211,7 @@ public class TreatmentManagement {
                 pstmt.close();
 
             }
-            else if(treatment.getPerformedBy().equalsIgnoreCase("Diagnosing Physician")) //otherwise, compare diagnosing physician or nurse schedule
+            else if(treatment.getPerformedBy().equalsIgnoreCase("Diagnosing Physician") && treatment.getAssignedPhysician() == null) //otherwise, compare diagnosing physician or nurse schedule
             {
                 String getPhysicianSched = "SELECT schedule_day FROM physician_schedule ps " +
                         "JOIN diagnosis d ON ps.physicianSchedule_id = d.physicianSchedule_id " +
