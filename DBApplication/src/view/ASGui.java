@@ -44,7 +44,6 @@ public class ASGui extends JFrame{
     private JLabel searchBarLabel;
     private JLabel sortByLabel;
     private JLabel sortByTextLabel;
-    private JLabel entriesLabel;
     private JLabel backgroundLabel;
 
     private JButton patientButton;
@@ -74,13 +73,10 @@ public class ASGui extends JFrame{
     private JButton updateButton;
     private JButton deleteButton;
 
-    private JButton previousPageButton;
-    private JButton firstPageButton;
-    private JButton secondPageButton;
-    private JButton thirdPageButton;
-    private JButton fourthPageButton;
-    private JButton lastPageButton;
-    private JButton nextPageButton;
+    private JButton aRateButton;
+    private JButton phWorkloadButton;
+    private JButton tStatisticsButton;
+    private JButton iOccurrenceButton;
 
     private JTextField searchTextField;
 
@@ -318,7 +314,7 @@ public class ASGui extends JFrame{
         recordsLabel.setBackground(Color.BLUE);
 
         tableLabel = new JLabel();
-        tableLabel.setBounds(60,0,240,64);
+        tableLabel.setBounds(60,0,640,64);
         tableLabel.setText("");
         tableLabel.setFont(MontserratBold.deriveFont(Font.BOLD,28f));
         tableLabel.setForeground(Color.WHITE);
@@ -376,16 +372,6 @@ public class ASGui extends JFrame{
         pathLabel.setForeground(new Color(0x2e582e));
         pathLabel.setBackground(Color.BLUE);
         // pathLabel.setOpaque(true);
-
-        entriesLabel = new JLabel();
-        entriesLabel.setBounds(60,950,240,40);
-        entriesLabel.setText("Showing 1-10 of 246 entries");
-        entriesLabel.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
-        entriesLabel.setHorizontalAlignment(JLabel.CENTER);
-        entriesLabel.setForeground(new Color(0x2e582e));
-        entriesLabel.setBackground(Color.WHITE);
-        entriesLabel.setBorder(BorderFactory.createEtchedBorder());
-        entriesLabel.setOpaque(true);
 
         backgroundLabel = new JLabel();
         backgroundLabel.setIcon(backgroundImage);
@@ -492,7 +478,7 @@ public class ASGui extends JFrame{
         ailmentButton = new JButton();
         ailmentButton.setBounds(30,386,240,40);
         ailmentButton.setIcon(personIcon);
-        ailmentButton.setText("Ailment");
+        ailmentButton.setText("Illness");
         ailmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
         ailmentButton.setHorizontalAlignment(JLabel.LEFT);
         ailmentButton.setIconTextGap(10);
@@ -529,7 +515,7 @@ public class ASGui extends JFrame{
         diagnosisButton.setBounds(30,604,240,40);
         diagnosisButton.setIcon(personIcon);
         diagnosisButton.setText("Diagnosis");
-        diagnosisButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+        diagnosisButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
         diagnosisButton.setHorizontalAlignment(JLabel.LEFT);
         diagnosisButton.setIconTextGap(10);
         diagnosisButton.setForeground(new Color(0x2e582e));
@@ -538,10 +524,10 @@ public class ASGui extends JFrame{
         diagnosisButton.setFocusable(false);
 
         nAssignmentButton = new JButton();
-        nAssignmentButton.setBounds(30,656,240,40);
+        nAssignmentButton.setBounds(30,708,240,40);
         nAssignmentButton.setIcon(personIcon);
         nAssignmentButton.setText("Nurse Assignment");
-        nAssignmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+        nAssignmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
         nAssignmentButton.setHorizontalAlignment(JLabel.LEFT);
         nAssignmentButton.setIconTextGap(10);
         nAssignmentButton.setForeground(new Color(0x2e582e));
@@ -550,10 +536,10 @@ public class ASGui extends JFrame{
         nAssignmentButton.setFocusable(false);
 
         treatmentButton = new JButton();
-        treatmentButton.setBounds(30,708,240,40);
+        treatmentButton.setBounds(30,656,240,40);
         treatmentButton.setIcon(personIcon);
         treatmentButton.setText("Treatment");
-        treatmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,16f));
+        treatmentButton.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
         treatmentButton.setHorizontalAlignment(JLabel.LEFT);
         treatmentButton.setIconTextGap(10);
         treatmentButton.setForeground(new Color(0x2e582e));
@@ -669,75 +655,45 @@ public class ASGui extends JFrame{
         deleteButton.setBorder(BorderFactory.createEtchedBorder());
         deleteButton.setFocusable(false);
 
-        previousPageButton = new JButton();
-        previousPageButton.setBounds(946,950,40,40);
-        previousPageButton.setText("<");
-        previousPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        previousPageButton.setHorizontalAlignment(JButton.CENTER);
-        previousPageButton.setForeground(new Color(0x2e582e));
-        previousPageButton.setBackground(Color.WHITE);
-        previousPageButton.setBorder(BorderFactory.createEtchedBorder());
-        previousPageButton.setFocusable(false);
+        aRateButton = new JButton();
+        aRateButton.setBounds(170,950,240,40);
+        aRateButton.setText("Admission Rates");
+        aRateButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+        aRateButton.setHorizontalAlignment(JButton.CENTER);
+        aRateButton.setForeground(new Color(0x2e582e));
+        aRateButton.setBackground(Color.WHITE);
+        aRateButton.setBorder(BorderFactory.createEtchedBorder());
+        aRateButton.setFocusable(false);
 
-        firstPageButton = new JButton();
-        firstPageButton.setBounds(996,950,40,40);
-        firstPageButton.setText("1");
-        firstPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        firstPageButton.setHorizontalAlignment(JButton.CENTER);
-        firstPageButton.setForeground(new Color(0x2e582e));
-        firstPageButton.setBackground(Color.WHITE);
-        firstPageButton.setBorder(BorderFactory.createEtchedBorder());
-        firstPageButton.setFocusable(false);
+        phWorkloadButton = new JButton();
+        phWorkloadButton.setBounds(420,950,240,40);
+        phWorkloadButton.setText("Physician Workloads");
+        phWorkloadButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+        phWorkloadButton.setHorizontalAlignment(JButton.CENTER);
+        phWorkloadButton.setForeground(new Color(0x2e582e));
+        phWorkloadButton.setBackground(Color.WHITE);
+        phWorkloadButton.setBorder(BorderFactory.createEtchedBorder());
+        phWorkloadButton.setFocusable(false);
 
-        secondPageButton = new JButton();
-        secondPageButton.setBounds(1046,950,40,40);
-        secondPageButton.setText("2");
-        secondPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        secondPageButton.setHorizontalAlignment(JButton.CENTER);
-        secondPageButton.setForeground(new Color(0x2e582e));
-        secondPageButton.setBackground(Color.WHITE);
-        secondPageButton.setBorder(BorderFactory.createEtchedBorder());
-        secondPageButton.setFocusable(false);
+        tStatisticsButton = new JButton();
+        tStatisticsButton.setBounds(670,950,240,40);
+        tStatisticsButton.setText("Treatment Statistics");
+        tStatisticsButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+        tStatisticsButton.setHorizontalAlignment(JButton.CENTER);
+        tStatisticsButton.setForeground(new Color(0x2e582e));
+        tStatisticsButton.setBackground(Color.WHITE);
+        tStatisticsButton.setBorder(BorderFactory.createEtchedBorder());
+        tStatisticsButton.setFocusable(false);
 
-        thirdPageButton = new JButton();
-        thirdPageButton.setBounds(1096,950,40,40);
-        thirdPageButton.setText("3");
-        thirdPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        thirdPageButton.setHorizontalAlignment(JButton.CENTER);
-        thirdPageButton.setForeground(new Color(0x2e582e));
-        thirdPageButton.setBackground(Color.WHITE);
-        thirdPageButton.setBorder(BorderFactory.createEtchedBorder());
-        thirdPageButton.setFocusable(false);
-
-        fourthPageButton = new JButton();
-        fourthPageButton.setBounds(1146,950,40,40);
-        fourthPageButton.setText("...");
-        fourthPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        fourthPageButton.setHorizontalAlignment(JButton.CENTER);
-        fourthPageButton.setForeground(new Color(0x2e582e));
-        fourthPageButton.setBackground(Color.WHITE);
-        fourthPageButton.setBorder(BorderFactory.createEtchedBorder());
-        fourthPageButton.setFocusable(false);
-
-        lastPageButton = new JButton();
-        lastPageButton.setBounds(1196,950,40,40);
-        lastPageButton.setText("25");
-        lastPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        lastPageButton.setHorizontalAlignment(JButton.CENTER);
-        lastPageButton.setForeground(new Color(0x2e582e));
-        lastPageButton.setBackground(Color.WHITE);
-        lastPageButton.setBorder(BorderFactory.createEtchedBorder());
-        lastPageButton.setFocusable(false);
-
-        nextPageButton = new JButton();
-        nextPageButton.setBounds(1246,950,40,40);
-        nextPageButton.setText(">");
-        nextPageButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
-        nextPageButton.setHorizontalAlignment(JButton.CENTER);
-        nextPageButton.setForeground(new Color(0x2e582e));
-        nextPageButton.setBackground(Color.WHITE);
-        nextPageButton.setBorder(BorderFactory.createEtchedBorder());
-        nextPageButton.setFocusable(false);
+        iOccurrenceButton = new JButton();
+        iOccurrenceButton.setBounds(920,950,240,40);
+        iOccurrenceButton.setText("Illness Occurrences");
+        iOccurrenceButton.setFont(RobotoBold.deriveFont(Font.BOLD,18f));
+        iOccurrenceButton.setHorizontalAlignment(JButton.CENTER);
+        iOccurrenceButton.setForeground(new Color(0x2e582e));
+        iOccurrenceButton.setBackground(Color.WHITE);
+        iOccurrenceButton.setBorder(BorderFactory.createEtchedBorder());
+        iOccurrenceButton.setFocusable(false);
 
         // Layouts -----------------------------------------------
 
@@ -788,14 +744,10 @@ public class ASGui extends JFrame{
         mainPanel.add(tableBGPanel);
         mainPanel.setLayer(tableBGPanel, 10);
         tableBGPanel.add(tabbedPane);
-        mainPanel.add(entriesLabel);
-        mainPanel.add(previousPageButton);
-        mainPanel.add(firstPageButton);
-        mainPanel.add(secondPageButton);
-        mainPanel.add(thirdPageButton);
-        mainPanel.add(fourthPageButton);
-        mainPanel.add(lastPageButton);
-        mainPanel.add(nextPageButton);
+        mainPanel.add(aRateButton);
+        mainPanel.add(phWorkloadButton);
+        mainPanel.add(tStatisticsButton);
+        mainPanel.add(iOccurrenceButton);
         mainPanel.add(backgroundLabel);
     }
 
@@ -843,6 +795,10 @@ public class ASGui extends JFrame{
         deleteButton.addActionListener(listener);
         updateButton.addActionListener(listener);
         searchButton.addActionListener(listener);
+        aRateButton.addActionListener(listener);
+        phWorkloadButton.addActionListener(listener);
+        tStatisticsButton.addActionListener(listener);
+        iOccurrenceButton.addActionListener(listener);
     }
 
     public List<Object> getSelectedRowIDs(JTable table) {
@@ -1114,10 +1070,10 @@ public class ASGui extends JFrame{
                 return 40; // Custom tab height
             }
 
-            @Override
-            protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-                return 120; // Custom tab width
-            }
+//            @Override
+//            protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+//                return 120; // Custom tab width
+//            }
 
             @Override
             protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex,
@@ -1232,6 +1188,26 @@ public class ASGui extends JFrame{
         return pScheduleButton;
     }
 
+    public JButton getARateButton()
+    {
+        return aRateButton;
+    }
+
+    public JButton getPHWorkloadButton()
+    {
+        return phWorkloadButton;
+    }
+
+    public JButton getTStatisticsButton()
+    {
+        return tStatisticsButton;
+    }
+
+    public JButton getIOccurrenceButton()
+    {
+        return iOccurrenceButton;
+    }
+
     public ImageIcon getProfileIcon()
     {
         return profileIcon;
@@ -1273,14 +1249,14 @@ public class ASGui extends JFrame{
         createButton.setText(createText);
     }
 
-    public int getButtonValue()
-    {
-        return buttonValue;
-    }
-
     public void setButtonValue(int newValue)
     {
         buttonValue = newValue;
+    }
+
+    public int getButtonValue()
+    {
+        return buttonValue;
     }
 
     public JScrollPane getPatientScrollPane()
