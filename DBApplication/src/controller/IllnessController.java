@@ -31,6 +31,7 @@ public class IllnessController implements ActionListener {
             asgui.setCreateButtonText("Add Illness");
             asgui.showOnlyTabs("Illnesses", "Illness Related Records");
             asgui.setTableLabel("Illness Records");
+            asgui.setPathLabel("Home   /   Illness   /");
             System.out.println("Ailment Button clicked!");
             List<Illness> illnesses = illnessManagement.viewIllnessRecords();
             Object[][] data = new Object[illnesses.size()][5];

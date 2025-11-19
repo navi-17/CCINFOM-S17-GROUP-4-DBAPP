@@ -32,6 +32,7 @@ public class NurseController implements ActionListener{
             asgui.setCreateButtonText("Add Nurse");
             asgui.showOnlyTabs("Nurse", "Nurse Related Records");
             asgui.setTableLabel("Nurse Records");
+            asgui.setPathLabel("Home   /   Nurse   /");
             System.out.println("Nurse Button clicked!");
             List<Nurse> nurses = nurseManagement.viewNurseRecords();
             Object[][] data = new Object[nurses.size()][4];
@@ -73,6 +74,7 @@ public class NurseController implements ActionListener{
             asgui.setCreateButtonText("Add Nurse Shift");
             asgui.showOnlyTabs("Nurse Shifts");
             asgui.setTableLabel("Nurse Shift Records");
+            asgui.setPathLabel("Home   /   Nurse Shift   /");
             System.out.println("NurseShift Button clicked!");
             List<NurseShift> nurseShifts = nurseShiftManagement.viewNurseShifts();
             Object[][] data = new Object[nurseShifts.size()][6];

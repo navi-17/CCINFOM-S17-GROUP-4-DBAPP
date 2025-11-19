@@ -30,6 +30,7 @@ public class DischargeController implements ActionListener{
             asgui.setCreateButtonText("Add Discharge");
             asgui.showOnlyTabs("Discharges");
             asgui.setTableLabel("Discharge Records");
+            asgui.setPathLabel("Home   /   Discharge   /");
             System.out.println("DischargeAilment Button clicked!");
             List<Discharge> discharges = dischargeManagement.viewDischargeRecord();
             Object[][] data = new Object[discharges.size()][4];

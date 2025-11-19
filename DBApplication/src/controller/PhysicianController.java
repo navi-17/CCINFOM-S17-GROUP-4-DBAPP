@@ -34,6 +34,7 @@ public class PhysicianController implements ActionListener{
             asgui.setCreateButtonText("Add Physician");
             asgui.showOnlyTabs("Physician", "Physician Related Records");
             asgui.setTableLabel("Physician Records");
+            asgui.setPathLabel("Home   /   Physician   /");
             System.out.println("Physician Button clicked!");
             List<Physician> physicians = physicianManagement.viewPhysicianRecords();
             Object[][] data = new Object[physicians.size()][5];
@@ -77,6 +78,7 @@ public class PhysicianController implements ActionListener{
             asgui.setCreateButtonText("Add Schedule");
             asgui.showOnlyTabs("Physician Schedules");
             asgui.setTableLabel("Physician Schedule Records");
+            asgui.setPathLabel("Home   /   Physician Schedule   /");
             System.out.println("Physician Schedule Button clicked!");
             List<PhysicianSchedule> schedules = physicianScheduleManagement.viewPhysicianSchedule();
             Object[][] data = new Object[schedules.size()][6];

@@ -31,6 +31,7 @@ public class WardController implements ActionListener {
             asgui.setCreateButtonText("Add Ward");
             asgui.showOnlyTabs("Wards", "Ward Related Records");
 			asgui.setTableLabel("Ward Records");
+            asgui.setPathLabel("Home   /   Ward   /");
 			System.out.println("Ward Button clicked!");
 			List<Ward> wards = wardManagement.viewWardRecords();
 			Object[][] data = new Object[wards.size()][5];

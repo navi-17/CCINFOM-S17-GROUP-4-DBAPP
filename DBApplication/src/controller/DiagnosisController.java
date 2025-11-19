@@ -33,6 +33,7 @@ public class DiagnosisController implements ActionListener{
             asgui.setCreateButtonText("Add Diagnosis");
             asgui.showOnlyTabs("Diagnosis");
             asgui.setTableLabel("Diagnosis Records");
+            asgui.setPathLabel("Home   /   Diagnosis   /");
             System.out.println("Diagnosis Button clicked!");
             List<Diagnosis> diagnoses = diagnosisManagement.viewPatientDiagnosis();
             Object[][] data = new Object[diagnoses.size()][7];

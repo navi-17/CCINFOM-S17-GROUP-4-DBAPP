@@ -31,6 +31,7 @@ public class PatientController implements ActionListener{
             asgui.setCreateButtonText("Add Patient");
             asgui.showOnlyTabs("Patients", "Patient Related Records");
             asgui.setTableLabel("Patient Records");
+            asgui.setPathLabel("Home   /   Patient   /");
             System.out.println("Patient Button clicked!");
             //---------Creating the table for viewing record
             List<Patient> patients = patientManagement.viewPatientRecords();

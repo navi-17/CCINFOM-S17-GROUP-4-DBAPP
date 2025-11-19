@@ -226,13 +226,22 @@ public class ASGui extends JFrame{
         System.out.println("Screen Width: " + screenWidth + " pixels");
         System.out.println("Screen Height: " + screenHeight + " pixels");
 
+//        this.setTitle("AdmitSys");
+//        this.setLayout(null);
+//		// MAKE SIZE DYNAMIC
+//        this.setSize(1700, 1050);
+//		this.setResizable(true);
+//		this.setExtendedState(Frame.NORMAL);
+//		this.setUndecorated(false);
+//        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.setVisible(true);
+
         this.setTitle("AdmitSys");
         this.setLayout(null);
-		// MAKE SIZE DYNAMIC
-        this.setSize(1920, 1080);
-		this.setResizable(true);
-		this.setExtendedState(Frame.NORMAL);
-		this.setUndecorated(false);
+        this.setSize(screenWidth, screenHeight);
+        this.setResizable(false);
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
+        this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
@@ -363,8 +372,8 @@ public class ASGui extends JFrame{
 
         pathLabel = new JLabel();
         pathLabel.setIcon(houseIcon);
-        pathLabel.setBounds(60,0,240,50);
-        pathLabel.setText("Home   /   Patient   /");
+        pathLabel.setBounds(60,0,340,50);
+        pathLabel.setText("Home   /");
         pathLabel.setFont(RobotoBold.deriveFont(Font.BOLD,20f));
         pathLabel.setVerticalTextPosition(JLabel.CENTER);
         pathLabel.setHorizontalTextPosition(JLabel.RIGHT);
@@ -1226,6 +1235,11 @@ public class ASGui extends JFrame{
     public void setTableLabel(String tableName)
     {
         tableLabel.setText(tableName);
+    }
+
+    public void setPathLabel(String pathString)
+    {
+        pathLabel.setText(pathString);
     }
 
     public JTabbedPane getTabbedPane()

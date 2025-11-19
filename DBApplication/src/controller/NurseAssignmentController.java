@@ -31,6 +31,7 @@ public class NurseAssignmentController implements ActionListener{
             asgui.setCreateButtonText("Add Assignment");
             asgui.showOnlyTabs("Nurse Assignments");
             asgui.setTableLabel("Nurse Assignment Records");
+            asgui.setPathLabel("Home   /   Nurse Assignment   /");
             // ... (VIEW logic) ...
             List<NurseAssignment> nurseAssignments = nurseAssignmentManagement.viewNurseAssignments();
             Object[][] data = new Object[nurseAssignments.size()][6];

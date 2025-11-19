@@ -30,6 +30,7 @@ public class MedicineController implements ActionListener{
             asgui.setCreateButtonText("Add Medicine");
             asgui.showOnlyTabs("Medicines", "Medicine Related Records");
             asgui.setTableLabel("Medicine Records");
+            asgui.setPathLabel("Home   /   Medicine   /");
             System.out.println("Medicine button clicked!");
             List<Medicine> medicines = medicineManagement.viewMedicineRecord();
             

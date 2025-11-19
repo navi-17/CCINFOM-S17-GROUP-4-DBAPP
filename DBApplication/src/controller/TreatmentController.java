@@ -32,6 +32,7 @@ public class TreatmentController implements ActionListener{
             asgui.setCreateButtonText("Add Treatment");
             asgui.showOnlyTabs("Treatments");
             asgui.setTableLabel("Treatment Records");
+            asgui.setPathLabel("Home   /   Treatment   /");
             System.out.println("Treatment Button clicked!");
             List<Treatment> treatments = treatmentManagement.viewTreatmentRecords();
             Object[][] data = new Object[treatments.size()][10];
