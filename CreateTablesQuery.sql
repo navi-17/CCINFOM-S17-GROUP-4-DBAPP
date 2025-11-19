@@ -6,7 +6,7 @@ CREATE TABLE patient(
     sex ENUM('M', 'F') NOT NULL,
     birth_date DATE NOT NULL,
     contact_no VARCHAR(30) NOT NULL,	
-    p_status ENUM('Active', 'Inactive') NOT NULL
+    p_status ENUM('Admitted', 'Discharged') NOT NULL
 );
 
 
