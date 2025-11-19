@@ -156,7 +156,7 @@ public class PatientManagement {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connection to database successful!");
 
-            String sql = "SELECT CONCAT(p.p_lastname, ', ', p.p_firstname) AS PatientName, i.illness_name, t.treatment_procedure, w.ward_no, CONCAT(ph.ph_lastname, ', ', ph.ph_firstname) AS Assigned_Physician, CONCAT(n.n_lastname, ', ', n.n_firstname) AS Assigned_Nurse\n" +
+            String sql = "SELECT CONCAT(p.p_lastname, ', ', p.p_firstname) AS PatientName, i.illness_name, t.treatment_procedure, w.ward_number, CONCAT(ph.ph_lastname, ', ', ph.ph_firstname) AS Assigned_Physician, CONCAT(n.n_lastname, ', ', n.n_firstname) AS Assigned_Nurse\n" +
                     "FROM patient p \n" +
                     "\tLEFT JOIN diagnosis d ON p.patient_id = d.patient_id\n" +
                     "    LEFT JOIN illness i ON d.illness_id = i.illness_id\n" +
@@ -179,7 +179,7 @@ public class PatientManagement {
                 row[0] = rs.getString("PatientName");
                 row[1] = rs.getString("illness_name");
                 row[2] = rs.getString("treatment_procedure");
-                row[3] = rs.getString("ward_no");
+                row[3] = rs.getString("ward_number");
                 row[4] = rs.getString("Assigned_Physician");
                 row[5] = rs.getString("Assigned_Nurse");
                 records.add(row);
