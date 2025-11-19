@@ -4,6 +4,7 @@ import model.AdmissionManagement;
 
 
 import view.ASGui;
+import view.UpdateAdmissionDialog;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -65,7 +66,82 @@ public class AdmissionController implements ActionListener{
                 System.err.println("Tab 'Admissions' not found!");
             }
         }
+		else if(e.getSource() == asgui.getDeleteButton())
+		{
+            // ROUTING CHECK (This prevents duplicate pop-ups)
+			if (!asgui.getTableLabel().getText().equals("Admission Records")) return;
+            
+			System.out.println("Delete Button clicked for Admission!");
+            JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+            if (table == null) return;
+
+            List<Object> selectedIDs = asgui.getSelectedRowIDs(table);
+            if (selectedIDs.isEmpty()) {
+                JOptionPane.showMessageDialog(asgui, "No rows selected for deletion.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(asgui, 
+                "Are you sure you want to delete the selected " + selectedIDs.size() + " admission record(s)?", 
+                "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                int deletedCount = 0;
+                for (Object id : selectedIDs) {
+                    try {
+                        if (admissionManagement.deleteAdmissionRecord((int) id)) {
+                            deletedCount++;
+                        }
+                    } catch (Exception ex) {
+                        System.err.println("Error deleting Admission ID " + id + ": " + ex.getMessage());
+                    }
+                }
+
+                JOptionPane.showMessageDialog(asgui, deletedCount + " admission record(s) deleted successfully.", "Deletion Complete", JOptionPane.INFORMATION_MESSAGE);
+                asgui.getAdmissionButton().doClick(); // Refresh
+            }
+		}
+		else if(e.getSource() == asgui.getUpdateButton())
+		{
+            // ROUTING CHECK
+			if (!asgui.getTableLabel().getText().equals("Admission Records")) return;
+			
+			// IMPLEMENTED UPDATE LOGIC
+			System.out.println("Update Button clicked for Admission!");
+			JTable table = (JTable) asgui.getScrollPane().getViewport().getView();
+			if (table == null) return;
+
+			List<Object> selectedData = asgui.getSelectedRowData(table);
+
+			if (selectedData != null) {
+				if (table.getModel().getColumnCount() != 5) {
+					JOptionPane.showMessageDialog(asgui, "Update function available only for Admission Records view.", "Update Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				try {
+					// Extract data
+					int admissionID = (int) selectedData.get(1);
+					int patientID = Integer.parseInt(selectedData.get(2).toString()); 
+					int wardID = Integer.parseInt(selectedData.get(3).toString());
+					String admissionDate = (String) selectedData.get(4);
+					
+					// Create Admission object
+					Admission selectedAdmission = new Admission(patientID, wardID, admissionDate);
+					selectedAdmission.setAdmissionID(admissionID);
+					
+					// Open the Update Dialog
+					UpdateAdmissionDialog updateDialog = new UpdateAdmissionDialog(asgui, selectedAdmission);
+					updateDialog.setVisible(true);
+
+					// Refresh the table
+					asgui.getAdmissionButton().doClick();
+
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(asgui, "Error processing selected Admission data.", "Data Error", JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
+			}
+		}
     }
-
-
 }

@@ -84,17 +84,19 @@ public class ASGui extends JFrame{
 
     private JTextField searchTextField;
 
-    private ImageIcon backgroundImage = new ImageIcon(getClass().getResource("/backgroundImage.png"));
-    private ImageIcon logoImage = new ImageIcon(getClass().getResource("/globeIcon.png"));
-    private ImageIcon houseIcon = new ImageIcon(getClass().getResource("/houseIcon.png"));
-    private ImageIcon personIcon = new ImageIcon(getClass().getResource("/personIcon.png"));
-    private ImageIcon profileIcon = new ImageIcon(getClass().getResource("/profileIcon.png"));
-    private ImageIcon settingsIcon = new ImageIcon(getClass().getResource("/settingsIcon.png"));
-    private ImageIcon bellIcon = new ImageIcon(getClass().getResource("/bellIcon.png"));
-    private ImageIcon dropdownIcon = new ImageIcon(getClass().getResource("/dropdownIcon.png"));
-    private ImageIcon dropdownIcon2 = new ImageIcon(getClass().getResource("/dropdownIcon2.png"));
-    private ImageIcon searchIcon = new ImageIcon(getClass().getResource("/searchIcon.png"));
-    private ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/cancelIcon.png"));
+	private String lastViewButtonName = "";
+
+    private ImageIcon backgroundImage = new ImageIcon(getClass().getResource("/resources/backgroundImage.png"));
+    private ImageIcon logoImage = new ImageIcon(getClass().getResource("/resources/globeIcon.png"));
+    private ImageIcon houseIcon = new ImageIcon(getClass().getResource("/resources/houseIcon.png"));
+    private ImageIcon personIcon = new ImageIcon(getClass().getResource("/resources/personIcon.png"));
+    private ImageIcon profileIcon = new ImageIcon(getClass().getResource("/resources/profileIcon.png"));
+    private ImageIcon settingsIcon = new ImageIcon(getClass().getResource("/resources/settingsIcon.png"));
+    private ImageIcon bellIcon = new ImageIcon(getClass().getResource("/resources/bellIcon.png"));
+    private ImageIcon dropdownIcon = new ImageIcon(getClass().getResource("/resources/dropdownIcon.png"));
+    private ImageIcon dropdownIcon2 = new ImageIcon(getClass().getResource("/resources/dropdownIcon2.png"));
+    private ImageIcon searchIcon = new ImageIcon(getClass().getResource("/resources/searchIcon.png"));
+    private ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/resources/cancelIcon.png"));
 
     private List<Component> allTabContents;
     private List<String> allTabTitles;
@@ -103,6 +105,16 @@ public class ASGui extends JFrame{
     private static Font RobotoRegular;
     private static Font RobotoBold;
     private static Font MontserratBold;
+
+	// ADDED: Getter/Setter for the active view name
+	public String getLastViewButtonName() {
+        return lastViewButtonName;
+    }
+
+	public JLabel getTableLabel()
+	{
+		return tableLabel;
+	}
 
     public ASGui()
     {
@@ -218,10 +230,11 @@ public class ASGui extends JFrame{
 
         this.setTitle("AdmitSys");
         this.setLayout(null);
-        this.setSize(screenWidth, screenHeight);
-        this.setResizable(false);
-        this.setExtendedState(Frame.MAXIMIZED_BOTH);
-        this.setUndecorated(true);
+		// MAKE SIZE DYNAMIC
+        this.setSize(1920, 1080);
+		this.setResizable(true);
+		this.setExtendedState(Frame.NORMAL);
+		this.setUndecorated(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
@@ -785,9 +798,9 @@ public class ASGui extends JFrame{
     }
 
     public void createFonts() {
-        RobotoRegular = loadFont("/RobotoRegular.ttf", 50f);
-        RobotoBold = loadFont("/RobotoBold.ttf", 50f);
-        MontserratBold = loadFont("/MontserratBold.ttf", 50f);
+        RobotoRegular = loadFont("/resources/RobotoRegular.ttf", 50f);
+        RobotoBold = loadFont("/resources/RobotoBold.ttf", 50f);
+        MontserratBold = loadFont("/resources/MontserratBold.ttf", 50f);
     }
 
     private Font loadFont(String path, float size) {

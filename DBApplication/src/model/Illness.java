@@ -22,6 +22,11 @@ public class Illness {
         illness_name = n;
     }
 
+	public void setIllness_id(int id) 
+    {
+        this.illness_id = id;
+    }
+
     public void setCategory(String category)
     {
         this.category = category;
