@@ -71,7 +71,7 @@ public class SearchController implements ActionListener {
                 }
 
                 String[] attributes = {
-                        "Patient Name", "Illness", "Treatment Procedure", "Ward No", "Assigned Nurse", "Assigned Physician"
+                        "Patient Name", "Illness", "Treatment Procedure", "Ward No", "Assigned Physician", "Assigned Nurse"
                 };
 
                 Map<Integer, Integer> colWidths = Map.of(
