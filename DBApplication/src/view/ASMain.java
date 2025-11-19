@@ -18,5 +18,6 @@ public class ASMain{
         DischargeController dischargeController = new DischargeController(gui);
         SearchController searchController = new SearchController(gui);
         CreateController createController = new CreateController(gui);
+        ReportController reportController = new ReportController(gui);
     }
 }
