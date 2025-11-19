@@ -58,6 +58,7 @@ public class WardController implements ActionListener {
             asgui.setWardScrollPane(wardScrollPane);
 
             int tabIndex = asgui.getTabIndex("Wards");
+            System.out.println("Tab index for 'Wards' = " + tabIndex);
             if(tabIndex != -1) {
                 asgui.getTabbedPane().setComponentAt(tabIndex, wardScrollPane);
                 asgui.getTabbedPane().setSelectedIndex(tabIndex);
