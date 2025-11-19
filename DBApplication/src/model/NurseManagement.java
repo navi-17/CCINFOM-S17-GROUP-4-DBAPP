@@ -162,7 +162,7 @@ public class NurseManagement {
 
             String sql = "SELECT CONCAT(n.n_lastname, ', ', n.n_firstname) AS nurse_name,\n" +
                     "\t   CONCAT(p.p_lastname, ', ', p.p_firstname) AS patient_name,\n" +
-                    "       w.ward_no, w.floor,\n" +
+                    "       w.ward_number, w.floor,\n" +
                     "\t   t.treatment_procedure,\n" +
                     "       t.treatment_date\n" +
                     "FROM nurse n\n" +
@@ -182,7 +182,7 @@ public class NurseManagement {
                 Object[] row = new Object[6];
                 row[0] = rs.getString("nurse_name");
                 row[1] = rs.getString("patient_name");
-                row[2] = rs.getString("ward_no");
+                row[2] = rs.getString("ward_number");
                 row[3] = rs.getString("floor");
                 row[4] = rs.getString("treatment_date");
                 row[5] = rs.getString("treatment_procedure");

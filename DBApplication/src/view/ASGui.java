@@ -218,8 +218,8 @@ public class ASGui extends JFrame{
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        screenWidth = screenSize.width;
-        screenHeight = screenSize.height;
+        screenWidth = 1920;
+        screenHeight = 1080;
         mainWidth = 1346;
         sideWidth = 300;
 
@@ -239,7 +239,7 @@ public class ASGui extends JFrame{
         this.setTitle("AdmitSys");
         this.setLayout(null);
 		// MAKE SIZE DYNAMIC
-        this.setSize(1646, 1029);
+        this.setSize(1780, 1080);
 		this.setResizable(true);
 		this.setExtendedState(Frame.NORMAL);
 		this.setUndecorated(false);
@@ -318,7 +318,7 @@ public class ASGui extends JFrame{
 
         recordsLabel = new JLabel();
         recordsLabel.setBounds(50,760,240,50);
-        recordsLabel.setText("Records");
+        recordsLabel.setText("Schedules");
         recordsLabel.setFont(MontserratBold.deriveFont(Font.BOLD,20f));
         recordsLabel.setForeground(new Color(0x2e582e));
         recordsLabel.setBackground(Color.BLUE);
