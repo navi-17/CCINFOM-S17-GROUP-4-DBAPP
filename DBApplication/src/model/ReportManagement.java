@@ -23,15 +23,15 @@ public class ReportManagement {
 
             if(type.equalsIgnoreCase("day"))
             {
-                sql = "SELECT COUNT(DISTINCT patient_id) AS Total_Patients, " +
-                        "CONCAT(p_lastname, ', ', p_firstname) AS patient_name," +
-                        "illness_name," +
-                        "treatment_procedure " +
-                        "FROM physicians_workload_view " +
-                        "WHERE treatment_date = ? " +
-                        "AND ((performed_by = 'Diagnosing Physician' AND physician_id = ?) " +
-                        "OR (performed_by = 'Assigned Physician' AND assignedPhysician_id = ?)) " +
-                        "GROUP BY p_lastname, p_firstname, illness_name, treatment_procedure;";
+                sql = "SELECT COUNT(DISTINCT p.patient_id) AS total_patients, CONCAT(dp.ph_lastname, ', ', dp.ph_firstname) AS physician_name\n" +
+                        "FROM treatment t\n" +
+                        "LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id\n" +
+                        "LEFT JOIN physician_schedule ps ON d.physicianSchedule_id = ps.physicianSchedule_id\n" +
+                        "LEFT JOIN physician dp ON ps.physician_id = dp.physician_id\n" +
+                        "LEFT JOIN patient p ON d.patient_id = p.patient_id\n" +
+                        "LEFT JOIN physician ap ON t.assignedPhysician_id = ap.physician_id\n" +
+                        "WHERE treatment_date = ? AND (dp.physician_id = ? OR ap.physician_id = ?)" +
+                        "GROUP BY dp.physician_id";
 
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, dateOrMonth);
@@ -41,16 +41,15 @@ public class ReportManagement {
             }
             else if(type.equalsIgnoreCase("month"))
             {
-                sql = "SELECT COUNT(DISTINCT patient_id) AS Total_Patients, " +
-                        "CONCAT(p_lastname, ', ', p_firstname) AS patient_name," +
-                        "illness_name," +
-                        "treatment_procedure " +
-                        "FROM physicians_workload_view " +
-                        "WHERE MONTH(treatment_date) = ? " +
-                        "AND YEAR(treatment_date) = ? " +
-                        "AND ((performed_by = 'Diagnosing Physician' AND physician_id = ?) " +
-                        "OR (performed_by = 'Assigned Physician' AND assignedPhysician_id = ?)) " +
-                        "GROUP BY p_lastname, p_firstname, illness_name, treatment_procedure;";
+                sql = "SELECT COUNT(DISTINCT p.patient_id) AS total_patients, CONCAT(dp.ph_lastname, ', ', dp.ph_firstname) AS physician_name\n" +
+                        "FROM treatment t\n" +
+                        "LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id\n" +
+                        "LEFT JOIN physician_schedule ps ON d.physicianSchedule_id = ps.physicianSchedule_id\n" +
+                        "LEFT JOIN physician dp ON ps.physician_id = dp.physician_id\n" +
+                        "LEFT JOIN patient p ON d.patient_id = p.patient_id\n" +
+                        "LEFT JOIN physician ap ON t.assignedPhysician_id = ap.physician_id\n" +
+                        "WHERE (MONTH(t.treatment_date) = ? AND YEAR(t.treatment_date) = ?) AND (dp.physician_id = ? OR ap.physician_id = ?)" +
+                        "GROUP BY dp.physician_id ";
 
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, Integer.parseInt(dateOrMonth));
@@ -60,15 +59,15 @@ public class ReportManagement {
             }
             else
             {
-                sql = "SELECT COUNT(DISTINCT patient_id) AS Total_Patients, " +
-                        "CONCAT(p_lastname, ', ', p_firstname) AS patient_name," +
-                        "illness_name," +
-                        "treatment_procedure " +
-                        "FROM physicians_workload_view " +
-                        "WHERE YEAR(treatment_date) = ? " +
-                        "AND ((performed_by = 'Diagnosing Physician' AND physician_id = ?) " +
-                        "OR (performed_by = 'Assigned Physician' AND assignedPhysician_id = ?)) " +
-                        "GROUP BY p_lastname, p_firstname, illness_name, treatment_procedure;";
+                sql = "SELECT COUNT(DISTINCT p.patient_id) AS total_patients, CONCAT(dp.ph_lastname, ', ', dp.ph_firstname) AS physician_name\n" +
+                        "FROM treatment t\n" +
+                        "LEFT JOIN diagnosis d ON t.diagnosis_id = d.diagnosis_id\n" +
+                        "LEFT JOIN physician_schedule ps ON d.physicianSchedule_id = ps.physicianSchedule_id\n" +
+                        "LEFT JOIN physician dp ON ps.physician_id = dp.physician_id\n" +
+                        "LEFT JOIN patient p ON d.patient_id = p.patient_id\n" +
+                        "LEFT JOIN physician ap ON t.assignedPhysician_id = ap.physician_id\n" +
+                        "WHERE YEAR(treatment_date) = ? AND (dp.physician_id = ? OR ap.physician_id = ?) " +
+                        "GROUP BY dp.physician_id ";
 
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, year);
@@ -79,12 +78,6 @@ public class ReportManagement {
             ResultSet rs = pstmt.executeQuery();// used for queries that returns result
             MakePDF.exportToPDF(rs, "Physician_Workload_Report.pdf");
 
-//            if(rs.next())
-//            {
-//                totalPatients = rs.getInt("Total_Patients");
-//                System.out.println(totalPatients);
-//
-//            }
 
             pstmt.close();
             rs.close();
@@ -94,7 +87,6 @@ public class ReportManagement {
             System.out.println(e.getMessage());
         }
 
-        //return totalPatients;
     }
 
     public void getIllnessOccurrenceReport (String type, String illness, String dateOrMonth, Integer year){

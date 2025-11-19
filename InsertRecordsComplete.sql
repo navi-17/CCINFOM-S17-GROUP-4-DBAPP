@@ -29,16 +29,16 @@ Discharge starts at 501
 -- CORE RECORDS
 INSERT INTO patient(patient_id, p_lastname, p_firstname, sex, birth_date, contact_no, p_status)
 VALUES
-    (1001, 'Santos', 'Maria', 'F', '1990-05-12', '+63 9171234567', 'Active'),
-    (1002, 'Reyes', 'Juan', 'M', '1985-09-23', '+63 9987654321', 'Active'),
-    (1003, 'Cruz', 'Angela', 'F', '2001-02-14', '+63 9170011223', 'Active'),
-    (1004, 'Dela Cruz', 'Mark', 'M', '1998-12-02', '+63 9223334455', 'Active'),
-    (1005, 'Garcia', 'Luis', 'M', '1975-03-30', '09175556677', 'Inactive'),
-    (1006, 'Torres', 'Sophia', 'F', '2003-07-19', '09334445566', 'Active'),
-    (1007, 'Flores', 'Daniel', 'M', '1993-11-08', '09449998877', 'Active'),
-    (1008, 'Gonzales', 'Isabel', 'F', '1989-04-25', '09556667788', 'Inactive'),
-    (1009, 'Navarro', 'Carlos', 'M', '1996-01-17', '09171112223', 'Active'),
-    (1010, 'Lim', 'Patricia', 'F', '2000-10-05', '09221112223', 'Active');
+    (1001, 'Santos', 'Maria', 'F', '1990-05-12', '+63 9171234567', 'Discharged'),
+    (1002, 'Reyes', 'Juan', 'M', '1985-09-23', '+63 9987654321', 'Discharged'),
+    (1003, 'Cruz', 'Angela', 'F', '2001-02-14', '+63 9170011223', 'Discharged'),
+    (1004, 'Dela Cruz', 'Mark', 'M', '1998-12-02', '+63 9223334455', 'Discharged'),
+    (1005, 'Garcia', 'Luis', 'M', '1975-03-30', '+63 9175556677', 'Discharged'),
+    (1006, 'Torres', 'Sophia', 'F', '2003-07-19', '+63 9334445566', 'Discharged'),
+    (1007, 'Flores', 'Daniel', 'M', '1993-11-08', '+63 9449998877', 'Discharged'),
+    (1008, 'Gonzales', 'Isabel', 'F', '1989-04-25', '+63 9556667788', 'Discharged'),
+    (1009, 'Navarro', 'Carlos', 'M', '1996-01-17', '+63 9171112223', 'Discharged'),
+    (1010, 'Lim', 'Patricia', 'F', '2000-10-05', '+63 9221112223', 'Discharged');
 
 INSERT INTO physician(physician_id, ph_lastname, ph_firstname, specialization, contact_no) VALUES
 	(2001, 'Laforteza', 'Sophia', 'Cardiology', '+63 994 133 4589'),
