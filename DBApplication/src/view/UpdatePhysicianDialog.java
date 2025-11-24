@@ -147,7 +147,7 @@ public class UpdatePhysicianDialog extends JDialog {
 		}
 		
 		// Create updated Physician object, preserving the ID
-		Physician updatedPhysician = new Physician(fn, ln, specialization, contact);
+		Physician updatedPhysician = new Physician(fn, ln, contact, specialization);
 		updatedPhysician.setPhysician_id(originalPhysician.getPhysicianID());
 
 		boolean success = physicianManagement.updatePhysicianRecord(updatedPhysician);
