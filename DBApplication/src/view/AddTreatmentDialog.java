@@ -20,7 +20,7 @@ public class AddTreatmentDialog extends JDialog {
         treatmentManagement = new TreatmentManagement();
 
         // --- DIALOG BASE LAYOUT ---
-        setSize(700, 550);
+        setSize(800, 550);
         setLocationRelativeTo(parent);
         setResizable(false);
         setLayout(new BorderLayout());

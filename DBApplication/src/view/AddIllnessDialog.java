@@ -18,7 +18,7 @@ public class AddIllnessDialog extends JDialog{
         illnessManagement = new IllnessManagement();
 
         // --- DIALOG BASE LAYOUT ---
-        setSize(600, 400);
+        setSize(700, 500);
         setLocationRelativeTo(parent);
         setResizable(false);
         setLayout(new BorderLayout());

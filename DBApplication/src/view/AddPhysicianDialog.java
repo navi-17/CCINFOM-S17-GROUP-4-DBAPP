@@ -140,7 +140,7 @@ public class AddPhysicianDialog extends JDialog {
             return;
         }
 
-        Physician physician = new Physician(fn, ln, specialization, contact);
+        Physician physician = new Physician(fn, ln, contact, specialization);
         boolean success = physicianManagement.createPhysicianRecord(physician);
 
         if (success) {
